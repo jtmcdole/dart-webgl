@@ -1,0 +1,4 @@
+name: learn_gl
+description: A sample web application
+dependencies:
+  browser: any
