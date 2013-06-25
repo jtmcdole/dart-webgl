@@ -3,7 +3,7 @@ dart-webgl
 Learn WebGL with Dart!
 ==========
 
-The is my re-write of learnwebgl.com's 16 lessons to the Dart programing
+The is my re-write of learningwebgl.com 16 lessons to the Dart programing
 language. It is by no means perfect, however I try to leverage the
 language and its features to introduce structure earlier in the lessons.
 My hope is this will get more people interested in WebGL programming that
