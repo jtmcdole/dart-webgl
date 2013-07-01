@@ -54,11 +54,6 @@ part 'matrix4.dart';
 
 CanvasElement canvas = query("#lesson01-canvas");
 RenderingContext gl;
-
-Set<int> currentlyPressedKeys = new Set<int>();
-
-var filter = 0;
-
 Lesson lesson;
 
 void main() {
@@ -129,10 +124,15 @@ void main() {
 tick(time) {
   window.requestAnimationFrame(tick);
   if (trackFrameRate) frameCount(time);
-  lesson.drawScene(canvas.width, canvas.height, canvas.width/canvas.height);
-  lesson.animate(time);
   lesson.handleKeys();
+  lesson.animate(time);
+  lesson.drawScene(canvas.width, canvas.height, canvas.width/canvas.height);
 }
+
+/**
+ * The global key-state map.
+ */
+Set<int> currentlyPressedKeys = new Set<int>();
 
 /**
  * Test if the given [KeyCode] is active.
@@ -227,14 +227,36 @@ void frameCount(num now) {
  * The base for all Learn WebGL lessons.
  */
 abstract class Lesson {
+
+  /**
+   * Render the scene to the [viewWidth], [viewHeight], and [aspect] ratio.
+   */
   void drawScene(num viewWidth, num viewHeight, num aspect);
-  void animate(num now);
-  void handleKeys();
+
+  /**
+   * Animate the scene any way you like. [now] is provided as a clock reference
+   * since the scene rendering started.
+   */
+  void animate(num now) {}
+
+  /**
+   * Handle any keyboard events.
+   */
+  void handleKeys() {}
+
+  /**
+   * Fill in any lesson related instructions and input elements.
+   * This is provided by default.
+   */
   void initHtml(DivElement hook) {
     hook.innerHtml = "If you see this, don't worry, the lesson doesn't have "
         "any parameters for you to change! Generally up/down/left/right or "
         "WASD work.";
   }
+
+  /**
+   * Added for your convenience to track time between [animate] callbacks.
+   */
   num lastTime = 0;
 }
 
