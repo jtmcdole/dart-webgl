@@ -47,7 +47,7 @@ class Lesson1 extends Lesson {
 
     // bindBuffer() tells the WebGL system the target of future calls
     gl.bindBuffer(ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList([
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList([
            0.0,  1.0,  0.0,
           -1.0, -1.0,  0.0,
            1.0, -1.0,  0.0
@@ -55,7 +55,7 @@ class Lesson1 extends Lesson {
 
     squareVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, squareVertexPositionBuffer);
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList([
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList([
            1.0,  1.0,  0.0,
           -1.0,  1.0,  0.0,
            1.0, -1.0,  0.0,

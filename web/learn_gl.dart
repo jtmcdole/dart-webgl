@@ -283,7 +283,7 @@ Future<Texture> loadTexture(String url, handle(Texture tex, ImageElement ele)) {
 void handleMipMapTexture(Texture texture, ImageElement image) {
   gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
   gl.bindTexture(TEXTURE_2D, texture);
-  gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, image);
+  gl.texImage2DImage(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, image);
   gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
   gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
   gl.generateMipmap(TEXTURE_2D);

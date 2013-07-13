@@ -43,7 +43,7 @@ class JsonObject implements Renderable {
 
       vertexNormalBuffer = gl.createBuffer();
       gl.bindBuffer(ARRAY_BUFFER, vertexNormalBuffer);
-      gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
+      gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
     }
 
     numArray = data['vertexTextureCoords'];
@@ -53,7 +53,7 @@ class JsonObject implements Renderable {
 
       textureCoordBuffer = gl.createBuffer();
       gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
-      gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(coords), STATIC_DRAW);
+      gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(coords), STATIC_DRAW);
     }
 
     numArray = data['vertexPositions'];
@@ -62,7 +62,7 @@ class JsonObject implements Renderable {
 
     vertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, vertexPositionBuffer);
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(positions), STATIC_DRAW);
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(positions), STATIC_DRAW);
 
     numArray = data['indices'];
     if (numArray != null) {
@@ -70,7 +70,7 @@ class JsonObject implements Renderable {
           from(numArray.map((num index) => index.toInt()));
       indexBuffer = gl.createBuffer();
       gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-      gl.bufferData(ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
+      gl.bufferDataTyped(ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
       _itemSize = indices.length;
     } else {
       _itemSize = positions.length ~/ 3;

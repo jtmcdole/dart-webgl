@@ -44,7 +44,7 @@ class Star implements Renderable {
       -1.0,  1.0, 0.0,
        1.0,  1.0, 0.0
     ];
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
 
     starVertexTextureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, starVertexTextureCoordBuffer);
@@ -54,7 +54,7 @@ class Star implements Renderable {
       0.0, 1.0,
       1.0, 1.0
     ];
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
   }
 
   void draw({int vertex, int normal, int coord, UniformLocation color,

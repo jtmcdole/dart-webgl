@@ -29,7 +29,7 @@ class Lesson5 extends Lesson {
     loadTexture("nehe.gif", (Texture texture, ImageElement element) {
       gl.bindTexture(TEXTURE_2D, texture);
       gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, element);
+      gl.texImage2DImage(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, element);
       gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
       gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
       gl.bindTexture(TEXTURE_2D, null);

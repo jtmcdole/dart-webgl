@@ -54,7 +54,7 @@ class Lesson2 extends Lesson {
 
     // bindBuffer() tells the WebGL system the target of future calls
     gl.bindBuffer(ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList([
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList([
            0.0,  1.0,  0.0,
           -1.0, -1.0,  0.0,
            1.0, -1.0,  0.0
@@ -67,11 +67,11 @@ class Lesson2 extends Lesson {
       0.0, 1.0, 0.0, 1.0,
       0.0, 0.0, 1.0, 1.0
     ];
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
 
     squareVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, squareVertexPositionBuffer);
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList([
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList([
            1.0,  1.0,  0.0,
           -1.0,  1.0,  0.0,
            1.0, -1.0,  0.0,
@@ -86,7 +86,7 @@ class Lesson2 extends Lesson {
       0.5, 0.5, 1.0, 1.0,
       0.5, 0.5, 1.0, 1.0
     ];
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
+    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
 
     // Specify the color to clear with (black with 100% alpha) and then enable
     // depth testing.

@@ -66,19 +66,19 @@ class Lesson6 extends Lesson {
       textures.add(text);
 
       gl.bindTexture(TEXTURE_2D, textures[0]);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
+      gl.texImage2DImage(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
       gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
       gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
 
       textures.add(gl.createTexture());
       gl.bindTexture(TEXTURE_2D, textures[1]);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
+      gl.texImage2DImage(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
       gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
       gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
 
       textures.add(gl.createTexture());
       gl.bindTexture(TEXTURE_2D, textures[2]);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
+      gl.texImage2DImage(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
       gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
       gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
       gl.generateMipmap(TEXTURE_2D);
