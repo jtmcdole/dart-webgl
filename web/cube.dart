@@ -202,7 +202,7 @@ class CubeColor {
     colorBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
     /// HARD CODED :'(
-    List<List<num>> colors = [
+    List<List<double>> colors = [
       [1.0, 0.0, 0.0, 1.0], // Front face
       [1.0, 1.0, 0.0, 1.0], // Back face
       [0.0, 1.0, 0.0, 1.0], // Top face
@@ -210,7 +210,7 @@ class CubeColor {
       [1.0, 0.0, 1.0, 1.0], // Right face
       [0.0, 0.0, 1.0, 1.0]  // Left face
     ];
-    var unpackedColors = new List<num>();
+    var unpackedColors = new List<double>();
     for (var i in colors) {
       for (var j=0; j < 4; j++) {
         unpackedColors.addAll(i);
