@@ -16,7 +16,7 @@ library learn_gl;
 
 import 'dart:math';
 import 'dart:html';
-import 'dart:json' as json;
+import 'dart:convert';
 import 'dart:web_gl';
 import 'dart:async';
 import 'dart:typed_data';
@@ -92,8 +92,8 @@ void main() {
 
   SelectElement lessonSelect = query("#lessonNumber");
   for (int i = 1; i < 17; i++) {
-    lessonSelect.children.add(new OptionElement("Lesson $i", "$i",
-        defaultLesson == i, defaultLesson == i));
+    lessonSelect.children.add(new OptionElement(data: "Lesson $i", value: "$i",
+        defaultSelected: defaultLesson == i, selected: defaultLesson == i));
   }
   lessonSelect.onChange.listen((event) {
     lesson = selectLesson(lessonSelect.selectedIndex+1)..initHtml(lessonHook);
@@ -312,4 +312,20 @@ Lesson selectLesson(int number) {
     case 15: return new Lesson15();
     case 16: return new Lesson16();
   }
+}
+
+/**
+ * Work around for setInnerHtml()
+ */
+class NullTreeSanitizer implements NodeTreeSanitizer {
+  static NullTreeSanitizer instance;
+  factory NullTreeSanitizer() {
+    if (instance == null) {
+      instance = new NullTreeSanitizer._();
+    }
+    return instance;
+  }
+
+  NullTreeSanitizer._();
+  void sanitizeTree(Node node) {}
 }

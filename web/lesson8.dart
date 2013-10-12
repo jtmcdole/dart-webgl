@@ -198,7 +198,7 @@ class Lesson8 extends Lesson {
   InputElement _blending, _alpha;
 
   void initHtml(DivElement hook) {
-    hook.innerHtml = """
+    hook.setInnerHtml("""
     <input type="checkbox" id="blending" checked /> Use blending<br/>
     Alpha level <input type="text" id="alpha" value="0.5" /><br/>
 
@@ -232,7 +232,7 @@ class Lesson8 extends Lesson {
             <td>B: <input type="text" id="ambientB" value="0.2" />
         </tr>
     </table>
-    """;
+    """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = query("#lighting");

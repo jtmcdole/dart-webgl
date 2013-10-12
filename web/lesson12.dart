@@ -209,7 +209,7 @@ class Lesson12 extends Lesson {
   InputElement _pR, _pG, _pB;
 
   void initHtml(DivElement hook) {
-    hook.innerHtml = """
+    hook.setInnerHtml("""
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     <br/>
 
@@ -243,7 +243,7 @@ class Lesson12 extends Lesson {
     <br/>
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """;
+    """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = query("#lighting");
