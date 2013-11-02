@@ -16,7 +16,7 @@ library learn_gl;
 
 import 'dart:math';
 import 'dart:html';
-import 'dart:json' as json;
+import 'dart:convert';
 import 'dart:web_gl';
 import 'dart:async';
 import 'dart:typed_data';
@@ -92,8 +92,8 @@ void main() {
 
   SelectElement lessonSelect = query("#lessonNumber");
   for (int i = 1; i < 17; i++) {
-    lessonSelect.children.add(new OptionElement("Lesson $i", "$i",
-        defaultLesson == i, defaultLesson == i));
+    lessonSelect.children.add(new OptionElement(data: "Lesson $i", value: "$i",
+        selected: defaultLesson == i));
   }
   lessonSelect.onChange.listen((event) {
     lesson = selectLesson(lessonSelect.selectedIndex+1)..initHtml(lessonHook);

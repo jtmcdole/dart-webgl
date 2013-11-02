@@ -34,7 +34,7 @@ class JsonObject implements Renderable {
   bool strip = false;
 
   JsonObject(String fromJson) {
-    Map data = json.parse(fromJson);
+    Map data = JSON.decode(fromJson);
 
     List<num> numArray = data['vertexNormals'];
     if (numArray != null) {
