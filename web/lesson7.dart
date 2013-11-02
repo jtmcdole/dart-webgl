@@ -185,7 +185,7 @@ class Lesson7 extends Lesson {
   InputElement _dR, _dG, _dB;
 
   void initHtml(DivElement hook) {
-    hook.innerHtml = """
+    hook.setInnerHtml("""
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     (Use cursor keys to spin the box and <code>Page Up</code>/<code>Page Down</code> to zoom out/in)
 
@@ -216,7 +216,7 @@ class Lesson7 extends Lesson {
             <td>B: <input type="text" id="ambientB" value="0.2" />
         </tr>
     </table>
-    """;
+    """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = query("#lighting");

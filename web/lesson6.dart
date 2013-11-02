@@ -167,7 +167,7 @@ class Lesson6 extends Lesson {
   }
 
   void initHtml(DivElement hook) {
-    hook.innerHtml = """
+    hook.setInnerHtml("""
     <h2>Controls:</h2>
 
     <ul>
@@ -175,6 +175,6 @@ class Lesson6 extends Lesson {
         <li>Cursor keys: make the cube rotate (the longer you hold down a cursor key, the more it accelerates)
         <li><code>F</code> to toggle through three different kinds of texture filters
     </ul>
-    """;
+    """, treeSanitizer: new NullTreeSanitizer());
   }
 }

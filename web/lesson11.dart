@@ -193,7 +193,7 @@ class Lesson11 extends Lesson {
   InputElement _dR, _dG, _dB;
 
   void initHtml(DivElement hook) {
-    hook.innerHtml = """
+    hook.setInnerHtml(""""
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     Spin the moon by dragging it with the mouse.
     <br/>
@@ -229,7 +229,7 @@ class Lesson11 extends Lesson {
     <br/>
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """;
+    """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = query("#lighting");

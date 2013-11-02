@@ -313,3 +313,19 @@ Lesson selectLesson(int number) {
     case 16: return new Lesson16();
   }
 }
+
+/**
+ * Work around for setInnerHtml()
+ */
+class NullTreeSanitizer implements NodeTreeSanitizer {
+  static NullTreeSanitizer instance;
+  factory NullTreeSanitizer() {
+    if (instance == null) {
+      instance = new NullTreeSanitizer._();
+    }
+    return instance;
+  }
+
+  NullTreeSanitizer._();
+  void sanitizeTree(Node node) {}
+}

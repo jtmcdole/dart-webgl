@@ -247,7 +247,7 @@ class Lesson15 extends Lesson {
   SelectElement _texture;
 
   void initHtml(DivElement hook) {
-    hook.innerHtml = """
+    hook.setInnerHtml("""
     <input type="checkbox" id="color-map" checked /> Use color map<br/>
     <input type="checkbox" id="specular-map" checked /> Use specular map<br/>
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
@@ -294,7 +294,7 @@ class Lesson15 extends Lesson {
     Earth texture courtesy of <a href="http://www.esa.int/esaEO/SEMGSY2IU7E_index_0.html">the European Space Agency/Envisat</a>.<br/>
     Galvanized texture courtesy of <a href="http://www.arroway-textures.com/">Arroway Textures</a>.<br/>
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """;
+    """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = query("#lighting");
