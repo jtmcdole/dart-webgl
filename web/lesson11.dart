@@ -232,17 +232,17 @@ class Lesson11 extends Lesson {
     """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
-    _lighting = query("#lighting");
-    _aR = query("#ambientR");
-    _aG = query("#ambientG");
-    _aB = query("#ambientB");
+    _lighting = querySelector("#lighting");
+    _aR = querySelector("#ambientR");
+    _aG = querySelector("#ambientG");
+    _aB = querySelector("#ambientB");
 
-    _dR = query("#directionalR");
-    _dG = query("#directionalG");
-    _dB = query("#directionalB");
+    _dR = querySelector("#directionalR");
+    _dG = querySelector("#directionalG");
+    _dB = querySelector("#directionalB");
 
-    _ldX = query("#lightDirectionX");
-    _ldY = query("#lightDirectionY");
-    _ldZ = query("#lightDirectionZ");
+    _ldX = querySelector("#lightDirectionX");
+    _ldY = querySelector("#lightDirectionY");
+    _ldZ = querySelector("#lightDirectionZ");
   }
 }

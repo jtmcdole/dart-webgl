@@ -335,20 +335,20 @@ class Lesson13 extends Lesson {
     """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
-    _lighting = query("#lighting");
-    _aR = query("#ambientR");
-    _aG = query("#ambientG");
-    _aB = query("#ambientB");
+    _lighting = querySelector("#lighting");
+    _aR = querySelector("#ambientR");
+    _aG = querySelector("#ambientG");
+    _aB = querySelector("#ambientB");
 
-    _pR = query("#pointR");
-    _pG = query("#pointG");
-    _pB = query("#pointB");
+    _pR = querySelector("#pointR");
+    _pG = querySelector("#pointG");
+    _pB = querySelector("#pointB");
 
-    _lpX = query("#lightPositionX");
-    _lpY = query("#lightPositionY");
-    _lpZ = query("#lightPositionZ");
+    _lpX = querySelector("#lightPositionX");
+    _lpY = querySelector("#lightPositionY");
+    _lpZ = querySelector("#lightPositionZ");
 
-    _perFragment = query("#per-fragment");
-    _textures = query("#textures");
+    _perFragment = querySelector("#per-fragment");
+    _textures = querySelector("#textures");
   }
 }

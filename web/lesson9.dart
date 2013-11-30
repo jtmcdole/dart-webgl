@@ -148,6 +148,6 @@ class Lesson9 extends Lesson {
     (Use up/down cursor keys to rotate, and <code>Page Up</code>/<code>Page Down</code> to zoom out/in)
     ''', treeSanitizer: new NullTreeSanitizer());
 
-    _twinkle = query("#twinkle");
+    _twinkle = querySelector("#twinkle");
   }
 }

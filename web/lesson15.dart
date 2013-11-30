@@ -297,25 +297,25 @@ class Lesson15 extends Lesson {
     """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
-    _lighting = query("#lighting");
-    _aR = query("#ambientR");
-    _aG = query("#ambientG");
-    _aB = query("#ambientB");
+    _lighting = querySelector("#lighting");
+    _aR = querySelector("#ambientR");
+    _aG = querySelector("#ambientG");
+    _aB = querySelector("#ambientB");
 
-    _lpX = query("#lightPositionX");
-    _lpY = query("#lightPositionY");
-    _lpZ = query("#lightPositionZ");
+    _lpX = querySelector("#lightPositionX");
+    _lpY = querySelector("#lightPositionY");
+    _lpZ = querySelector("#lightPositionZ");
 
-    _dR = query("#diffuseR");
-    _dG = query("#diffuseG");
-    _dB = query("#diffuseB");
+    _dR = querySelector("#diffuseR");
+    _dG = querySelector("#diffuseG");
+    _dB = querySelector("#diffuseB");
 
-    _sR = query("#specularR");
-    _sG = query("#specularG");
-    _sB = query("#specularB");
+    _sR = querySelector("#specularR");
+    _sG = querySelector("#specularG");
+    _sB = querySelector("#specularB");
 
-    _colorMap = query("#color-map");
-    _specularMap = query("#specular-map");
-    _texture = query("#texture");
+    _colorMap = querySelector("#color-map");
+    _specularMap = querySelector("#specular-map");
+    _texture = querySelector("#texture");
   }
 }
