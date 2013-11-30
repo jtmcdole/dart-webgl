@@ -52,7 +52,7 @@ part 'lesson16.dart';
 // Math
 part 'matrix4.dart';
 
-CanvasElement canvas = query("#lesson01-canvas");
+CanvasElement canvas = querySelector("#lesson01-canvas");
 RenderingContext gl;
 Lesson lesson;
 
@@ -69,7 +69,7 @@ void main() {
 
   trackFrameRate = urlParameters.containsKey("fps");
   if (!trackFrameRate) {
-    query("#fps").remove();
+    querySelector("#fps").remove();
   }
   if (urlParameters.containsKey("width")) {
     String width = urlParameters["width"];
@@ -90,7 +90,7 @@ void main() {
     defaultLesson = int.parse(urlParameters["lsn"]);
   }
 
-  SelectElement lessonSelect = query("#lessonNumber");
+  SelectElement lessonSelect = querySelector("#lessonNumber");
   for (int i = 1; i < 17; i++) {
     lessonSelect.children.add(new OptionElement(data: "Lesson $i", value: "$i",
         selected: defaultLesson == i));
@@ -212,7 +212,7 @@ const SAMPLE_FACTOR = 1000 ~/ SAMPLE_RATE_MS;
 int frames = 0;
 num lastSample = 0;
 num averageFps = 1;
-DivElement fps = query("#fps");
+DivElement fps = querySelector("#fps");
 
 void frameCount(num now) {
   frames++;
@@ -290,7 +290,7 @@ void handleMipMapTexture(Texture texture, ImageElement image) {
   gl.bindTexture(TEXTURE_2D, null);
 }
 
-DivElement lessonHook = query("#lesson_html");
+DivElement lessonHook = querySelector("#lesson_html");
 bool trackFrameRate = false;
 
 Lesson selectLesson(int number) {

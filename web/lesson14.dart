@@ -176,7 +176,7 @@ class Lesson14 extends Lesson {
 
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
-    bool specularHighlights = (query("#specular") as InputElement).checked;
+    bool specularHighlights = (querySelector("#specular") as InputElement).checked;
     gl.uniform1i(uShowSpecularHighlights, specularHighlights ? 1 : 0);
     bool lighting = _lighting.checked;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
@@ -324,25 +324,25 @@ class Lesson14 extends Lesson {
     """, treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
-    _lighting = query("#lighting");
-    _aR = query("#ambientR");
-    _aG = query("#ambientG");
-    _aB = query("#ambientB");
+    _lighting = querySelector("#lighting");
+    _aR = querySelector("#ambientR");
+    _aG = querySelector("#ambientG");
+    _aB = querySelector("#ambientB");
 
-    _lpX = query("#lightPositionX");
-    _lpY = query("#lightPositionY");
-    _lpZ = query("#lightPositionZ");
+    _lpX = querySelector("#lightPositionX");
+    _lpY = querySelector("#lightPositionY");
+    _lpZ = querySelector("#lightPositionZ");
 
-    _dR = query("#diffuseR");
-    _dG = query("#diffuseG");
-    _dB = query("#diffuseB");
+    _dR = querySelector("#diffuseR");
+    _dG = querySelector("#diffuseG");
+    _dB = querySelector("#diffuseB");
 
-    _specular = query("#specular");
-    _sR = query("#specularR");
-    _sG = query("#specularG");
-    _sB = query("#specularB");
+    _specular = querySelector("#specular");
+    _sR = querySelector("#specularR");
+    _sG = querySelector("#specularG");
+    _sB = querySelector("#specularB");
 
-    _shininess = query("#shininess");
-    _texture = query("#texture");
+    _shininess = querySelector("#shininess");
+    _texture = querySelector("#texture");
   }
 }
