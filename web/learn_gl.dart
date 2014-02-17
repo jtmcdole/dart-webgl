@@ -122,7 +122,7 @@ void main() {
  * parameter is an increasing value based on when the animation loop started.
  */
 tick(time) {
-  window.requestAnimationFrame(tick);
+  window.animationFrame.then(tick);
   if (trackFrameRate) frameCount(time);
   lesson.handleKeys();
   lesson.animate(time);
