@@ -92,13 +92,13 @@ void main() {
 
   SelectElement lessonSelect = querySelector("#lessonNumber");
   for (int i = 1; i < 17; i++) {
-    lessonSelect.children.add(new OptionElement(data: "Lesson $i", value: "$i",
-        selected: defaultLesson == i));
+    lessonSelect.children.add(new OptionElement(
+        data: "Lesson $i", value: "$i", selected: defaultLesson == i));
   }
   lessonSelect.onChange.listen((event) {
-    lesson = selectLesson(lessonSelect.selectedIndex+1)..initHtml(lessonHook);
+    lesson = selectLesson(lessonSelect.selectedIndex + 1)..initHtml(lessonHook);
   });
-  lesson = selectLesson(lessonSelect.selectedIndex+1)..initHtml(lessonHook);
+  lesson = selectLesson(lessonSelect.selectedIndex + 1)..initHtml(lessonHook);
 
   // Set the fill color to black
   gl.clearColor(0, 0, 0, 1.0);
@@ -126,7 +126,7 @@ tick(time) {
   if (trackFrameRate) frameCount(time);
   lesson.handleKeys();
   lesson.animate(time);
-  lesson.drawScene(canvas.width, canvas.height, canvas.width/canvas.height);
+  lesson.drawScene(canvas.width, canvas.height, canvas.width / canvas.height);
 }
 
 /**
@@ -143,8 +143,9 @@ bool isActive(int code) => currentlyPressedKeys.contains(code);
  * Test if any of the given [KeyCode]s are active, returning true.
  */
 bool anyActive(List<int> codes) {
-  return codes.firstWhere((code) =>
-      currentlyPressedKeys.contains(code), orElse: () => null) != null;
+  return codes.firstWhere((code) => currentlyPressedKeys.contains(code),
+          orElse: () => null) !=
+      null;
 }
 
 /**
@@ -165,6 +166,7 @@ parseQueryString() {
     }
   }
 }
+
 Map urlParameters = {};
 
 /// Perspective matrix
@@ -216,8 +218,9 @@ DivElement fps = querySelector("#fps");
 
 void frameCount(num now) {
   frames++;
-  if ((now - lastSample) <  SAMPLE_RATE_MS) return;
-  averageFps = averageFps*ALPHA_DECAY + frames*INVERSE_ALPHA_DECAY*SAMPLE_FACTOR;
+  if ((now - lastSample) < SAMPLE_RATE_MS) return;
+  averageFps =
+      averageFps * ALPHA_DECAY + frames * INVERSE_ALPHA_DECAY * SAMPLE_FACTOR;
   fps.text = averageFps.toStringAsFixed(2);
   frames = 0;
   lastSample = now;
@@ -227,7 +230,6 @@ void frameCount(num now) {
  * The base for all Learn WebGL lessons.
  */
 abstract class Lesson {
-
   /**
    * Render the scene to the [viewWidth], [viewHeight], and [aspect] ratio.
    */
@@ -295,22 +297,38 @@ bool trackFrameRate = false;
 
 Lesson selectLesson(int number) {
   switch (number) {
-    case 1: return new Lesson1();
-    case 2: return new Lesson2();
-    case 3: return new Lesson3();
-    case 4: return new Lesson4();
-    case 5: return new Lesson5();
-    case 6: return new Lesson6();
-    case 7: return new Lesson7();
-    case 8: return new Lesson8();
-    case 9: return new Lesson9();
-    case 10: return new Lesson10();
-    case 11: return new Lesson11();
-    case 12: return new Lesson12();
-    case 13: return new Lesson13();
-    case 14: return new Lesson14();
-    case 15: return new Lesson15();
-    case 16: return new Lesson16();
+    case 1:
+      return new Lesson1();
+    case 2:
+      return new Lesson2();
+    case 3:
+      return new Lesson3();
+    case 4:
+      return new Lesson4();
+    case 5:
+      return new Lesson5();
+    case 6:
+      return new Lesson6();
+    case 7:
+      return new Lesson7();
+    case 8:
+      return new Lesson8();
+    case 9:
+      return new Lesson9();
+    case 10:
+      return new Lesson10();
+    case 11:
+      return new Lesson11();
+    case 12:
+      return new Lesson12();
+    case 13:
+      return new Lesson13();
+    case 14:
+      return new Lesson14();
+    case 15:
+      return new Lesson15();
+    case 16:
+      return new Lesson16();
   }
 }
 

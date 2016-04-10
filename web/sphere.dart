@@ -50,36 +50,40 @@ class Sphere implements Renderable {
 
         normals.addAll([x, y, z]);
         textureCoords.addAll([u, v]);
-        vertexPositions.addAll([radius*x, radius*y, radius*z]);
+        vertexPositions.addAll([radius * x, radius * y, radius * z]);
       }
     }
 
     // Step 2: Stich vertex positions together as a series of triangles.
     for (var lat = 0; lat < lats; lat++) {
-      for (var lon = 0 ; lon < lons; lon++) {
+      for (var lon = 0; lon < lons; lon++) {
         var first = (lat * (lons + 1)) + lon;
         var second = first + lons + 1;
-        indexData.addAll([first, second, first + 1, second, second + 1,
-                          first + 1]);
+        indexData
+            .addAll([first, second, first + 1, second, second + 1, first + 1]);
       }
     }
     _indexBufferSize = indexData.length;
 
     _normalBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, _normalBuffer);
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
+    gl.bufferDataTyped(
+        ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
 
     _textureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, _textureCoordBuffer);
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
+    gl.bufferDataTyped(
+        ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
 
     _positionBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, _positionBuffer);
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(vertexPositions), STATIC_DRAW);
+    gl.bufferDataTyped(
+        ARRAY_BUFFER, new Float32List.fromList(vertexPositions), STATIC_DRAW);
 
     _indexBuffer = gl.createBuffer();
     gl.bindBuffer(ELEMENT_ARRAY_BUFFER, _indexBuffer);
-    gl.bufferDataTyped(ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indexData), STATIC_DRAW);
+    gl.bufferDataTyped(
+        ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indexData), STATIC_DRAW);
   }
 
   void draw({int vertex, int normal, int coord, setUniforms()}) {

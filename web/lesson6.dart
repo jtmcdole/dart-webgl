@@ -55,10 +55,11 @@ class Lesson6 extends Lesson {
               gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
               vTextureCoord = aTextureCoord;
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
 
     gl.useProgram(program.program);
-
 
     // Do some extra texture filters after loading the create texture
     loadTexture("crate.gif", (Texture text, ImageElement ele) {
@@ -114,23 +115,25 @@ class Lesson6 extends Lesson {
     // First stash the current model view matrix before we start moving around.
     mvPushMatrix();
 
-    mvMatrix..translate([0.0, 0.0, z])..
-        rotateX(radians(xRot))..
-        rotateY(radians(yRot));
+    mvMatrix
+      ..translate([0.0, 0.0, z])
+      ..rotateX(radians(xRot))
+      ..rotateY(radians(yRot));
 
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, textures[activeFilter]);
     gl.uniform1i(uSampler, 0);
-    cube.draw(setUniforms: setMatrixUniforms,
+    cube.draw(
+        setUniforms: setMatrixUniforms,
         vertex: program.attributes['aVertexPosition'],
-        coord: program.attributes['aTextureCoord'] );
+        coord: program.attributes['aTextureCoord']);
 
     // Finally, reset the matrix back to what it was before we moved around.
     mvPopMatrix();
   }
 
-  get uPMatrix  => program.uniforms["uPMatrix"];
-  get uMVMatrix  => program.uniforms["uMVMatrix"];
+  get uPMatrix => program.uniforms["uPMatrix"];
+  get uMVMatrix => program.uniforms["uMVMatrix"];
   get uSampler => program.uniforms["uSampler"];
 
   void setMatrixUniforms() {
@@ -167,7 +170,8 @@ class Lesson6 extends Lesson {
   }
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml("""
+    hook.setInnerHtml(
+        """
     <h2>Controls:</h2>
 
     <ul>
@@ -175,6 +179,7 @@ class Lesson6 extends Lesson {
         <li>Cursor keys: make the cube rotate (the longer you hold down a cursor key, the more it accelerates)
         <li><code>F</code> to toggle through three different kinds of texture filters
     </ul>
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+        treeSanitizer: new NullTreeSanitizer());
   }
 }

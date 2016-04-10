@@ -23,7 +23,6 @@ part of learn_gl;
  * lets play around with that.
  */
 class Lesson13 extends Lesson {
-
   Cube cube;
   Sphere moon;
 
@@ -40,12 +39,20 @@ class Lesson13 extends Lesson {
     cube = new Cube();
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = ['uPMatrix', 'uMVMatrix', 'uNMatrix', 'uSampler',
-                    'uUseTextures', 'uUseLighting', 'uAmbientColor',
-                    'uPointLightingLocation', 'uPointLightingColor'];
+    var uniforms = [
+      'uPMatrix',
+      'uMVMatrix',
+      'uNMatrix',
+      'uSampler',
+      'uUseTextures',
+      'uUseLighting',
+      'uAmbientColor',
+      'uPointLightingLocation',
+      'uPointLightingColor'
+    ];
 
     perVertexProgram = new GlProgram(
-      '''
+        '''
         precision mediump float;
     
         varying vec2 vTextureCoord;
@@ -65,7 +72,7 @@ class Lesson13 extends Lesson {
             gl_FragColor = vec4(fragmentColor.rgb * vLightWeighting, fragmentColor.a);
         }
       ''',
-      '''
+        '''
         attribute vec3 aVertexPosition;
         attribute vec3 aVertexNormal;
         attribute vec2 aTextureCoord;
@@ -99,7 +106,9 @@ class Lesson13 extends Lesson {
                 vLightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
             }
         }
-      ''', attributes, uniforms);
+      ''',
+        attributes,
+        uniforms);
 
     currentProgram = perFragmentProgram = new GlProgram(
         '''
@@ -160,7 +169,9 @@ class Lesson13 extends Lesson {
               vTextureCoord = aTextureCoord;
               vTransformedNormal = uNMatrix * aVertexNormal;
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
 
     // Handle textures
     loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
@@ -170,8 +181,8 @@ class Lesson13 extends Lesson {
   }
 
   get aVertexPosition => currentProgram.attributes["aVertexPosition"];
-  get aVertexNormal  => currentProgram.attributes["aVertexNormal"];
-  get aTextureCoord  => currentProgram.attributes["aTextureCoord"];
+  get aVertexNormal => currentProgram.attributes["aVertexNormal"];
+  get aTextureCoord => currentProgram.attributes["aTextureCoord"];
 
   get uPMatrix => currentProgram.uniforms["uPMatrix"];
   get uMVMatrix => currentProgram.uniforms["uMVMatrix"];
@@ -180,7 +191,8 @@ class Lesson13 extends Lesson {
   get uUseTextures => currentProgram.uniforms["uUseTextures"];
   get uUseLighting => currentProgram.uniforms["uUseLighting"];
   get uAmbientColor => currentProgram.uniforms["uAmbientColor"];
-  get uPointLightingLocation => currentProgram.uniforms["uPointLightingLocation"];
+  get uPointLightingLocation =>
+      currentProgram.uniforms["uPointLightingLocation"];
   get uPointLightingColor => currentProgram.uniforms["uPointLightingColor"];
 
   void drawScene(num viewWidth, num viewHeight, num aspect) {
@@ -219,30 +231,36 @@ class Lesson13 extends Lesson {
     mvPushMatrix();
 
     // Setup the scene -5.0 away and pitch up by 30 degrees
-    mvMatrix..
-        translate([0.0, 0.0, -5.0])..
-        rotateX(radians(tilt));
+    mvMatrix
+      ..translate([0.0, 0.0, -5.0])
+      ..rotateX(radians(tilt));
 
     mvPushMatrix();
     // Rotate and move away from the scene
     mvMatrix
-        ..rotateY(radians(moonAngle))
-        ..translate([2.0, 0.0, 0.0]);
+      ..rotateY(radians(moonAngle))
+      ..translate([2.0, 0.0, 0.0]);
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
-    moon.draw(vertex: aVertexPosition, normal: aVertexNormal,
-        coord: aTextureCoord, setUniforms: setMatrixUniforms);
+    moon.draw(
+        vertex: aVertexPosition,
+        normal: aVertexNormal,
+        coord: aTextureCoord,
+        setUniforms: setMatrixUniforms);
     mvPopMatrix();
 
     mvMatrix
-        ..rotateY(radians(cubeAngle))
-        ..translate([1.25, 0.0, 0.0]);
+      ..rotateY(radians(cubeAngle))
+      ..translate([1.25, 0.0, 0.0]);
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, cubeTexture);
     gl.uniform1i(uSampler, 0);
-    cube.draw(vertex: aVertexPosition, normal: aVertexNormal,
-        coord: aTextureCoord, setUniforms: setMatrixUniforms);
+    cube.draw(
+        vertex: aVertexPosition,
+        normal: aVertexNormal,
+        coord: aTextureCoord,
+        setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -294,7 +312,8 @@ class Lesson13 extends Lesson {
   InputElement _pR, _pG, _pB;
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml("""
+    hook.setInnerHtml(
+        """
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     <input type="checkbox" id="per-fragment" checked /> Per-fragment lighting<br/>
     <input type="checkbox" id="textures" checked /> Use textures<br/>
@@ -332,7 +351,8 @@ class Lesson13 extends Lesson {
     <br/>
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+        treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

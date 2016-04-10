@@ -38,14 +38,14 @@ class Vector3 {
   set y(double v) => buf[1] = v;
   set z(double v) => buf[2] = v;
 
-  double magnitude() => sqrt(x*x + y*y + z*z);
+  double magnitude() => sqrt(x * x + y * y + z * z);
 
   Vector3 normalize() {
     double len = magnitude();
     if (len == 0.0) {
       throw new ZeroLengthVectorException();
     }
-    return new Vector3(x/len, y/len, z/len);
+    return new Vector3(x / len, y / len, z / len);
   }
 
   Vector3 operator -() {
@@ -75,7 +75,8 @@ class Vector3 {
   }
 }
 
-const double degrees2radians = PI/180.0;
+const double degrees2radians = PI / 180.0;
+
 /// Convert [degrees] to radians.
 double radians(double degrees) {
   return degrees * degrees2radians;
@@ -141,22 +142,69 @@ class Matrix4 {
   double get m32 => buf[rc(3, 2)];
   double get m33 => buf[rc(3, 3)];
 
-  void set m00(double m) { buf[rc(0, 0)] = m; }
-  void set m01(double m) { buf[rc(0, 1)] = m; }
-  void set m02(double m) { buf[rc(0, 2)] = m; }
-  void set m03(double m) { buf[rc(0, 3)] = m; }
-  void set m10(double m) { buf[rc(1, 0)] = m; }
-  void set m11(double m) { buf[rc(1, 1)] = m; }
-  void set m12(double m) { buf[rc(1, 2)] = m; }
-  void set m13(double m) { buf[rc(1, 3)] = m; }
-  void set m20(double m) { buf[rc(2, 0)] = m; }
-  void set m21(double m) { buf[rc(2, 1)] = m; }
-  void set m22(double m) { buf[rc(2, 2)] = m; }
-  void set m23(double m) { buf[rc(2, 3)] = m; }
-  void set m30(double m) { buf[rc(3, 0)] = m; }
-  void set m31(double m) { buf[rc(3, 1)] = m; }
-  void set m32(double m) { buf[rc(3, 2)] = m; }
-  void set m33(double m) { buf[rc(3, 3)] = m; }
+  void set m00(double m) {
+    buf[rc(0, 0)] = m;
+  }
+
+  void set m01(double m) {
+    buf[rc(0, 1)] = m;
+  }
+
+  void set m02(double m) {
+    buf[rc(0, 2)] = m;
+  }
+
+  void set m03(double m) {
+    buf[rc(0, 3)] = m;
+  }
+
+  void set m10(double m) {
+    buf[rc(1, 0)] = m;
+  }
+
+  void set m11(double m) {
+    buf[rc(1, 1)] = m;
+  }
+
+  void set m12(double m) {
+    buf[rc(1, 2)] = m;
+  }
+
+  void set m13(double m) {
+    buf[rc(1, 3)] = m;
+  }
+
+  void set m20(double m) {
+    buf[rc(2, 0)] = m;
+  }
+
+  void set m21(double m) {
+    buf[rc(2, 1)] = m;
+  }
+
+  void set m22(double m) {
+    buf[rc(2, 2)] = m;
+  }
+
+  void set m23(double m) {
+    buf[rc(2, 3)] = m;
+  }
+
+  void set m30(double m) {
+    buf[rc(3, 0)] = m;
+  }
+
+  void set m31(double m) {
+    buf[rc(3, 1)] = m;
+  }
+
+  void set m32(double m) {
+    buf[rc(3, 2)] = m;
+  }
+
+  void set m33(double m) {
+    buf[rc(3, 3)] = m;
+  }
 
   String toString() {
     List<String> rows = new List();
@@ -250,6 +298,7 @@ class Matrix4 {
     buf[11] = t8;
     return this;
   }
+
   /// Rotate this matrix [radians] around Y
   Matrix4 rotateY(double radians) {
     double c = cos(radians);
@@ -307,8 +356,8 @@ class Matrix4 {
     var tz = v[2];
     var tw = v.length == 4 ? v[3] : 1.0;
 
-    buf[12] = buf[0] * tx + buf[4] * ty + buf[ 8] * tz + buf[12] * tw;
-    buf[13] = buf[1] * tx + buf[5] * ty + buf[ 9] * tz + buf[13] * tw;
+    buf[12] = buf[0] * tx + buf[4] * ty + buf[8] * tz + buf[12] * tw;
+    buf[13] = buf[1] * tx + buf[5] * ty + buf[9] * tz + buf[13] * tw;
     buf[14] = buf[2] * tx + buf[6] * ty + buf[10] * tz + buf[14] * tw;
     buf[15] = buf[3] * tx + buf[7] * ty + buf[11] * tz + buf[15] * tw;
     return this;
@@ -364,8 +413,8 @@ class Matrix4 {
    * [zNear] distance to the near clipping plane.
    * [zFar] distance to the far clipping plane.
    */
-  static Matrix4 perspective(double fovyDegrees, double aspectRatio,
-      double zNear, double zFar) {
+  static Matrix4 perspective(
+      double fovyDegrees, double aspectRatio, double zNear, double zFar) {
     double height = tan(radians(fovyDegrees) * 0.5) * zNear.toDouble();
     double width = height * aspectRatio.toDouble();
     return frustum(-width, width, -height, height, zNear, zFar);
@@ -407,9 +456,7 @@ class Matrix4 {
    */
   static Matrix4 ortho(left, right, bottom, top, near, far) {
     Float32List out = new Float32List(16);
-    var lr = 1 / (left - right),
-        bt = 1 / (bottom - top),
-        nf = 1 / (near - far);
+    var lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
     out[0] = -2 * lr;
     out[1] = 0.0;
     out[2] = 0.0;
@@ -492,25 +539,27 @@ class Matrix4 {
     var a10 = m01, a11 = m11, a12 = m21;
     var a20 = m02, a21 = m12, a22 = m22;
 
-    var b01 = a22*a11 - a12*a21;
-    var b11 = -a22*a10 + a12*a20;
-    var b21 = a21*a10 - a11*a20;
+    var b01 = a22 * a11 - a12 * a21;
+    var b11 = -a22 * a10 + a12 * a20;
+    var b21 = a21 * a10 - a11 * a20;
 
-    var d = a00*b01 + a01*b11 + a02*b21;
-    if (d == 0) { return null; }
-    var id = 1/d;
+    var d = a00 * b01 + a01 * b11 + a02 * b21;
+    if (d == 0) {
+      return null;
+    }
+    var id = 1 / d;
 
     Matrix3 dest = new Matrix3();
 
-    dest.m00 = b01*id;
-    dest.m10 = (-a22*a01 + a02*a21)*id;
-    dest.m20 = (a12*a01 - a02*a11)*id;
-    dest.m01 = b11*id;
-    dest.m11 = (a22*a00 - a02*a20)*id;
-    dest.m21 = (-a12*a00 + a02*a10)*id;
-    dest.m02 = b21*id;
-    dest.m12 = (-a21*a00 + a01*a20)*id;
-    dest.m22 = (a11*a00 - a01*a10)*id;
+    dest.m00 = b01 * id;
+    dest.m10 = (-a22 * a01 + a02 * a21) * id;
+    dest.m20 = (a12 * a01 - a02 * a11) * id;
+    dest.m01 = b11 * id;
+    dest.m11 = (a22 * a00 - a02 * a20) * id;
+    dest.m21 = (-a12 * a00 + a02 * a10) * id;
+    dest.m02 = b21 * id;
+    dest.m12 = (-a21 * a00 + a01 * a20) * id;
+    dest.m22 = (a11 * a00 - a01 * a10) * id;
 
     return dest;
   }
@@ -518,10 +567,11 @@ class Matrix4 {
   static const double GLMAT_EPSILON = 0.000001;
   Matrix4 rotate(num rad, List<num> axis) {
     num x = axis[0], y = axis[1], z = axis[2];
-    num len = sqrt(x*x + y*y + z*z);
-    if (len.abs()  < GLMAT_EPSILON) throw "length of normal vector <~ $GLMAT_EPSILON";
+    num len = sqrt(x * x + y * y + z * z);
+    if (len.abs() < GLMAT_EPSILON)
+      throw "length of normal vector <~ $GLMAT_EPSILON";
     if (len != 1) {
-      len = 1/len;
+      len = 1 / len;
       x *= len;
       y *= len;
       z *= len;
@@ -587,7 +637,6 @@ class Matrix4 {
  *
  */
 class Matrix3 {
-
   Float32List buf;
 
   Matrix3() : buf = new Float32List(9);
@@ -609,15 +658,41 @@ class Matrix3 {
   double get m21 => buf[rc(2, 1)];
   double get m22 => buf[rc(2, 2)];
 
-  void set m00(double m) { buf[rc(0, 0)] = m; }
-  void set m01(double m) { buf[rc(0, 1)] = m; }
-  void set m02(double m) { buf[rc(0, 2)] = m; }
-  void set m10(double m) { buf[rc(1, 0)] = m; }
-  void set m11(double m) { buf[rc(1, 1)] = m; }
-  void set m12(double m) { buf[rc(1, 2)] = m; }
-  void set m20(double m) { buf[rc(2, 0)] = m; }
-  void set m21(double m) { buf[rc(2, 1)] = m; }
-  void set m22(double m) { buf[rc(2, 2)] = m; }
+  void set m00(double m) {
+    buf[rc(0, 0)] = m;
+  }
+
+  void set m01(double m) {
+    buf[rc(0, 1)] = m;
+  }
+
+  void set m02(double m) {
+    buf[rc(0, 2)] = m;
+  }
+
+  void set m10(double m) {
+    buf[rc(1, 0)] = m;
+  }
+
+  void set m11(double m) {
+    buf[rc(1, 1)] = m;
+  }
+
+  void set m12(double m) {
+    buf[rc(1, 2)] = m;
+  }
+
+  void set m20(double m) {
+    buf[rc(2, 0)] = m;
+  }
+
+  void set m21(double m) {
+    buf[rc(2, 1)] = m;
+  }
+
+  void set m22(double m) {
+    buf[rc(2, 2)] = m;
+  }
 
   String toString() {
     List<String> rows = new List();
@@ -662,8 +737,7 @@ class Matrix3 {
    *     m20 m21 m22    m02 m12 m22
    */
   void transposeSelf() {
-    var a01 = m01, a02 = m02,
-        a12 = m12;
+    var a01 = m01, a02 = m02, a12 = m12;
     m01 = m10;
     m02 = m20;
     m10 = a01;

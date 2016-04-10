@@ -23,7 +23,6 @@ part of learn_gl;
  * lets play around with that.
  */
 class Lesson12 extends Lesson {
-
   GlProgram program;
   Cube cube;
   Sphere moon;
@@ -36,9 +35,16 @@ class Lesson12 extends Lesson {
     cube = new Cube();
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = ['uSampler', 'uMVMatrix', 'uPMatrix', 'uNMatrix',
-                    'uAmbientColor', 'uPointLightingLocation',
-                    'uPointLightingColor', 'uUseLighting'];
+    var uniforms = [
+      'uSampler',
+      'uMVMatrix',
+      'uPMatrix',
+      'uNMatrix',
+      'uAmbientColor',
+      'uPointLightingLocation',
+      'uPointLightingColor',
+      'uUseLighting'
+    ];
     program = new GlProgram(
         '''
           precision mediump float;
@@ -87,7 +93,9 @@ class Lesson12 extends Lesson {
                   vLightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
               }
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
 
     loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
     loadTexture("crate.gif", handleMipMapTexture).then((t) => cubeTexture = t);
@@ -138,29 +146,36 @@ class Lesson12 extends Lesson {
     mvPushMatrix();
 
     // Setup the scene -20.0 away.
-    mvMatrix..translate([0.0, 0.0, -20.0])..
-        rotateX(radians(tilt));
+    mvMatrix
+      ..translate([0.0, 0.0, -20.0])
+      ..rotateX(radians(tilt));
 
     mvPushMatrix();
     // Rotate and move away from the scene
     mvMatrix
-        ..rotateY(radians(moonAngle))
-        ..translate([5.0, 0.0, 0.0]);
+      ..rotateY(radians(moonAngle))
+      ..translate([5.0, 0.0, 0.0]);
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
-    moon.draw(vertex: aVertexPosition, normal: aVertexNormal,
-        coord: aTextureCoord, setUniforms: setMatrixUniforms);
+    moon.draw(
+        vertex: aVertexPosition,
+        normal: aVertexNormal,
+        coord: aTextureCoord,
+        setUniforms: setMatrixUniforms);
     mvPopMatrix();
 
     mvMatrix
-        ..rotateY(radians(cubeAngle))
-        ..translate([5.0, 0.0, 0.0]);
+      ..rotateY(radians(cubeAngle))
+      ..translate([5.0, 0.0, 0.0]);
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, cubeTexture);
     gl.uniform1i(uSampler, 0);
-    cube.draw(vertex: aVertexPosition, normal: aVertexNormal,
-        coord: aTextureCoord, setUniforms: setMatrixUniforms);
+    cube.draw(
+        vertex: aVertexPosition,
+        normal: aVertexNormal,
+        coord: aTextureCoord,
+        setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -209,7 +224,8 @@ class Lesson12 extends Lesson {
   InputElement _pR, _pG, _pB;
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml("""
+    hook.setInnerHtml(
+        """
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     <br/>
 
@@ -243,7 +259,8 @@ class Lesson12 extends Lesson {
     <br/>
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+        treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

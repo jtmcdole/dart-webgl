@@ -19,7 +19,6 @@ part of learn_gl;
  * with particles. Needs clean up.
  */
 class Star implements Renderable {
-
   static Random rand = new Random(42);
   static bool loaded = false;
   static int starCount = 0;
@@ -31,6 +30,7 @@ class Star implements Renderable {
 
   /// Normal color
   num r, g, b;
+
   /// Twinkle color
   num rT, gT, bT;
 
@@ -39,35 +39,49 @@ class Star implements Renderable {
     starVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, starVertexPositionBuffer);
     var vertices = [
-      -1.0, -1.0, 0.0,
-       1.0, -1.0, 0.0,
-      -1.0,  1.0, 0.0,
-       1.0,  1.0, 0.0
+      -1.0,
+      -1.0,
+      0.0,
+      1.0,
+      -1.0,
+      0.0,
+      -1.0,
+      1.0,
+      0.0,
+      1.0,
+      1.0,
+      0.0
     ];
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
+    gl.bufferDataTyped(
+        ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
 
     starVertexTextureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, starVertexTextureCoordBuffer);
-    var textureCoords = [
-      0.0, 0.0,
-      1.0, 0.0,
-      0.0, 1.0,
-      1.0, 1.0
-    ];
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
+    var textureCoords = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0];
+    gl.bufferDataTyped(
+        ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
   }
 
-  void draw({int vertex, int normal, int coord, UniformLocation color,
-    bool twinkle: false, num tilt, num spin, setUniforms()}) {
+  void draw(
+      {int vertex,
+      int normal,
+      int coord,
+      UniformLocation color,
+      bool twinkle: false,
+      num tilt,
+      num spin,
+      setUniforms()}) {
     mvPushMatrix();
 
     // Move to the star's position
-    mvMatrix..rotateY(radians(angle))..
-        translate([dist, 0.0, 0.0]);
+    mvMatrix
+      ..rotateY(radians(angle))
+      ..translate([dist, 0.0, 0.0]);
 
     // Rotate back so that the star is facing the viewer
-    mvMatrix..rotateY(radians(-angle))..
-      rotateX(radians(-tilt));
+    mvMatrix
+      ..rotateY(radians(-angle))
+      ..rotateX(radians(-tilt));
 
     if (twinkle) {
       // Draw a non-rotating star in the alternate "twinkling" color
@@ -84,7 +98,7 @@ class Star implements Renderable {
     mvPopMatrix();
   }
 
-  static const num effectiveFPMS = 60/1000;
+  static const num effectiveFPMS = 60 / 1000;
   void animate(num time) {
     angle += rotationSpeed * effectiveFPMS * time;
 

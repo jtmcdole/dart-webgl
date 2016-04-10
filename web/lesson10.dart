@@ -18,7 +18,6 @@ part of learn_gl;
  * Load a world!
  */
 class Lesson10 extends Lesson {
-
   GlProgram program;
   Texture texture;
   JsonObject world;
@@ -31,7 +30,7 @@ class Lesson10 extends Lesson {
       print("world loaded with ${world._itemSize}");
     });
 
-    loadTexture("mcdole.gif" , (Texture texture, ImageElement ele) {
+    loadTexture("mcdole.gif", (Texture texture, ImageElement ele) {
       gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
       gl.bindTexture(TEXTURE_2D, texture);
       gl.texImage2DImage(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
@@ -68,7 +67,9 @@ class Lesson10 extends Lesson {
               gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
               vTextureCoord = aTextureCoord;
           }
-        """, attributes, uniforms);
+        """,
+        attributes,
+        uniforms);
     gl.useProgram(program.program);
   }
 
@@ -96,19 +97,22 @@ class Lesson10 extends Lesson {
 
     mvPushMatrix();
 
-    mvMatrix..
-        rotateX(radians(-pitch))..
-        rotateY(radians(-yaw))..
-        translate([-xPos, -yPos, -zPos]);
+    mvMatrix
+      ..rotateX(radians(-pitch))
+      ..rotateY(radians(-yaw))
+      ..translate([-xPos, -yPos, -zPos]);
 
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, texture);
     gl.uniform1i(uSampler, 0);
 
-    world.draw(vertex: aVertexPosition, coord: aTextureCoord, setUniforms: () {
-      gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
-      gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
-    });
+    world.draw(
+        vertex: aVertexPosition,
+        coord: aTextureCoord,
+        setUniforms: () {
+          gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
+          gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
+        });
 
     mvPopMatrix();
   }
@@ -157,9 +161,11 @@ class Lesson10 extends Lesson {
   }
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml("""
+    hook.setInnerHtml(
+        """
     Use the cursor keys or WASD to run around, and <code>Page Up</code>/<code>Page Down</code> to
     look up and down.
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+        treeSanitizer: new NullTreeSanitizer());
   }
 }

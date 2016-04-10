@@ -15,7 +15,6 @@
 part of learn_gl;
 
 class Lesson15 extends Lesson {
-
   GlProgram currentProgram;
   Sphere sphere;
   Texture earthTexture, moonTexture, earthSpecularMapTexture;
@@ -30,11 +29,20 @@ class Lesson15 extends Lesson {
     sphere = new Sphere(lats: 30, lons: 30, radius: 13);
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = ['uPMatrix', 'uMVMatrix', 'uNMatrix', 'uAmbientColor',
-                    'uPointLightingLocation', 'uPointLightingSpecularColor',
-                    'uPointLightingDiffuseColor', 'uUseColorMap',
-                    'uUseSpecularMap', 'uUseLighting', 'uColorMapSampler',
-                    'uSpecularMapSampler'];
+    var uniforms = [
+      'uPMatrix',
+      'uMVMatrix',
+      'uNMatrix',
+      'uAmbientColor',
+      'uPointLightingLocation',
+      'uPointLightingSpecularColor',
+      'uPointLightingDiffuseColor',
+      'uUseColorMap',
+      'uUseSpecularMap',
+      'uUseLighting',
+      'uColorMapSampler',
+      'uSpecularMapSampler'
+    ];
 
     currentProgram = new GlProgram(
         '''
@@ -113,7 +121,9 @@ class Lesson15 extends Lesson {
               vTextureCoord = aTextureCoord;
               vTransformedNormal = uNMatrix * aVertexNormal;
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
 
     gl.useProgram(currentProgram.program);
 
@@ -135,21 +145,24 @@ class Lesson15 extends Lesson {
   }
 
   get aVertexPosition => currentProgram.attributes["aVertexPosition"];
-  get aVertexNormal  => currentProgram.attributes["aVertexNormal"];
-  get aTextureCoord  => currentProgram.attributes["aTextureCoord"];
+  get aVertexNormal => currentProgram.attributes["aVertexNormal"];
+  get aTextureCoord => currentProgram.attributes["aTextureCoord"];
 
-  get uPMatrix  => currentProgram.uniforms["uPMatrix"];
-  get uMVMatrix  => currentProgram.uniforms["uMVMatrix"];
-  get uNMatrix  => currentProgram.uniforms["uNMatrix"];
+  get uPMatrix => currentProgram.uniforms["uPMatrix"];
+  get uMVMatrix => currentProgram.uniforms["uMVMatrix"];
+  get uNMatrix => currentProgram.uniforms["uNMatrix"];
   get uColorMapSampler => currentProgram.uniforms["uColorMapSampler"];
   get uSpecularMapSampler => currentProgram.uniforms["uSpecularMapSampler"];
   get uUseColorMap => currentProgram.uniforms["uUseColorMap"];
   get uUseSpecularMap => currentProgram.uniforms["uUseSpecularMap"];
   get uUseLighting => currentProgram.uniforms["uUseLighting"];
   get uAmbientColor => currentProgram.uniforms["uAmbientColor"];
-  get uPointLightingLocation  => currentProgram.uniforms["uPointLightingLocation"];
-  get uPointLightingSpecularColor  => currentProgram.uniforms["uPointLightingSpecularColor"];
-  get uPointLightingDiffuseColor  => currentProgram.uniforms["uPointLightingDiffuseColor"];
+  get uPointLightingLocation =>
+      currentProgram.uniforms["uPointLightingLocation"];
+  get uPointLightingSpecularColor =>
+      currentProgram.uniforms["uPointLightingSpecularColor"];
+  get uPointLightingDiffuseColor =>
+      currentProgram.uniforms["uPointLightingDiffuseColor"];
 
   void drawScene(num viewWidth, num viewHeight, num aspect) {
     if (!isLoaded) return;
@@ -184,10 +197,10 @@ class Lesson15 extends Lesson {
 
     mvPushMatrix();
 
-    mvMatrix..
-        translate([0.0, 0.0, -40.0])..
-        rotate(radians(tilt), [1, 0, -1])..
-        rotateY(radians(sphereAngle));
+    mvMatrix
+      ..translate([0.0, 0.0, -40.0])
+      ..rotate(radians(tilt), [1, 0, -1])
+      ..rotateY(radians(sphereAngle));
 
     gl.activeTexture(TEXTURE0);
     if (_texture.value == "earth") {
@@ -201,8 +214,11 @@ class Lesson15 extends Lesson {
     gl.bindTexture(TEXTURE_2D, earthSpecularMapTexture);
     gl.uniform1i(uSpecularMapSampler, 1);
 
-    sphere.draw(vertex: aVertexPosition, normal: aVertexNormal,
-        coord: aTextureCoord, setUniforms: setMatrixUniforms);
+    sphere.draw(
+        vertex: aVertexPosition,
+        normal: aVertexNormal,
+        coord: aTextureCoord,
+        setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -217,7 +233,7 @@ class Lesson15 extends Lesson {
   void animate(num now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
-      sphereAngle  += 0.05 * elapsed;
+      sphereAngle += 0.05 * elapsed;
     }
     lastTime = now;
   }
@@ -247,7 +263,8 @@ class Lesson15 extends Lesson {
   SelectElement _texture;
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml("""
+    hook.setInnerHtml(
+        """
     <input type="checkbox" id="color-map" checked /> Use color map<br/>
     <input type="checkbox" id="specular-map" checked /> Use specular map<br/>
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
@@ -294,7 +311,8 @@ class Lesson15 extends Lesson {
     Earth texture courtesy of <a href="http://www.esa.int/esaEO/SEMGSY2IU7E_index_0.html">the European Space Agency/Envisat</a>.<br/>
     Galvanized texture courtesy of <a href="http://www.arroway-textures.com/">Arroway Textures</a>.<br/>
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+        treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

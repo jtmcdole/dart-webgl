@@ -29,9 +29,17 @@ class Lesson8 extends Lesson {
     loadTexture('glass.gif', handleMipMapTexture).then((t) => texture = t);
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = ['uPMatrix', 'uMVMatrix', 'uNMatrix', 'uSampler',
-                    'uAmbientColor', 'uLightingDirection', 'uDirectionalColor',
-                    'uUseLighting', 'uAlpha'];
+    var uniforms = [
+      'uPMatrix',
+      'uMVMatrix',
+      'uNMatrix',
+      'uSampler',
+      'uAmbientColor',
+      'uLightingDirection',
+      'uDirectionalColor',
+      'uUseLighting',
+      'uAlpha'
+    ];
 
     program = new GlProgram(
         '''
@@ -80,7 +88,9 @@ class Lesson8 extends Lesson {
                   vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
               }
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
 
     gl.useProgram(program.program);
   }
@@ -117,9 +127,10 @@ class Lesson8 extends Lesson {
     // First stash the current model view matrix before we start moving around.
     mvPushMatrix();
 
-    mvMatrix..translate([0.0, 0.0, z])..
-        rotateX(radians(xRot))..
-        rotateY(radians(yRot));
+    mvMatrix
+      ..translate([0.0, 0.0, z])
+      ..rotateX(radians(xRot))
+      ..rotateY(radians(yRot));
 
     if (_blending.checked) {
       gl.blendFunc(SRC_ALPHA, ONE);
@@ -150,7 +161,8 @@ class Lesson8 extends Lesson {
     gl.bindTexture(TEXTURE_2D, texture);
     gl.uniform1i(uSampler, 0);
 
-    cube.draw(setUniforms: setMatrixUniforms,
+    cube.draw(
+        setUniforms: setMatrixUniforms,
         vertex: program.attributes['aVertexPosition'],
         coord: program.attributes['aTextureCoord'],
         normal: program.attributes['aVertexNormal']);
@@ -198,7 +210,8 @@ class Lesson8 extends Lesson {
   InputElement _blending, _alpha;
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml("""
+    hook.setInnerHtml(
+        """
     <input type="checkbox" id="blending" checked /> Use blending<br/>
     Alpha level <input type="text" id="alpha" value="0.5" /><br/>
 
@@ -232,7 +245,8 @@ class Lesson8 extends Lesson {
             <td>B: <input type="text" id="ambientB" value="0.2" />
         </tr>
     </table>
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+        treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

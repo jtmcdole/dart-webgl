@@ -18,7 +18,6 @@ part of learn_gl;
  * Spheres, rotations matricies, and mouse events
  */
 class Lesson11 extends Lesson {
-
   GlProgram program;
   Sphere moon;
   Texture moonTexture;
@@ -33,9 +32,16 @@ class Lesson11 extends Lesson {
     moon = new Sphere(lats: 30, lons: 30, radius: 2);
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = ['uSampler', 'uMVMatrix', 'uPMatrix', 'uNMatrix',
-                    'uAmbientColor', 'uLightingDirection', 'uDirectionalColor',
-                    'uUseLighting'];
+    var uniforms = [
+      'uSampler',
+      'uMVMatrix',
+      'uPMatrix',
+      'uNMatrix',
+      'uAmbientColor',
+      'uLightingDirection',
+      'uDirectionalColor',
+      'uUseLighting'
+    ];
     program = new GlProgram(
         '''
           precision mediump float;
@@ -81,7 +87,9 @@ class Lesson11 extends Lesson {
                   vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
               }
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
 
     loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
 
@@ -103,9 +111,11 @@ class Lesson11 extends Lesson {
       var newX = event.client.x;
       var newY = event.client.y;
       var deltaX = newX - _lastMouseX;
-      Matrix4 newRot = new Matrix4()..identity()..rotateY(radians(deltaX/10));
+      Matrix4 newRot = new Matrix4()
+        ..identity()
+        ..rotateY(radians(deltaX / 10));
       var deltaY = newY - _lastMouseY;
-      newRot.rotateX(radians(deltaY/10));
+      newRot.rotateX(radians(deltaY / 10));
       _rotation = newRot * _rotation; // C = A * B, first operand = newRot.
       _lastMouseX = newX;
       _lastMouseY = newY;
@@ -139,8 +149,8 @@ class Lesson11 extends Lesson {
     bool lighting = _lighting.checked;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
     if (lighting) {
-      gl.uniform3f(uAmbientColor,
-          double.parse(_aR.value), double.parse(_aG.value), double.parse(_aB.value));
+      gl.uniform3f(uAmbientColor, double.parse(_aR.value),
+          double.parse(_aG.value), double.parse(_aB.value));
 
       // Take the lighting point and normalize / reverse it.
       Vector3 direction = new Vector3(double.parse(_ldX.value),
@@ -154,15 +164,17 @@ class Lesson11 extends Lesson {
 
     mvPushMatrix();
     // Setup the scene -20.0 away.
-    mvMatrix = mvMatrix..
-        translate([0.0, 0.0, -7.0]);
+    mvMatrix = mvMatrix..translate([0.0, 0.0, -7.0]);
     mvMatrix = mvMatrix * _rotation;
 
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
-    moon.draw(vertex: aVertexPosition, normal: aVertexNormal,
-        coord: aTextureCoord, setUniforms: setMatrixUniforms);
+    moon.draw(
+        vertex: aVertexPosition,
+        normal: aVertexNormal,
+        coord: aTextureCoord,
+        setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -177,11 +189,9 @@ class Lesson11 extends Lesson {
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void animate(num now) {
-  }
+  void animate(num now) {}
 
-  void handleKeys() {
-  }
+  void handleKeys() {}
 
   // Lighting enabled / Ambient color
   InputElement _lighting, _aR, _aG, _aB;
@@ -193,7 +203,8 @@ class Lesson11 extends Lesson {
   InputElement _dR, _dG, _dB;
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml(""""
+    hook.setInnerHtml(
+        """"
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     Spin the moon by dragging it with the mouse.
     <br/>
@@ -229,7 +240,8 @@ class Lesson11 extends Lesson {
     <br/>
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+        treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

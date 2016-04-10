@@ -29,9 +29,16 @@ class Lesson7 extends Lesson {
     loadTexture('crate.gif', handleMipMapTexture).then((t) => texture = t);
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = ['uPMatrix', 'uMVMatrix', 'uNMatrix', 'uSampler',
-                    'uAmbientColor', 'uLightingDirection', 'uDirectionalColor',
-                    'uUseLighting'];
+    var uniforms = [
+      'uPMatrix',
+      'uMVMatrix',
+      'uNMatrix',
+      'uSampler',
+      'uAmbientColor',
+      'uLightingDirection',
+      'uDirectionalColor',
+      'uUseLighting'
+    ];
 
     program = new GlProgram(
         '''
@@ -78,7 +85,9 @@ class Lesson7 extends Lesson {
                   vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
               }
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
 
     gl.useProgram(program.program);
   }
@@ -116,9 +125,10 @@ class Lesson7 extends Lesson {
     // First stash the current model view matrix before we start moving around.
     mvPushMatrix();
 
-    mvMatrix..translate([0.0, 0.0, z])..
-        rotateX(radians(xRot))..
-        rotateY(radians(yRot));
+    mvMatrix
+      ..translate([0.0, 0.0, z])
+      ..rotateX(radians(xRot))
+      ..rotateY(radians(yRot));
 
     gl.uniform1i(uUseLighting, _lighting.checked ? 1 : 0);
     if (_lighting.checked) {
@@ -139,7 +149,8 @@ class Lesson7 extends Lesson {
     gl.bindTexture(TEXTURE_2D, texture);
     gl.uniform1i(uSampler, 0);
 
-    cube.draw(setUniforms: setMatrixUniforms,
+    cube.draw(
+        setUniforms: setMatrixUniforms,
         vertex: program.attributes['aVertexPosition'],
         coord: program.attributes['aTextureCoord'],
         normal: program.attributes['aVertexNormal']);
@@ -185,7 +196,8 @@ class Lesson7 extends Lesson {
   InputElement _dR, _dG, _dB;
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml("""
+    hook.setInnerHtml(
+        """
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     (Use cursor keys to spin the box and <code>Page Up</code>/<code>Page Down</code> to zoom out/in)
 
@@ -216,7 +228,8 @@ class Lesson7 extends Lesson {
             <td>B: <input type="text" id="ambientB" value="0.2" />
         </tr>
     </table>
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+        treeSanitizer: new NullTreeSanitizer());
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

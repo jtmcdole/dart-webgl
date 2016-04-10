@@ -64,7 +64,9 @@ class Lesson5 extends Lesson {
               gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
               vTextureCoord = aTextureCoord;
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
 
     gl.useProgram(program.program);
   }
@@ -86,24 +88,26 @@ class Lesson5 extends Lesson {
     // First stash the current model view matrix before we start moving around.
     mvPushMatrix();
 
-    mvMatrix..translate([0.0, 0.0, -5.0])..
-        rotateX(radians(xRot))..
-        rotateY(radians(yRot))..
-        rotateZ(radians(zRot));
+    mvMatrix
+      ..translate([0.0, 0.0, -5.0])
+      ..rotateX(radians(xRot))
+      ..rotateY(radians(yRot))
+      ..rotateZ(radians(zRot));
 
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, neheTexture);
     gl.uniform1i(uSampler, 0);
-    cube.draw(setUniforms: setMatrixUniforms,
+    cube.draw(
+        setUniforms: setMatrixUniforms,
         vertex: program.attributes['aVertexPosition'],
-        coord: program.attributes['aTextureCoord'] );
+        coord: program.attributes['aTextureCoord']);
 
     // Finally, reset the matrix back to what it was before we moved around.
     mvPopMatrix();
   }
 
-  get uPMatrix  => program.uniforms["uPMatrix"];
-  get uMVMatrix  => program.uniforms["uMVMatrix"];
+  get uPMatrix => program.uniforms["uPMatrix"];
+  get uMVMatrix => program.uniforms["uMVMatrix"];
   get uSampler => program.uniforms["uSampler"];
 
   void setMatrixUniforms() {

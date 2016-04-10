@@ -28,7 +28,8 @@ class Lesson4 extends Lesson {
   num rPyramid = 0.0, rCube = 0.0;
 
   Lesson4() {
-    program = new GlProgram('''
+    program = new GlProgram(
+        '''
           precision mediump float;
 
           varying vec4 vColor;
@@ -36,7 +37,8 @@ class Lesson4 extends Lesson {
           void main(void) {
             gl_FragColor = vColor;
           }
-        ''','''
+        ''',
+        '''
           attribute vec3 aVertexPosition;
           attribute vec4 aVertexColor;
 
@@ -49,7 +51,9 @@ class Lesson4 extends Lesson {
               gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
               vColor = aVertexColor;
           }
-        ''', ['aVertexPosition', 'aVertexColor'], ['uMVMatrix', 'uPMatrix']);
+        ''',
+        ['aVertexPosition', 'aVertexColor'],
+        ['uMVMatrix', 'uPMatrix']);
     gl.useProgram(program.program);
 
     // Currently this is hardcoded, because well... everything else is textures
@@ -80,20 +84,21 @@ class Lesson4 extends Lesson {
     mvMatrix.translate([-1.5, 0.0, -8.0]);
 
     // Let the user play around with some directional changes.
-    mvMatrix.rotateX(radians(x))..
-        rotateY(radians(y));
+    mvMatrix.rotateX(radians(x))..rotateY(radians(y));
 
     mvPushMatrix();
-    mvMatrix.rotate(radians(rPyramid), [0,1,0]);
-    pyramid.draw(setUniforms: setMatrixUniforms,
+    mvMatrix.rotate(radians(rPyramid), [0, 1, 0]);
+    pyramid.draw(
+        setUniforms: setMatrixUniforms,
         vertex: program.attributes['aVertexPosition'],
         color: program.attributes['aVertexColor']);
     mvPopMatrix();
 
     // Move 3 units to the right
     mvMatrix.translate([3.0, 0.0, 0.0]);
-    mvMatrix.rotate(radians(rCube), [1,1,1]);
-    cube.draw(setUniforms: setMatrixUniforms,
+    mvMatrix.rotate(radians(rCube), [1, 1, 1]);
+    cube.draw(
+        setUniforms: setMatrixUniforms,
         vertex: program.attributes['aVertexPosition'],
         color: program.attributes['aVertexColor']);
 

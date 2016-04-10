@@ -24,7 +24,8 @@ class Lesson2 extends Lesson {
   Buffer triangleVertexColorBuffer, squareVertexColorBuffer;
 
   Lesson2() {
-    program = new GlProgram('''
+    program = new GlProgram(
+        '''
           precision mediump float;
 
           varying vec4 vColor;
@@ -32,7 +33,8 @@ class Lesson2 extends Lesson {
           void main(void) {
             gl_FragColor = vColor;
           }
-        ''','''
+        ''',
+        '''
           attribute vec3 aVertexPosition;
           attribute vec4 aVertexColor;
 
@@ -45,7 +47,9 @@ class Lesson2 extends Lesson {
               gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
               vColor = aVertexColor;
           }
-        ''', ['aVertexPosition', 'aVertexColor'], ['uMVMatrix', 'uPMatrix']);
+        ''',
+        ['aVertexPosition', 'aVertexColor'],
+        ['uMVMatrix', 'uPMatrix']);
     gl.useProgram(program.program);
 
     // Allocate and build the two buffers we need to draw a triangle and box.
@@ -54,39 +58,48 @@ class Lesson2 extends Lesson {
 
     // bindBuffer() tells the WebGL system the target of future calls
     gl.bindBuffer(ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList([
-           0.0,  1.0,  0.0,
-          -1.0, -1.0,  0.0,
-           1.0, -1.0,  0.0
-        ]), STATIC_DRAW);
+    gl.bufferDataTyped(
+        ARRAY_BUFFER,
+        new Float32List.fromList(
+            [0.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]),
+        STATIC_DRAW);
 
     triangleVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, triangleVertexColorBuffer);
-    var colors = [
-      1.0, 0.0, 0.0, 1.0,
-      0.0, 1.0, 0.0, 1.0,
-      0.0, 0.0, 1.0, 1.0
-    ];
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
+    var colors = [1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0];
+    gl.bufferDataTyped(
+        ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
 
     squareVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, squareVertexPositionBuffer);
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList([
-           1.0,  1.0,  0.0,
-          -1.0,  1.0,  0.0,
-           1.0, -1.0,  0.0,
-          -1.0, -1.0,  0.0
-        ]), STATIC_DRAW);
+    gl.bufferDataTyped(
+        ARRAY_BUFFER,
+        new Float32List.fromList(
+            [1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]),
+        STATIC_DRAW);
 
     squareVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, squareVertexColorBuffer);
     colors = [
-      0.5, 0.5, 1.0, 1.0,
-      0.5, 0.5, 1.0, 1.0,
-      0.5, 0.5, 1.0, 1.0,
-      0.5, 0.5, 1.0, 1.0
+      0.5,
+      0.5,
+      1.0,
+      1.0,
+      0.5,
+      0.5,
+      1.0,
+      1.0,
+      0.5,
+      0.5,
+      1.0,
+      1.0,
+      0.5,
+      0.5,
+      1.0,
+      1.0
     ];
-    gl.bufferDataTyped(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
+    gl.bufferDataTyped(
+        ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
 
     // Specify the color to clear with (black with 100% alpha) and then enable
     // depth testing.
@@ -113,10 +126,12 @@ class Lesson2 extends Lesson {
     // Here's that bindBuffer() again, as seen in the constructor
     gl.bindBuffer(ARRAY_BUFFER, triangleVertexPositionBuffer);
     // Set the vertex attribute to the size of each individual element (x,y,z)
-    gl.vertexAttribPointer(program.attributes['aVertexPosition'], 3, FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(
+        program.attributes['aVertexPosition'], 3, FLOAT, false, 0, 0);
 
     gl.bindBuffer(ARRAY_BUFFER, triangleVertexColorBuffer);
-    gl.vertexAttribPointer(program.attributes['aVertexColor'], 4, FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(
+        program.attributes['aVertexColor'], 4, FLOAT, false, 0, 0);
 
     setMatrixUniforms();
     // Now draw 3 vertices
@@ -127,10 +142,12 @@ class Lesson2 extends Lesson {
 
     // And get ready to draw the square just like we did the triangle...
     gl.bindBuffer(ARRAY_BUFFER, squareVertexPositionBuffer);
-    gl.vertexAttribPointer(program.attributes['aVertexPosition'], 3, FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(
+        program.attributes['aVertexPosition'], 3, FLOAT, false, 0, 0);
 
     gl.bindBuffer(ARRAY_BUFFER, squareVertexColorBuffer);
-    gl.vertexAttribPointer(program.attributes['aVertexColor'], 4, FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(
+        program.attributes['aVertexColor'], 4, FLOAT, false, 0, 0);
 
     setMatrixUniforms();
     // Except now draw 2 triangles, re-using the vertices found in the buffer.

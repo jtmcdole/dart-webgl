@@ -69,7 +69,9 @@ class Lesson9 extends Lesson {
               gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
               vTextureCoord = aTextureCoord;
           }
-        ''', attributes, uniforms);
+        ''',
+        attributes,
+        uniforms);
     gl.useProgram(program.program);
   }
 
@@ -90,19 +92,23 @@ class Lesson9 extends Lesson {
     gl.disable(DEPTH_TEST);
     gl.enable(BLEND);
 
-    mvMatrix..translate([0.0, 0.0, zoom])..
-        rotateX(radians(tilt));
+    mvMatrix
+      ..translate([0.0, 0.0, zoom])
+      ..rotateX(radians(tilt));
 
     gl.activeTexture(TEXTURE0);
     gl.bindTexture(TEXTURE_2D, texture);
     gl.uniform1i(program.uniforms['uSampler'], 0);
 
     for (Star star in stars) {
-      star.draw(vertex: program.attributes['aVertexPosition'],
+      star.draw(
+          vertex: program.attributes['aVertexPosition'],
           coord: program.attributes['aTextureCoord'],
           color: program.uniforms['uColor'],
           twinkle: _twinkle.checked,
-          tilt: tilt, spin: spin, setUniforms: setMatrixUniforms);
+          tilt: tilt,
+          spin: spin,
+          setUniforms: setMatrixUniforms);
     }
     mvPopMatrix();
   }
@@ -130,9 +136,7 @@ class Lesson9 extends Lesson {
   }
 
   void handleKeys() {
-    handleDirection(
-        up: () => tilt += 2.0,
-        down: () => tilt -= 2.0);
+    handleDirection(up: () => tilt += 2.0, down: () => tilt -= 2.0);
     if (isActive(KeyCode.PAGE_UP)) {
       zoom -= 0.1;
     }
@@ -143,10 +147,12 @@ class Lesson9 extends Lesson {
 
   InputElement _twinkle;
   initHtml(DivElement hook) {
-    hook.setInnerHtml('''
+    hook.setInnerHtml(
+        '''
     <input type="checkbox" id="twinkle" /> Twinkle<br/>
     (Use up/down cursor keys to rotate, and <code>Page Up</code>/<code>Page Down</code> to zoom out/in)
-    ''', treeSanitizer: new NullTreeSanitizer());
+    ''',
+        treeSanitizer: new NullTreeSanitizer());
 
     _twinkle = querySelector("#twinkle");
   }
