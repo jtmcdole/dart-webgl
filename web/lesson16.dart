@@ -191,7 +191,7 @@ class Lesson16 extends Lesson {
     gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
     gl.generateMipmap(TEXTURE_2D);
 
-    gl.texImage2DTyped(
+    gl.texImage2D(
         TEXTURE_2D, 0, RGBA, rttWidth, rttHeight, 0, RGBA, UNSIGNED_BYTE, null);
 
     renderbuffer = gl.createRenderbuffer();

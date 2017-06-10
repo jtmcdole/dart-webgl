@@ -67,22 +67,21 @@ class Sphere implements Renderable {
 
     _normalBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, _normalBuffer);
-    gl.bufferDataTyped(
-        ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
+    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
 
     _textureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, _textureCoordBuffer);
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
 
     _positionBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, _positionBuffer);
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(vertexPositions), STATIC_DRAW);
 
     _indexBuffer = gl.createBuffer();
     gl.bindBuffer(ELEMENT_ARRAY_BUFFER, _indexBuffer);
-    gl.bufferDataTyped(
+    gl.bufferData(
         ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indexData), STATIC_DRAW);
   }
 

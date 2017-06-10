@@ -57,7 +57,7 @@ class Cube implements Renderable {
       -1.0, 1.0, 1.0,
       -1.0, 1.0, -1.0
     ];
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
 
     normalBuffer = gl.createBuffer();
@@ -99,7 +99,7 @@ class Cube implements Renderable {
       -1.0, 0.0, 0.0,
       -1.0, 0.0, 0.0,
     ];
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(vertexNormals), STATIC_DRAW);
 
     textureCoordBuffer = gl.createBuffer();
@@ -141,12 +141,12 @@ class Cube implements Renderable {
       1.0, 1.0,
       0.0, 1.0,
     ];
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
 
     indexBuffer = gl.createBuffer();
     gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferDataTyped(
+    gl.bufferData(
         ELEMENT_ARRAY_BUFFER,
         new Uint16List.fromList([
           0, 1, 2, 0, 2, 3, // Front face
@@ -216,7 +216,7 @@ class CubeColor {
         unpackedColors.addAll(i);
       }
     }
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(unpackedColors), STATIC_DRAW);
   }
 }

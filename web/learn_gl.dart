@@ -330,6 +330,7 @@ Lesson selectLesson(int number) {
     case 16:
       return new Lesson16();
   }
+  return null;
 }
 
 /**

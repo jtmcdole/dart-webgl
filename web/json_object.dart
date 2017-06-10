@@ -44,7 +44,7 @@ class JsonObject implements Renderable {
 
       vertexNormalBuffer = gl.createBuffer();
       gl.bindBuffer(ARRAY_BUFFER, vertexNormalBuffer);
-      gl.bufferDataTyped(
+      gl.bufferData(
           ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
     }
 
@@ -55,7 +55,7 @@ class JsonObject implements Renderable {
 
       textureCoordBuffer = gl.createBuffer();
       gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
-      gl.bufferDataTyped(
+      gl.bufferData(
           ARRAY_BUFFER, new Float32List.fromList(coords), STATIC_DRAW);
     }
 
@@ -65,7 +65,7 @@ class JsonObject implements Renderable {
 
     vertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, vertexPositionBuffer);
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(positions), STATIC_DRAW);
 
     numArray = data['indices'];
@@ -74,7 +74,7 @@ class JsonObject implements Renderable {
           new List<int>.from(numArray.map((num index) => index.toInt()));
       indexBuffer = gl.createBuffer();
       gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-      gl.bufferDataTyped(
+      gl.bufferData(
           ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
       _itemSize = indices.length;
     } else {

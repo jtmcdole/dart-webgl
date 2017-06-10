@@ -147,7 +147,7 @@ class Lesson14 extends Lesson {
   void handleTexture(Texture texture, ImageElement image) {
     gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
     gl.bindTexture(TEXTURE_2D, texture);
-    gl.texImage2DImage(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, image);
+    gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, image);
     gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
     gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
     gl.generateMipmap(TEXTURE_2D);
@@ -190,8 +190,7 @@ class Lesson14 extends Lesson {
 
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
-    bool specularHighlights =
-        (querySelector("#specular") as InputElement).checked;
+    bool specularHighlights = _specular.checked;
     gl.uniform1i(uShowSpecularHighlights, specularHighlights ? 1 : 0);
     bool lighting = _lighting.checked;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);

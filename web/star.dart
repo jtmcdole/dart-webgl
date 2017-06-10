@@ -52,13 +52,13 @@ class Star implements Renderable {
       1.0,
       0.0
     ];
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
 
     starVertexTextureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(ARRAY_BUFFER, starVertexTextureCoordBuffer);
     var textureCoords = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0];
-    gl.bufferDataTyped(
+    gl.bufferData(
         ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
   }
 
