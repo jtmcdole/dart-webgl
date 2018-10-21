@@ -141,17 +141,17 @@ class Lesson14 extends Lesson {
       texturesLoaded++;
     });
 
-    gl.enable(DEPTH_TEST);
+    gl.enable(WebGL.DEPTH_TEST);
   }
 
   void handleTexture(Texture texture, ImageElement image) {
-    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
-    gl.bindTexture(TEXTURE_2D, texture);
-    gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, image);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
-    gl.generateMipmap(TEXTURE_2D);
-    gl.bindTexture(TEXTURE_2D, null);
+    gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+    gl.bindTexture(WebGL.TEXTURE_2D, texture);
+    gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
+    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+    gl.generateMipmap(WebGL.TEXTURE_2D);
+    gl.bindTexture(WebGL.TEXTURE_2D, null);
     texturesLoaded++;
     print("loaded ${image.src}");
   }
@@ -183,10 +183,10 @@ class Lesson14 extends Lesson {
     gl.viewport(0, 0, viewWidth, viewHeight);
 
     // Clear!
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
 
-    gl.enable(DEPTH_TEST);
-    gl.disable(BLEND);
+    gl.enable(WebGL.DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
 
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
@@ -218,13 +218,13 @@ class Lesson14 extends Lesson {
       ..rotate(radians(tilt), [1, 0, -1])
       ..rotateY(radians(teapotAngle));
 
-    gl.activeTexture(TEXTURE0);
+    gl.activeTexture(WebGL.TEXTURE0);
     if (texture == "earth") {
-      gl.bindTexture(TEXTURE_2D, earthTexture);
+      gl.bindTexture(WebGL.TEXTURE_2D, earthTexture);
     } else if (texture == "galvanized") {
-      gl.bindTexture(TEXTURE_2D, galvanizedTexture);
+      gl.bindTexture(WebGL.TEXTURE_2D, galvanizedTexture);
     } else if (texture == "moon") {
-      gl.bindTexture(TEXTURE_2D, moonTexture);
+      gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     }
     gl.uniform1i(uSampler, 0);
 

@@ -27,12 +27,12 @@ class Lesson5 extends Lesson {
   Lesson5() {
     cube = new Cube();
     loadTexture("nehe.gif", (Texture texture, ImageElement element) {
-      gl.bindTexture(TEXTURE_2D, texture);
-      gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, element);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
-      gl.bindTexture(TEXTURE_2D, null);
+      gl.bindTexture(WebGL.TEXTURE_2D, texture);
+      gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, element);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
+      gl.bindTexture(WebGL.TEXTURE_2D, null);
       neheTexture = texture;
     });
 
@@ -76,9 +76,9 @@ class Lesson5 extends Lesson {
 
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
-    gl.enable(DEPTH_TEST);
-    gl.disable(BLEND);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
+    gl.enable(WebGL.DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
 
     // Setup the perspective - you might be wondering why we do this every
     // time, and that will become clear in much later lessons. Just know, you
@@ -94,8 +94,8 @@ class Lesson5 extends Lesson {
       ..rotateY(radians(yRot))
       ..rotateZ(radians(zRot));
 
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, neheTexture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, neheTexture);
     gl.uniform1i(uSampler, 0);
     cube.draw(
         setUniforms: setMatrixUniforms,

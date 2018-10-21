@@ -117,7 +117,7 @@ class Lesson8 extends Lesson {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
 
     // Setup the perspective - you might be wondering why we do this every
     // time, and that will become clear in much later lessons. Just know, you
@@ -133,13 +133,13 @@ class Lesson8 extends Lesson {
       ..rotateY(radians(yRot));
 
     if (_blending.checked) {
-      gl.blendFunc(SRC_ALPHA, ONE);
-      gl.enable(BLEND);
-      gl.disable(DEPTH_TEST);
+      gl.blendFunc(WebGL.SRC_ALPHA, WebGL.ONE);
+      gl.enable(WebGL.BLEND);
+      gl.disable(WebGL.DEPTH_TEST);
       gl.uniform1f(uAlpha, double.parse(_alpha.value, (e) => 1.0));
     } else {
-      gl.disable(BLEND);
-      gl.enable(DEPTH_TEST);
+      gl.disable(WebGL.BLEND);
+      gl.enable(WebGL.DEPTH_TEST);
     }
 
     gl.uniform1i(uUseLighting, _lighting.checked ? 1 : 0);
@@ -157,8 +157,8 @@ class Lesson8 extends Lesson {
           double.parse(_dG.value), double.parse(_dB.value));
     }
 
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, texture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, texture);
     gl.uniform1i(uSampler, 0);
 
     cube.draw(

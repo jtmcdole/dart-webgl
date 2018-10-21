@@ -33,12 +33,12 @@ class Sphere implements Renderable {
 
     // Step 1: Generate normals, texture coordinates and vertex positions
     for (int lat = 0; lat <= lats; lat++) {
-      var theta = lat * PI / lats;
+      var theta = lat * pi / lats;
       var sinTheta = sin(theta);
       var cosTheta = cos(theta);
 
       for (int lon = 0; lon <= lons; lon++) {
-        var phi = lon * 2 * PI / lons;
+        var phi = lon * 2 * pi / lons;
         var sinPhi = sin(phi);
         var cosPhi = cos(phi);
 
@@ -66,44 +66,44 @@ class Sphere implements Renderable {
     _indexBufferSize = indexData.length;
 
     _normalBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, _normalBuffer);
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, _normalBuffer);
+    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(normals), WebGL.STATIC_DRAW);
 
     _textureCoordBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, _textureCoordBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, _textureCoordBuffer);
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(textureCoords), WebGL.STATIC_DRAW);
 
     _positionBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, _positionBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, _positionBuffer);
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(vertexPositions), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertexPositions), WebGL.STATIC_DRAW);
 
     _indexBuffer = gl.createBuffer();
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, _indexBuffer);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, _indexBuffer);
     gl.bufferData(
-        ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indexData), STATIC_DRAW);
+        WebGL.ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indexData), WebGL.STATIC_DRAW);
   }
 
   void draw({int vertex, int normal, int coord, setUniforms()}) {
     if (vertex != null) {
-      gl.bindBuffer(ARRAY_BUFFER, _positionBuffer);
-      gl.vertexAttribPointer(vertex, 3, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, _positionBuffer);
+      gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (normal != null) {
-      gl.bindBuffer(ARRAY_BUFFER, _normalBuffer);
-      gl.vertexAttribPointer(normal, 3, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, _normalBuffer);
+      gl.vertexAttribPointer(normal, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (coord != null) {
-      gl.bindBuffer(ARRAY_BUFFER, _textureCoordBuffer);
-      gl.vertexAttribPointer(coord, 2, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, _textureCoordBuffer);
+      gl.vertexAttribPointer(coord, 2, WebGL.FLOAT, false, 0, 0);
     }
 
     if (setUniforms != null) setUniforms();
 
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, _indexBuffer);
-    gl.drawElements(TRIANGLES, _indexBufferSize, UNSIGNED_SHORT, 0);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, _indexBuffer);
+    gl.drawElements(WebGL.TRIANGLES, _indexBufferSize, WebGL.UNSIGNED_SHORT, 0);
   }
 }

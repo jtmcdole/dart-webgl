@@ -180,33 +180,33 @@ class Lesson16 extends Lesson {
         uniforms);
 
     gl.useProgram(currentProgram.program);
-    gl.enable(DEPTH_TEST);
+    gl.enable(WebGL.DEPTH_TEST);
 
     rttFramebuffer = gl.createFramebuffer();
-    gl.bindFramebuffer(FRAMEBUFFER, rttFramebuffer);
+    gl.bindFramebuffer(WebGL.FRAMEBUFFER, rttFramebuffer);
 
     rttTexture = gl.createTexture();
-    gl.bindTexture(TEXTURE_2D, rttTexture);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
-    gl.generateMipmap(TEXTURE_2D);
+    gl.bindTexture(WebGL.TEXTURE_2D, rttTexture);
+    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+    gl.generateMipmap(WebGL.TEXTURE_2D);
 
     gl.texImage2D(
-        TEXTURE_2D, 0, RGBA, rttWidth, rttHeight, 0, RGBA, UNSIGNED_BYTE, null);
+        WebGL.TEXTURE_2D, 0, WebGL.RGBA, rttWidth, rttHeight, 0, WebGL.RGBA, WebGL.UNSIGNED_BYTE, null);
 
     renderbuffer = gl.createRenderbuffer();
-    gl.bindRenderbuffer(RENDERBUFFER, renderbuffer);
+    gl.bindRenderbuffer(WebGL.RENDERBUFFER, renderbuffer);
     gl.renderbufferStorage(
-        RENDERBUFFER, DEPTH_COMPONENT16, rttWidth, rttHeight);
+        WebGL.RENDERBUFFER, WebGL.DEPTH_COMPONENT16, rttWidth, rttHeight);
 
     gl.framebufferTexture2D(
-        FRAMEBUFFER, COLOR_ATTACHMENT0, TEXTURE_2D, rttTexture, 0);
+        WebGL.FRAMEBUFFER, WebGL.COLOR_ATTACHMENT0, WebGL.TEXTURE_2D, rttTexture, 0);
     gl.framebufferRenderbuffer(
-        FRAMEBUFFER, DEPTH_ATTACHMENT, RENDERBUFFER, renderbuffer);
+        WebGL.FRAMEBUFFER, WebGL.DEPTH_ATTACHMENT, WebGL.RENDERBUFFER, renderbuffer);
 
-    gl.bindTexture(TEXTURE_2D, null);
-    gl.bindRenderbuffer(RENDERBUFFER, null);
-    gl.bindFramebuffer(FRAMEBUFFER, null);
+    gl.bindTexture(WebGL.TEXTURE_2D, null);
+    gl.bindRenderbuffer(WebGL.RENDERBUFFER, null);
+    gl.bindFramebuffer(WebGL.FRAMEBUFFER, null);
   }
 
   Framebuffer rttFramebuffer;
@@ -249,16 +249,16 @@ class Lesson16 extends Lesson {
     if (!isLoaded) return;
 
     // First: render lesson 13 to the render buffer!
-    gl.bindFramebuffer(FRAMEBUFFER, rttFramebuffer);
+    gl.bindFramebuffer(WebGL.FRAMEBUFFER, rttFramebuffer);
     lesson13.drawScene(rttWidth, rttHeight, 1.66);
 
     // What ever was the output of that, copy it to our texture
-    gl.bindTexture(TEXTURE_2D, rttTexture);
-    gl.generateMipmap(TEXTURE_2D);
-    gl.bindTexture(TEXTURE_2D, null); // reset to default
+    gl.bindTexture(WebGL.TEXTURE_2D, rttTexture);
+    gl.generateMipmap(WebGL.TEXTURE_2D);
+    gl.bindTexture(WebGL.TEXTURE_2D, null); // reset to default
 
     // Back to normal framebuffer rendering
-    gl.bindFramebuffer(FRAMEBUFFER, null);
+    gl.bindFramebuffer(WebGL.FRAMEBUFFER, null);
 
     // And use our current program.
     gl.useProgram(currentProgram.program);
@@ -267,7 +267,7 @@ class Lesson16 extends Lesson {
     gl.viewport(0, 0, viewWidth, viewHeight);
 
     // Clear!
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
 
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
@@ -315,8 +315,8 @@ class Lesson16 extends Lesson {
     gl.uniform1i(uUseTextures, 1);
 
     // Now re-use the rttTexture for the screen - bam!
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, rttTexture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, rttTexture);
     gl.uniform1i(uSampler, 0);
     laptopScreen.draw(
         vertex: aVertexPosition,

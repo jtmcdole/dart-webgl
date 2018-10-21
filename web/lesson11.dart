@@ -139,9 +139,9 @@ class Lesson11 extends Lesson {
     if (!isLoaded) return;
 
     gl.viewport(0, 0, viewWidth, viewHeight);
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
-    gl.enable(DEPTH_TEST);
-    gl.disable(BLEND);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
+    gl.enable(WebGL.DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
 
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
@@ -167,8 +167,8 @@ class Lesson11 extends Lesson {
     mvMatrix = mvMatrix..translate([0.0, 0.0, -7.0]);
     mvMatrix = mvMatrix * _rotation;
 
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, moonTexture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
     moon.draw(
         vertex: aVertexPosition,

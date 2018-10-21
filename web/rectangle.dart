@@ -35,7 +35,7 @@ class Rectangle implements Renderable {
     textureCoordBuffer = gl.createBuffer();
     colorBuffer = gl.createBuffer();
 
-    gl.bindBuffer(ARRAY_BUFFER, positionBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
     var vertices = [
       left, bottom, 0.0, // bottom left
       left + width, bottom, 0.0, // bottom right
@@ -43,9 +43,9 @@ class Rectangle implements Renderable {
       left, bottom + height, 0.0, // top left
     ];
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertices), WebGL.STATIC_DRAW);
 
-    gl.bindBuffer(ARRAY_BUFFER, normalBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
     var vertexNormals = [
       // Front face
       0.0, 0.0, 1.0,
@@ -54,9 +54,9 @@ class Rectangle implements Renderable {
       0.0, 0.0, 1.0,
     ];
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(vertexNormals), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertexNormals), WebGL.STATIC_DRAW);
 
-    gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
     var coords = [
       // Front face
       0.0, 0.0,
@@ -64,10 +64,10 @@ class Rectangle implements Renderable {
       1.0, 1.0,
       0.0, 1.0,
     ];
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(coords), STATIC_DRAW);
+    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(coords), WebGL.STATIC_DRAW);
 
     // TODO: Come up with a better way to store color buffer vs texture buffer :)
-    gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
     var colors = WHITE_COLOR;
     if (vertexColors != null) {
       colors = new List<double>();
@@ -90,41 +90,41 @@ class Rectangle implements Renderable {
 //      0.0, 0.0, 1.0, 1.0, // top right
 //      1.0, 1.0, 1.0, 1.0, // top left
 //    ];
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
+    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(colors), WebGL.STATIC_DRAW);
 
     indexBuffer = gl.createBuffer();
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(
-        ELEMENT_ARRAY_BUFFER,
+        WebGL.ELEMENT_ARRAY_BUFFER,
         new Uint16List.fromList([
           0, 1, 2, 0, 2, 3, // Front face
         ]),
-        STATIC_DRAW);
+        WebGL.STATIC_DRAW);
   }
 
   void draw({int vertex, int normal, int coord, int color, setUniforms()}) {
     if (vertex != null) {
-      gl.bindBuffer(ARRAY_BUFFER, positionBuffer);
-      gl.vertexAttribPointer(vertex, 3, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
+      gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (normal != null) {
-      gl.bindBuffer(ARRAY_BUFFER, normalBuffer);
-      gl.vertexAttribPointer(normal, 3, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
+      gl.vertexAttribPointer(normal, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (coord != null) {
-      gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
-      gl.vertexAttribPointer(coord, 2, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
+      gl.vertexAttribPointer(coord, 2, WebGL.FLOAT, false, 0, 0);
     }
 
     if (color != null) {
-      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-      gl.vertexAttribPointer(color, 4, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
+      gl.vertexAttribPointer(color, 4, WebGL.FLOAT, false, 0, 0);
     }
 
     if (setUniforms != null) setUniforms();
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.drawElements(TRIANGLES, 6, UNSIGNED_SHORT, 0);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.drawElements(WebGL.TRIANGLES, 6, WebGL.UNSIGNED_SHORT, 0);
   }
 }

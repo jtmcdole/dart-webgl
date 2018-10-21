@@ -68,10 +68,10 @@ class Lesson4 extends Lesson {
   void drawScene(num viewWidth, num viewHeight, num aspect) {
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
 
-    gl.enable(DEPTH_TEST);
-    gl.disable(BLEND);
+    gl.enable(WebGL.DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
 
     // Setup the perspective - you might be wondering why we do this every
     // time, and that will become clear in much later lessons. Just know, you

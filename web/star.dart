@@ -37,7 +37,7 @@ class Star implements Renderable {
   Star(this.dist, this.rotationSpeed) {
     randomizeColors();
     starVertexPositionBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, starVertexPositionBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, starVertexPositionBuffer);
     var vertices = [
       -1.0,
       -1.0,
@@ -53,13 +53,13 @@ class Star implements Renderable {
       0.0
     ];
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertices), WebGL.STATIC_DRAW);
 
     starVertexTextureCoordBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, starVertexTextureCoordBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, starVertexTextureCoordBuffer);
     var textureCoords = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0];
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(textureCoords), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(textureCoords), WebGL.STATIC_DRAW);
   }
 
   void draw(
@@ -124,13 +124,13 @@ class Star implements Renderable {
   Buffer starVertexTextureCoordBuffer;
 
   void drawStar(int vertex, int normal, int coord, setUniforms()) {
-    gl.bindBuffer(ARRAY_BUFFER, starVertexTextureCoordBuffer);
-    gl.vertexAttribPointer(coord, 2, FLOAT, false, 0, 0);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, starVertexTextureCoordBuffer);
+    gl.vertexAttribPointer(coord, 2, WebGL.FLOAT, false, 0, 0);
 
-    gl.bindBuffer(ARRAY_BUFFER, starVertexPositionBuffer);
-    gl.vertexAttribPointer(vertex, 3, FLOAT, false, 0, 0);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, starVertexPositionBuffer);
+    gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);
 
     setUniforms();
-    gl.drawArrays(TRIANGLE_STRIP, 0, 4);
+    gl.drawArrays(WebGL.TRIANGLE_STRIP, 0, 4);
   }
 }

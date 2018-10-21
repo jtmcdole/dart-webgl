@@ -283,13 +283,13 @@ Future<Texture> loadTexture(String url, handle(Texture tex, ImageElement ele)) {
  * lessons that require textures.
  */
 void handleMipMapTexture(Texture texture, ImageElement image) {
-  gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
-  gl.bindTexture(TEXTURE_2D, texture);
-  gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, image);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
-  gl.generateMipmap(TEXTURE_2D);
-  gl.bindTexture(TEXTURE_2D, null);
+  gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+  gl.bindTexture(WebGL.TEXTURE_2D, texture);
+  gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+  gl.generateMipmap(WebGL.TEXTURE_2D);
+  gl.bindTexture(WebGL.TEXTURE_2D, null);
 }
 
 DivElement lessonHook = querySelector("#lesson_html");

@@ -63,29 +63,29 @@ class Lesson6 extends Lesson {
 
     // Do some extra texture filters after loading the create texture
     loadTexture("crate.gif", (Texture text, ImageElement ele) {
-      gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
+      gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       textures.add(text);
 
-      gl.bindTexture(TEXTURE_2D, textures[0]);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
+      gl.bindTexture(WebGL.TEXTURE_2D, textures[0]);
+      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
 
       textures.add(gl.createTexture());
-      gl.bindTexture(TEXTURE_2D, textures[1]);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
+      gl.bindTexture(WebGL.TEXTURE_2D, textures[1]);
+      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR);
 
       textures.add(gl.createTexture());
-      gl.bindTexture(TEXTURE_2D, textures[2]);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
-      gl.generateMipmap(TEXTURE_2D);
+      gl.bindTexture(WebGL.TEXTURE_2D, textures[2]);
+      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+      gl.generateMipmap(WebGL.TEXTURE_2D);
 
       // reset the texture 2d
-      gl.bindTexture(TEXTURE_2D, null);
+      gl.bindTexture(WebGL.TEXTURE_2D, null);
     });
 
     // We want to trigger on the unique key-down event for switching filters;
@@ -103,9 +103,9 @@ class Lesson6 extends Lesson {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
-    gl.enable(DEPTH_TEST);
-    gl.disable(BLEND);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
+    gl.enable(WebGL.DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
 
     // Setup the perspective - you might be wondering why we do this every
     // time, and that will become clear in much later lessons. Just know, you
@@ -120,8 +120,8 @@ class Lesson6 extends Lesson {
       ..rotateX(radians(xRot))
       ..rotateY(radians(yRot));
 
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, textures[activeFilter]);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, textures[activeFilter]);
     gl.uniform1i(uSampler, 0);
     cube.draw(
         setUniforms: setMatrixUniforms,
