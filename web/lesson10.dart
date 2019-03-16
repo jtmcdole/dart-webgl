@@ -31,11 +31,11 @@ class Lesson10 extends Lesson {
     });
 
     loadTexture("mcdole.gif", (Texture texture, ImageElement ele) {
-      gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
-      gl.bindTexture(TEXTURE_2D, texture);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
+      gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+      gl.bindTexture(WebGL.TEXTURE_2D, texture);
+      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR);
       this.texture = texture;
       print("texture loaded");
     });
@@ -83,12 +83,12 @@ class Lesson10 extends Lesson {
   void drawScene(num viewWidth, num viewHeight, num aspect) {
     if (!isLoaded) return;
 
-    gl.disable(BLEND);
-    gl.enable(DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
+    gl.enable(WebGL.DEPTH_TEST);
 
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
 
     // Setup the perspective - you might be wondering why we do this every
     // time, and that will become clear in much later lessons. Just know, you
@@ -102,8 +102,8 @@ class Lesson10 extends Lesson {
       ..rotateY(radians(-yaw))
       ..translate([-xPos, -yPos, -zPos]);
 
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, texture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, texture);
     gl.uniform1i(uSampler, 0);
 
     world.draw(

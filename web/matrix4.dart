@@ -75,7 +75,7 @@ class Vector3 {
   }
 }
 
-const double degrees2radians = PI / 180.0;
+const double degrees2radians = pi / 180.0;
 
 /// Convert [degrees] to radians.
 double radians(double degrees) {

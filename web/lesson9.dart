@@ -29,13 +29,13 @@ class Lesson9 extends Lesson {
       stars.add(new Star((i / 50) * 5.0, i / 50));
     }
     loadTexture("star.gif", (Texture texture, ImageElement ele) {
-      gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
-      gl.bindTexture(TEXTURE_2D, texture);
-      gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, ele);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-      gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
+      gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+      gl.bindTexture(WebGL.TEXTURE_2D, texture);
+      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR);
 
-      gl.bindTexture(TEXTURE_2D, null);
+      gl.bindTexture(WebGL.TEXTURE_2D, null);
       this.texture = texture;
     });
 
@@ -79,7 +79,7 @@ class Lesson9 extends Lesson {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
 
     // Setup the perspective - you might be wondering why we do this every
     // time, and that will become clear in much later lessons. Just know, you
@@ -88,16 +88,16 @@ class Lesson9 extends Lesson {
 
     // First stash the current model view matrix before we start moving around.
     mvPushMatrix();
-    gl.blendFunc(SRC_ALPHA, ONE);
-    gl.disable(DEPTH_TEST);
-    gl.enable(BLEND);
+    gl.blendFunc(WebGL.SRC_ALPHA, WebGL.ONE);
+    gl.disable(WebGL.DEPTH_TEST);
+    gl.enable(WebGL.BLEND);
 
     mvMatrix
       ..translate([0.0, 0.0, zoom])
       ..rotateX(radians(tilt));
 
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, texture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, texture);
     gl.uniform1i(program.uniforms['uSampler'], 0);
 
     for (Star star in stars) {

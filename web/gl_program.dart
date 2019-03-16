@@ -27,11 +27,11 @@ class GlProgram {
 
   GlProgram(String fragSrc, String vertSrc, List<String> attributeNames,
       List<String> uniformNames) {
-    fragShader = gl.createShader(FRAGMENT_SHADER);
+    fragShader = gl.createShader(WebGL.FRAGMENT_SHADER);
     gl.shaderSource(fragShader, fragSrc);
     gl.compileShader(fragShader);
 
-    vertShader = gl.createShader(VERTEX_SHADER);
+    vertShader = gl.createShader(WebGL.VERTEX_SHADER);
     gl.shaderSource(vertShader, vertSrc);
     gl.compileShader(vertShader);
 
@@ -40,7 +40,7 @@ class GlProgram {
     gl.attachShader(program, fragShader);
     gl.linkProgram(program);
 
-    if (!gl.getProgramParameter(program, LINK_STATUS)) {
+    if (!gl.getProgramParameter(program, WebGL.LINK_STATUS)) {
       print("Could not initialise shaders");
     }
 

@@ -141,7 +141,7 @@ class Lesson15 extends Lesson {
       textureCount++;
     });
 
-    gl.enable(DEPTH_TEST);
+    gl.enable(WebGL.DEPTH_TEST);
   }
 
   get aVertexPosition => currentProgram.attributes["aVertexPosition"];
@@ -170,10 +170,10 @@ class Lesson15 extends Lesson {
     gl.viewport(0, 0, viewWidth, viewHeight);
 
     // Clear!
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
 
-    gl.enable(DEPTH_TEST);
-    gl.disable(BLEND);
+    gl.enable(WebGL.DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
 
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
@@ -202,16 +202,16 @@ class Lesson15 extends Lesson {
       ..rotate(radians(tilt), [1, 0, -1])
       ..rotateY(radians(sphereAngle));
 
-    gl.activeTexture(TEXTURE0);
+    gl.activeTexture(WebGL.TEXTURE0);
     if (_texture.value == "earth") {
-      gl.bindTexture(TEXTURE_2D, earthTexture);
+      gl.bindTexture(WebGL.TEXTURE_2D, earthTexture);
     } else if (_texture.value == "moon") {
-      gl.bindTexture(TEXTURE_2D, moonTexture);
+      gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     }
     gl.uniform1i(uColorMapSampler, 0);
 
-    gl.activeTexture(TEXTURE1);
-    gl.bindTexture(TEXTURE_2D, earthSpecularMapTexture);
+    gl.activeTexture(WebGL.TEXTURE1);
+    gl.bindTexture(WebGL.TEXTURE_2D, earthSpecularMapTexture);
     gl.uniform1i(uSpecularMapSampler, 1);
 
     sphere.draw(

@@ -23,7 +23,7 @@ class Pyramid implements Renderable {
     normalBuffer = gl.createBuffer();
     textureCoordBuffer = gl.createBuffer();
 
-    gl.bindBuffer(ARRAY_BUFFER, positionBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
     var vertices = [
       // Front face
       0.0, 1.0, 0.0,
@@ -54,10 +54,10 @@ class Pyramid implements Renderable {
       -1.0, -1.0, 1.0,
     ];
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(vertices), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertices), WebGL.STATIC_DRAW);
 
     normalBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, normalBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
     var vertexNormals = [
       // Front face
       0.0, 0.4472135901451111, 0.8944271802902222,
@@ -88,11 +88,11 @@ class Pyramid implements Renderable {
       0.0, -1.0, 0.0
     ];
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(vertexNormals), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertexNormals), WebGL.STATIC_DRAW);
 
     // TODO: Come up with a better way to store color buffer vs texture buffer :)
     colorBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
     var colors = [
       // Front face
       1.0, 0.0, 0.0, 1.0,
@@ -122,7 +122,7 @@ class Pyramid implements Renderable {
       0.0, 1.0, 0.0, 1.0,
       0.0, 1.0, 0.0, 1.0
     ];
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
+    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(colors), WebGL.STATIC_DRAW);
 
     // Normal discovery from a list triangles
     //    for (int i = 0; i < vertices.length; i += 9 ) {
@@ -138,26 +138,26 @@ class Pyramid implements Renderable {
 
   void draw({int vertex, int normal, int coord, int color, setUniforms()}) {
     if (vertex != null) {
-      gl.bindBuffer(ARRAY_BUFFER, positionBuffer);
-      gl.vertexAttribPointer(vertex, 3, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
+      gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (normal != null) {
-      gl.bindBuffer(ARRAY_BUFFER, normalBuffer);
-      gl.vertexAttribPointer(normal, 3, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
+      gl.vertexAttribPointer(normal, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (coord != null) {
-      gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
-      gl.vertexAttribPointer(coord, 2, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
+      gl.vertexAttribPointer(coord, 2, WebGL.FLOAT, false, 0, 0);
     }
 
     if (color != null) {
-      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-      gl.vertexAttribPointer(color, 4, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
+      gl.vertexAttribPointer(color, 4, WebGL.FLOAT, false, 0, 0);
     }
 
     if (setUniforms != null) setUniforms();
-    gl.drawArrays(TRIANGLES, 0, 18);
+    gl.drawArrays(WebGL.TRIANGLES, 0, 18);
   }
 }

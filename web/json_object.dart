@@ -35,7 +35,7 @@ class JsonObject implements Renderable {
   bool strip = false;
 
   JsonObject(String fromJson) {
-    Map data = JSON.decode(fromJson);
+    Map data = json.decode(fromJson);
 
     List<num> numArray = data['vertexNormals'];
     if (numArray != null) {
@@ -43,9 +43,9 @@ class JsonObject implements Renderable {
           new List<double>.from(numArray.map((num index) => index.toDouble()));
 
       vertexNormalBuffer = gl.createBuffer();
-      gl.bindBuffer(ARRAY_BUFFER, vertexNormalBuffer);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexNormalBuffer);
       gl.bufferData(
-          ARRAY_BUFFER, new Float32List.fromList(normals), STATIC_DRAW);
+          WebGL.ARRAY_BUFFER, new Float32List.fromList(normals), WebGL.STATIC_DRAW);
     }
 
     numArray = data['vertexTextureCoords'];
@@ -54,9 +54,9 @@ class JsonObject implements Renderable {
           new List<double>.from(numArray.map((num index) => index.toDouble()));
 
       textureCoordBuffer = gl.createBuffer();
-      gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
       gl.bufferData(
-          ARRAY_BUFFER, new Float32List.fromList(coords), STATIC_DRAW);
+          WebGL.ARRAY_BUFFER, new Float32List.fromList(coords), WebGL.STATIC_DRAW);
     }
 
     numArray = data['vertexPositions'];
@@ -64,18 +64,18 @@ class JsonObject implements Renderable {
         new List<double>.from(numArray.map((num index) => index.toDouble()));
 
     vertexPositionBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, vertexPositionBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexPositionBuffer);
     gl.bufferData(
-        ARRAY_BUFFER, new Float32List.fromList(positions), STATIC_DRAW);
+        WebGL.ARRAY_BUFFER, new Float32List.fromList(positions), WebGL.STATIC_DRAW);
 
     numArray = data['indices'];
     if (numArray != null) {
       List<int> indices =
           new List<int>.from(numArray.map((num index) => index.toInt()));
       indexBuffer = gl.createBuffer();
-      gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
+      gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
       gl.bufferData(
-          ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
+          WebGL.ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), WebGL.STATIC_DRAW);
       _itemSize = indices.length;
     } else {
       _itemSize = positions.length ~/ 3;
@@ -97,29 +97,29 @@ class JsonObject implements Renderable {
 
   void draw({int vertex, int normal, int coord, setUniforms()}) {
     if (vertex != null) {
-      gl.bindBuffer(ARRAY_BUFFER, vertexPositionBuffer);
-      gl.vertexAttribPointer(vertex, 3, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexPositionBuffer);
+      gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (normal != null && vertexNormalBuffer != null) {
-      gl.bindBuffer(ARRAY_BUFFER, vertexNormalBuffer);
-      gl.vertexAttribPointer(normal, 3, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexNormalBuffer);
+      gl.vertexAttribPointer(normal, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (coord != null && textureCoordBuffer != null) {
-      gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
-      gl.vertexAttribPointer(coord, 2, FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
+      gl.vertexAttribPointer(coord, 2, WebGL.FLOAT, false, 0, 0);
     }
 
     if (setUniforms != null) setUniforms();
 
     if (indexBuffer != null) {
-      gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-      gl.drawElements(TRIANGLES, _itemSize, UNSIGNED_SHORT, 0);
+      gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+      gl.drawElements(WebGL.TRIANGLES, _itemSize, WebGL.UNSIGNED_SHORT, 0);
     } else if (strip) {
-      gl.drawArrays(TRIANGLE_STRIP, 0, _itemSize);
+      gl.drawArrays(WebGL.TRIANGLE_STRIP, 0, _itemSize);
     } else {
-      gl.drawArrays(TRIANGLES, 0, _itemSize);
+      gl.drawArrays(WebGL.TRIANGLES, 0, _itemSize);
     }
   }
 }

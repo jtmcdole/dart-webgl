@@ -101,7 +101,7 @@ class Lesson12 extends Lesson {
     loadTexture("crate.gif", handleMipMapTexture).then((t) => cubeTexture = t);
 
     gl.useProgram(program.program);
-    gl.enable(DEPTH_TEST);
+    gl.enable(WebGL.DEPTH_TEST);
   }
 
   get aVertexPosition => program.attributes['aVertexPosition'];
@@ -120,11 +120,11 @@ class Lesson12 extends Lesson {
   void drawScene(num viewWidth, num viewHeight, num aspect) {
     if (!isLoaded) return;
 
-    gl.enable(DEPTH_TEST);
-    gl.disable(BLEND);
+    gl.enable(WebGL.DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
 
     gl.viewport(0, 0, viewWidth, viewHeight);
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
     gl.useProgram(program.program);
@@ -155,8 +155,8 @@ class Lesson12 extends Lesson {
     mvMatrix
       ..rotateY(radians(moonAngle))
       ..translate([5.0, 0.0, 0.0]);
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, moonTexture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
     moon.draw(
         vertex: aVertexPosition,
@@ -168,8 +168,8 @@ class Lesson12 extends Lesson {
     mvMatrix
       ..rotateY(radians(cubeAngle))
       ..translate([5.0, 0.0, 0.0]);
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, cubeTexture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, cubeTexture);
     gl.uniform1i(uSampler, 0);
     cube.draw(
         vertex: aVertexPosition,
