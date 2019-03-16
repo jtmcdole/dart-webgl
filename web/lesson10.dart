@@ -175,9 +175,12 @@ class Lesson10 extends Lesson {
   }
 
   void initHtml(DivElement hook) {
-    hook.setInnerHtml("""
+    hook.setInnerHtml(
+      """
     Use the cursor keys or WASD to run around, and <code>Page Up</code>/<code>Page Down</code> to
     look up and down.
-    """, treeSanitizer: new NullTreeSanitizer());
+    """,
+      treeSanitizer: new NullTreeSanitizer(),
+    );
   }
 }

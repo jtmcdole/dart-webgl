@@ -605,7 +605,6 @@ class Matrix4 {
 ///
 /// We use column major order because that is what WebGL APIs expect.
 ///
-///
 class Matrix3 {
   Float32List buf;
 
