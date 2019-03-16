@@ -29,7 +29,7 @@ class Lesson4 extends Lesson {
 
   Lesson4() {
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec4 vColor;
@@ -38,7 +38,7 @@ class Lesson4 extends Lesson {
             gl_FragColor = vColor;
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec4 aVertexColor;
 
@@ -52,8 +52,9 @@ class Lesson4 extends Lesson {
               vColor = aVertexColor;
           }
         ''',
-        ['aVertexPosition', 'aVertexColor'],
-        ['uMVMatrix', 'uPMatrix']);
+      ['aVertexPosition', 'aVertexColor'],
+      ['uMVMatrix', 'uPMatrix'],
+    );
     gl.useProgram(program.program);
 
     // Currently this is hardcoded, because well... everything else is textures

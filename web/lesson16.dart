@@ -92,7 +92,7 @@ class Lesson16 extends Lesson {
     ];
 
     currentProgram = new GlProgram(
-        '''
+      '''
           precision mediump float;
       
           varying vec2 vTextureCoord;
@@ -156,7 +156,7 @@ class Lesson16 extends Lesson {
               );
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec3 aVertexNormal;
           attribute vec2 aTextureCoord;
@@ -176,8 +176,9 @@ class Lesson16 extends Lesson {
               vTransformedNormal = uNMatrix * aVertexNormal;
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     gl.useProgram(currentProgram.program);
     gl.enable(WebGL.DEPTH_TEST);
@@ -187,12 +188,29 @@ class Lesson16 extends Lesson {
 
     rttTexture = gl.createTexture();
     gl.bindTexture(WebGL.TEXTURE_2D, rttTexture);
-    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+    gl.texParameteri(
+      WebGL.TEXTURE_2D,
+      WebGL.TEXTURE_MAG_FILTER,
+      WebGL.LINEAR,
+    );
+    gl.texParameteri(
+      WebGL.TEXTURE_2D,
+      WebGL.TEXTURE_MIN_FILTER,
+      WebGL.LINEAR_MIPMAP_NEAREST,
+    );
     gl.generateMipmap(WebGL.TEXTURE_2D);
 
     gl.texImage2D(
-        WebGL.TEXTURE_2D, 0, WebGL.RGBA, rttWidth, rttHeight, 0, WebGL.RGBA, WebGL.UNSIGNED_BYTE, null);
+      WebGL.TEXTURE_2D,
+      0,
+      WebGL.RGBA,
+      rttWidth,
+      rttHeight,
+      0,
+      WebGL.RGBA,
+      WebGL.UNSIGNED_BYTE,
+      null,
+    );
 
     renderbuffer = gl.createRenderbuffer();
     gl.bindRenderbuffer(WebGL.RENDERBUFFER, renderbuffer);
@@ -200,9 +218,18 @@ class Lesson16 extends Lesson {
         WebGL.RENDERBUFFER, WebGL.DEPTH_COMPONENT16, rttWidth, rttHeight);
 
     gl.framebufferTexture2D(
-        WebGL.FRAMEBUFFER, WebGL.COLOR_ATTACHMENT0, WebGL.TEXTURE_2D, rttTexture, 0);
+      WebGL.FRAMEBUFFER,
+      WebGL.COLOR_ATTACHMENT0,
+      WebGL.TEXTURE_2D,
+      rttTexture,
+      0,
+    );
     gl.framebufferRenderbuffer(
-        WebGL.FRAMEBUFFER, WebGL.DEPTH_ATTACHMENT, WebGL.RENDERBUFFER, renderbuffer);
+      WebGL.FRAMEBUFFER,
+      WebGL.DEPTH_ATTACHMENT,
+      WebGL.RENDERBUFFER,
+      renderbuffer,
+    );
 
     gl.bindTexture(WebGL.TEXTURE_2D, null);
     gl.bindRenderbuffer(WebGL.RENDERBUFFER, null);

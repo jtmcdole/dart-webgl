@@ -29,7 +29,7 @@ class Rectangle implements Renderable {
   ];
 
   Rectangle(num width, num height,
-      {num left: 0.0, num bottom: 0.0, Float32List vertexColors}) {
+      {num left = 0.0, num bottom = 0.0, Float32List vertexColors}) {
     positionBuffer = gl.createBuffer();
     normalBuffer = gl.createBuffer();
     textureCoordBuffer = gl.createBuffer();
@@ -43,7 +43,10 @@ class Rectangle implements Renderable {
       left, bottom + height, 0.0, // top left
     ];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertices), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(vertices),
+      WebGL.STATIC_DRAW,
+    );
 
     gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
     var vertexNormals = [
@@ -54,7 +57,10 @@ class Rectangle implements Renderable {
       0.0, 0.0, 1.0,
     ];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertexNormals), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(vertexNormals),
+      WebGL.STATIC_DRAW,
+    );
 
     gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
     var coords = [
@@ -64,7 +70,11 @@ class Rectangle implements Renderable {
       1.0, 1.0,
       0.0, 1.0,
     ];
-    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(coords), WebGL.STATIC_DRAW);
+    gl.bufferData(
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(coords),
+      WebGL.STATIC_DRAW,
+    );
 
     // TODO: Come up with a better way to store color buffer vs texture buffer :)
     gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
@@ -90,7 +100,11 @@ class Rectangle implements Renderable {
 //      0.0, 0.0, 1.0, 1.0, // top right
 //      1.0, 1.0, 1.0, 1.0, // top left
 //    ];
-    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(colors), WebGL.STATIC_DRAW);
+    gl.bufferData(
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(colors),
+      WebGL.STATIC_DRAW,
+    );
 
     indexBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);

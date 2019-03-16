@@ -73,12 +73,12 @@ void main() {
   }
   if (urlParameters.containsKey("width")) {
     String width = urlParameters["width"];
-    canvas.width = int.parse(width, onError: (_) => 500);
+    canvas.width = int.tryParse(width) ?? 500;
   }
 
   if (urlParameters.containsKey("height")) {
     String height = urlParameters["height"];
-    canvas.height = int.parse(height, onError: (_) => 500);
+    canvas.height = int.tryParse(height) ?? 500;
   }
 
   if (urlParameters.containsKey("overflow")) {
@@ -116,11 +116,9 @@ void main() {
   tick(0);
 }
 
-/**
- * This is the infinite animation loop; we request that the web browser
- * call us back every time its ready for a new frame to be rendered. The [time]
- * parameter is an increasing value based on when the animation loop started.
- */
+/// This is the infinite animation loop; we request that the web browser
+/// call us back every time its ready for a new frame to be rendered. The [time]
+/// parameter is an increasing value based on when the animation loop started.
 tick(time) {
   window.animationFrame.then(tick);
   if (trackFrameRate) frameCount(time);
@@ -129,28 +127,20 @@ tick(time) {
   lesson.drawScene(canvas.width, canvas.height, canvas.width / canvas.height);
 }
 
-/**
- * The global key-state map.
- */
+/// The global key-state map.
 Set<int> currentlyPressedKeys = new Set<int>();
 
-/**
- * Test if the given [KeyCode] is active.
- */
+/// Test if the given [KeyCode] is active.
 bool isActive(int code) => currentlyPressedKeys.contains(code);
 
-/**
- * Test if any of the given [KeyCode]s are active, returning true.
- */
+/// Test if any of the given [KeyCode]s are active, returning true.
 bool anyActive(List<int> codes) {
   return codes.firstWhere((code) => currentlyPressedKeys.contains(code),
           orElse: () => null) !=
       null;
 }
 
-/**
- * Parse and store the URL parameters for start up.
- */
+/// Parse and store the URL parameters for start up.
 parseQueryString() {
   String search = window.location.search;
   if (search.startsWith("?")) {
@@ -177,20 +167,14 @@ Matrix4 mvMatrix;
 
 List<Matrix4> mvStack = new List<Matrix4>();
 
-/**
- * Add a copy of the current Model-View matrix to the the stack for future
- * restoration.
- */
+/// Add a copy of the current Model-View matrix to the the stack for future
+/// restoration.
 mvPushMatrix() => mvStack.add(new Matrix4.fromMatrix(mvMatrix));
 
-/**
- * Pop the last matrix off the stack and set the Model View matrix.
- */
+/// Pop the last matrix off the stack and set the Model View matrix.
 mvPopMatrix() => mvMatrix = mvStack.removeLast();
 
-/**
- * Handle common keys through callbacks, making lessons a little easier to code
- */
+/// Handle common keys through callbacks, making lessons a little easier to code
 void handleDirection({up(), down(), left(), right()}) {
   if (left != null && anyActive([KeyCode.A, KeyCode.LEFT])) {
     left();
@@ -226,46 +210,32 @@ void frameCount(num now) {
   lastSample = now;
 }
 
-/**
- * The base for all Learn WebGL lessons.
- */
+/// The base for all Learn WebGL lessons.
 abstract class Lesson {
-  /**
-   * Render the scene to the [viewWidth], [viewHeight], and [aspect] ratio.
-   */
+  /// Render the scene to the [viewWidth], [viewHeight], and [aspect] ratio.
   void drawScene(num viewWidth, num viewHeight, num aspect);
 
-  /**
-   * Animate the scene any way you like. [now] is provided as a clock reference
-   * since the scene rendering started.
-   */
+  /// Animate the scene any way you like. [now] is provided as a clock reference
+  /// since the scene rendering started.
   void animate(num now) {}
 
-  /**
-   * Handle any keyboard events.
-   */
+  /// Handle any keyboard events.
   void handleKeys() {}
 
-  /**
-   * Fill in any lesson related instructions and input elements.
-   * This is provided by default.
-   */
+  /// Fill in any lesson related instructions and input elements.
+  /// This is provided by default.
   void initHtml(DivElement hook) {
     hook.innerHtml = "If you see this, don't worry, the lesson doesn't have "
         "any parameters for you to change! Generally up/down/left/right or "
         "WASD work.";
   }
 
-  /**
-   * Added for your convenience to track time between [animate] callbacks.
-   */
+  /// Added for your convenience to track time between [animate] callbacks.
   num lastTime = 0;
 }
 
-/**
- * Load the given image at [url] and call [handle] to execute some GL code.
- * Return a [Future] to asynchronously notify when the texture is complete.
- */
+/// Load the given image at [url] and call [handle] to execute some GL code.
+/// Return a [Future] to asynchronously notify when the texture is complete.
 Future<Texture> loadTexture(String url, handle(Texture tex, ImageElement ele)) {
   var completer = new Completer<Texture>();
   var texture = gl.createTexture();
@@ -278,16 +248,16 @@ Future<Texture> loadTexture(String url, handle(Texture tex, ImageElement ele)) {
   return completer.future;
 }
 
-/**
- * This is a common handler for [loadTexture]. It will be explained in future
- * lessons that require textures.
- */
+/// This is a common handler for [loadTexture]. It will be explained in future
+/// lessons that require textures.
 void handleMipMapTexture(Texture texture, ImageElement image) {
   gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
   gl.bindTexture(WebGL.TEXTURE_2D, texture);
-  gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
+  gl.texImage2D(
+      WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
   gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+  gl.texParameteri(
+      WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
   gl.generateMipmap(WebGL.TEXTURE_2D);
   gl.bindTexture(WebGL.TEXTURE_2D, null);
 }
@@ -333,9 +303,7 @@ Lesson selectLesson(int number) {
   return null;
 }
 
-/**
- * Work around for setInnerHtml()
- */
+/// Work around for setInnerHtml()
 class NullTreeSanitizer implements NodeTreeSanitizer {
   static NullTreeSanitizer instance;
   factory NullTreeSanitizer() {

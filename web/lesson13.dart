@@ -52,7 +52,7 @@ class Lesson13 extends Lesson {
     ];
 
     perVertexProgram = new GlProgram(
-        '''
+      '''
         precision mediump float;
     
         varying vec2 vTextureCoord;
@@ -72,7 +72,7 @@ class Lesson13 extends Lesson {
             gl_FragColor = vec4(fragmentColor.rgb * vLightWeighting, fragmentColor.a);
         }
       ''',
-        '''
+      '''
         attribute vec3 aVertexPosition;
         attribute vec3 aVertexNormal;
         attribute vec2 aTextureCoord;
@@ -107,11 +107,12 @@ class Lesson13 extends Lesson {
             }
         }
       ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     currentProgram = perFragmentProgram = new GlProgram(
-        '''
+      '''
           precision mediump float;
       
           varying vec2 vTextureCoord;
@@ -149,7 +150,7 @@ class Lesson13 extends Lesson {
               gl_FragColor = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec3 aVertexNormal;
           attribute vec2 aTextureCoord;
@@ -170,8 +171,9 @@ class Lesson13 extends Lesson {
               vTransformedNormal = uNMatrix * aVertexNormal;
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     // Handle textures
     loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
@@ -313,7 +315,7 @@ class Lesson13 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """
+      """
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     <input type="checkbox" id="per-fragment" checked /> Per-fragment lighting<br/>
     <input type="checkbox" id="textures" checked /> Use textures<br/>
@@ -352,7 +354,8 @@ class Lesson13 extends Lesson {
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

@@ -14,15 +14,13 @@
  */
 part of learn_gl;
 
-/**
- * Basic directional and abient lighting
- */
+/// Basic directional and abient lighting
 class Lesson7 extends Lesson {
   Cube cube;
   GlProgram program;
   Texture texture;
 
-  bool get isLoaded => texture != false;
+  bool get isLoaded => texture != null;
 
   Lesson7() {
     cube = new Cube();
@@ -41,7 +39,7 @@ class Lesson7 extends Lesson {
     ];
 
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -54,7 +52,7 @@ class Lesson7 extends Lesson {
               gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec3 aVertexNormal;
           attribute vec2 aTextureCoord;
@@ -86,8 +84,9 @@ class Lesson7 extends Lesson {
               }
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     gl.useProgram(program.program);
   }
@@ -197,7 +196,7 @@ class Lesson7 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """
+      """
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     (Use cursor keys to spin the box and <code>Page Up</code>/<code>Page Down</code> to zoom out/in)
 
@@ -229,7 +228,8 @@ class Lesson7 extends Lesson {
         </tr>
     </table>
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

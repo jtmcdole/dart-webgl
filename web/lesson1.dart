@@ -14,9 +14,7 @@
  */
 part of learn_gl;
 
-/**
- * Staticly draw a triangle and a square!
- */
+/// Staticly draw a triangle and a square!
 class Lesson1 extends Lesson {
   GlProgram program;
 
@@ -24,14 +22,14 @@ class Lesson1 extends Lesson {
 
   Lesson1() {
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           void main(void) {
               gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
 
           uniform mat4 uMVMatrix;
@@ -41,8 +39,9 @@ class Lesson1 extends Lesson {
               gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
           }
         ''',
-        ['aVertexPosition'],
-        ['uMVMatrix', 'uPMatrix']);
+      ['aVertexPosition'],
+      ['uMVMatrix', 'uPMatrix'],
+    );
     gl.useProgram(program.program);
 
     // Allocate and build the two buffers we need to draw a triangle and box.
@@ -111,10 +110,8 @@ class Lesson1 extends Lesson {
     mvPopMatrix();
   }
 
-  /**
-   * Write the matrix uniforms (model view matrix and perspective matrix) so
-   * WebGL knows what to do with them.
-   */
+  /// Write the matrix uniforms (model view matrix and perspective matrix) so
+  /// WebGL knows what to do with them.
   setMatrixUniforms() {
     gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);

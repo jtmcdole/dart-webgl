@@ -25,7 +25,7 @@ class Sphere implements Renderable {
   Buffer _indexBuffer;
   int _indexBufferSize;
 
-  Sphere({this.lats: 30, this.lons: 30, this.radius: 2}) {
+  Sphere({this.lats = 30, this.lons = 30, this.radius = 2}) {
     List<double> vertexPositions = new List();
     List<double> normals = new List();
     List<double> textureCoords = new List();
@@ -67,22 +67,35 @@ class Sphere implements Renderable {
 
     _normalBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, _normalBuffer);
-    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(normals), WebGL.STATIC_DRAW);
+    gl.bufferData(
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(normals),
+      WebGL.STATIC_DRAW,
+    );
 
     _textureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, _textureCoordBuffer);
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(textureCoords), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(textureCoords),
+      WebGL.STATIC_DRAW,
+    );
 
     _positionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, _positionBuffer);
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertexPositions), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(vertexPositions),
+      WebGL.STATIC_DRAW,
+    );
 
     _indexBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, _indexBuffer);
     gl.bufferData(
-        WebGL.ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indexData), WebGL.STATIC_DRAW);
+      WebGL.ELEMENT_ARRAY_BUFFER,
+      new Uint16List.fromList(indexData),
+      WebGL.STATIC_DRAW,
+    );
   }
 
   void draw({int vertex, int normal, int coord, setUniforms()}) {

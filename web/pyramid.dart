@@ -54,7 +54,10 @@ class Pyramid implements Renderable {
       -1.0, -1.0, 1.0,
     ];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertices), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(vertices),
+      WebGL.STATIC_DRAW,
+    );
 
     normalBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
@@ -88,7 +91,10 @@ class Pyramid implements Renderable {
       0.0, -1.0, 0.0
     ];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertexNormals), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(vertexNormals),
+      WebGL.STATIC_DRAW,
+    );
 
     // TODO: Come up with a better way to store color buffer vs texture buffer :)
     colorBuffer = gl.createBuffer();
@@ -122,7 +128,11 @@ class Pyramid implements Renderable {
       0.0, 1.0, 0.0, 1.0,
       0.0, 1.0, 0.0, 1.0
     ];
-    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(colors), WebGL.STATIC_DRAW);
+    gl.bufferData(
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(colors),
+      WebGL.STATIC_DRAW,
+    );
 
     // Normal discovery from a list triangles
     //    for (int i = 0; i < vertices.length; i += 9 ) {

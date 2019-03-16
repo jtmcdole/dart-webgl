@@ -14,9 +14,7 @@
  */
 part of learn_gl;
 
-/**
- * Textures part two: filtering.
- */
+/// Textures part two: filtering.
 class Lesson6 extends Lesson {
   GlProgram program;
   List<Texture> textures = [];
@@ -31,7 +29,7 @@ class Lesson6 extends Lesson {
     var uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
 
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -42,7 +40,7 @@ class Lesson6 extends Lesson {
               gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec2 aTextureCoord;
 
@@ -56,8 +54,9 @@ class Lesson6 extends Lesson {
               vTextureCoord = aTextureCoord;
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     gl.useProgram(program.program);
 
@@ -67,21 +66,66 @@ class Lesson6 extends Lesson {
       textures.add(text);
 
       gl.bindTexture(WebGL.TEXTURE_2D, textures[0]);
-      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
+      gl.texImage2D(
+        WebGL.TEXTURE_2D,
+        0,
+        WebGL.RGBA,
+        WebGL.RGBA,
+        WebGL.UNSIGNED_BYTE,
+        ele,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MAG_FILTER,
+        WebGL.NEAREST,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MIN_FILTER,
+        WebGL.NEAREST,
+      );
 
       textures.add(gl.createTexture());
       gl.bindTexture(WebGL.TEXTURE_2D, textures[1]);
-      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR);
+      gl.texImage2D(
+        WebGL.TEXTURE_2D,
+        0,
+        WebGL.RGBA,
+        WebGL.RGBA,
+        WebGL.UNSIGNED_BYTE,
+        ele,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MAG_FILTER,
+        WebGL.LINEAR,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MIN_FILTER,
+        WebGL.LINEAR,
+      );
 
       textures.add(gl.createTexture());
       gl.bindTexture(WebGL.TEXTURE_2D, textures[2]);
-      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+      gl.texImage2D(
+        WebGL.TEXTURE_2D,
+        0,
+        WebGL.RGBA,
+        WebGL.RGBA,
+        WebGL.UNSIGNED_BYTE,
+        ele,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MAG_FILTER,
+        WebGL.LINEAR,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MIN_FILTER,
+        WebGL.LINEAR_MIPMAP_NEAREST,
+      );
       gl.generateMipmap(WebGL.TEXTURE_2D);
 
       // reset the texture 2d
@@ -171,7 +215,7 @@ class Lesson6 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """
+      """
     <h2>Controls:</h2>
 
     <ul>
@@ -180,6 +224,7 @@ class Lesson6 extends Lesson {
         <li><code>F</code> to toggle through three different kinds of texture filters
     </ul>
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
   }
 }

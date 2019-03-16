@@ -45,7 +45,7 @@ class Lesson15 extends Lesson {
     ];
 
     currentProgram = new GlProgram(
-        '''
+      '''
           precision mediump float;
       
           varying vec2 vTextureCoord;
@@ -101,7 +101,7 @@ class Lesson15 extends Lesson {
               gl_FragColor = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec3 aVertexNormal;
           attribute vec2 aTextureCoord;
@@ -122,8 +122,9 @@ class Lesson15 extends Lesson {
               vTransformedNormal = uNMatrix * aVertexNormal;
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     gl.useProgram(currentProgram.program);
 
@@ -264,7 +265,7 @@ class Lesson15 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """
+      """
     <input type="checkbox" id="color-map" checked /> Use color map<br/>
     <input type="checkbox" id="specular-map" checked /> Use specular map<br/>
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
@@ -312,7 +313,8 @@ class Lesson15 extends Lesson {
     Galvanized texture courtesy of <a href="http://www.arroway-textures.com/">Arroway Textures</a>.<br/>
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

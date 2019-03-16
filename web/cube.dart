@@ -58,7 +58,10 @@ class Cube implements Renderable {
       -1.0, 1.0, -1.0
     ];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertices), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(vertices),
+      WebGL.STATIC_DRAW,
+    );
 
     normalBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
@@ -100,7 +103,10 @@ class Cube implements Renderable {
       -1.0, 0.0, 0.0,
     ];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertexNormals), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(vertexNormals),
+      WebGL.STATIC_DRAW,
+    );
 
     textureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
@@ -142,7 +148,10 @@ class Cube implements Renderable {
       0.0, 1.0,
     ];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(textureCoords), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(textureCoords),
+      WebGL.STATIC_DRAW,
+    );
 
     indexBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -191,9 +200,7 @@ class Cube implements Renderable {
   }
 }
 
-/**
- * Holds a color [Buffer] for our cube's element array
- */
+/// Holds a color [Buffer] for our cube's element array
 class CubeColor {
   Buffer colorBuffer;
 
@@ -217,6 +224,9 @@ class CubeColor {
       }
     }
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(unpackedColors), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(unpackedColors),
+      WebGL.STATIC_DRAW,
+    );
   }
 }

@@ -6,7 +6,7 @@ part of learn_gl;
  * Thrown if you attempt to normalize a zero length vector.
  */
 class ZeroLengthVectorException implements Exception {
-  ZeroLengthVectorException() {}
+  ZeroLengthVectorException();
 }
 
 /**
@@ -14,7 +14,7 @@ class ZeroLengthVectorException implements Exception {
  * singular matrix has no inverse.)
  */
 class SingularMatrixException implements Exception {
-  SingularMatrixException() {}
+  SingularMatrixException();
 }
 
 /**
@@ -142,67 +142,67 @@ class Matrix4 {
   double get m32 => buf[rc(3, 2)];
   double get m33 => buf[rc(3, 3)];
 
-  void set m00(double m) {
+  set m00(double m) {
     buf[rc(0, 0)] = m;
   }
 
-  void set m01(double m) {
+  set m01(double m) {
     buf[rc(0, 1)] = m;
   }
 
-  void set m02(double m) {
+  set m02(double m) {
     buf[rc(0, 2)] = m;
   }
 
-  void set m03(double m) {
+  set m03(double m) {
     buf[rc(0, 3)] = m;
   }
 
-  void set m10(double m) {
+  set m10(double m) {
     buf[rc(1, 0)] = m;
   }
 
-  void set m11(double m) {
+  set m11(double m) {
     buf[rc(1, 1)] = m;
   }
 
-  void set m12(double m) {
+  set m12(double m) {
     buf[rc(1, 2)] = m;
   }
 
-  void set m13(double m) {
+  set m13(double m) {
     buf[rc(1, 3)] = m;
   }
 
-  void set m20(double m) {
+  set m20(double m) {
     buf[rc(2, 0)] = m;
   }
 
-  void set m21(double m) {
+  set m21(double m) {
     buf[rc(2, 1)] = m;
   }
 
-  void set m22(double m) {
+  set m22(double m) {
     buf[rc(2, 2)] = m;
   }
 
-  void set m23(double m) {
+  set m23(double m) {
     buf[rc(2, 3)] = m;
   }
 
-  void set m30(double m) {
+  set m30(double m) {
     buf[rc(3, 0)] = m;
   }
 
-  void set m31(double m) {
+  set m31(double m) {
     buf[rc(3, 1)] = m;
   }
 
-  void set m32(double m) {
+  set m32(double m) {
     buf[rc(3, 2)] = m;
   }
 
-  void set m33(double m) {
+  set m33(double m) {
     buf[rc(3, 3)] = m;
   }
 
@@ -363,9 +363,7 @@ class Matrix4 {
     return this;
   }
 
-  /**
-   * returns the transpose of this matrix
-   */
+  /// returns the transpose of this matrix
   Matrix4 transpose() {
     Matrix4 m = new Matrix4();
     for (int row = 0; row < 4; row++) {
@@ -658,39 +656,39 @@ class Matrix3 {
   double get m21 => buf[rc(2, 1)];
   double get m22 => buf[rc(2, 2)];
 
-  void set m00(double m) {
+  set m00(double m) {
     buf[rc(0, 0)] = m;
   }
 
-  void set m01(double m) {
+  set m01(double m) {
     buf[rc(0, 1)] = m;
   }
 
-  void set m02(double m) {
+  set m02(double m) {
     buf[rc(0, 2)] = m;
   }
 
-  void set m10(double m) {
+  set m10(double m) {
     buf[rc(1, 0)] = m;
   }
 
-  void set m11(double m) {
+  set m11(double m) {
     buf[rc(1, 1)] = m;
   }
 
-  void set m12(double m) {
+  set m12(double m) {
     buf[rc(1, 2)] = m;
   }
 
-  void set m20(double m) {
+  set m20(double m) {
     buf[rc(2, 0)] = m;
   }
 
-  void set m21(double m) {
+  set m21(double m) {
     buf[rc(2, 1)] = m;
   }
 
-  void set m22(double m) {
+  set m22(double m) {
     buf[rc(2, 2)] = m;
   }
 
