@@ -14,10 +14,8 @@
  */
 part of learn_gl;
 
-/**
- * Note; not happy about this, it just a texturized rectangle that's conflated
- * with particles. Needs clean up.
- */
+/// Note; not happy about this, it just a texturized rectangle that's conflated
+/// with particles. Needs clean up.
 class Star implements Renderable {
   static Random rand = new Random(42);
   static bool loaded = false;
