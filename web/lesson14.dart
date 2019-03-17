@@ -48,7 +48,7 @@ class Lesson14 extends Lesson {
     ];
 
     currentProgram = new GlProgram(
-        '''
+      '''
           precision mediump float;
           
           varying vec2 vTextureCoord;
@@ -101,7 +101,7 @@ class Lesson14 extends Lesson {
               gl_FragColor = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec3 aVertexNormal;
           attribute vec2 aTextureCoord;
@@ -122,8 +122,9 @@ class Lesson14 extends Lesson {
               vTransformedNormal = uNMatrix * aVertexNormal;
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     gl.useProgram(currentProgram.program);
 
@@ -147,9 +148,24 @@ class Lesson14 extends Lesson {
   void handleTexture(Texture texture, ImageElement image) {
     gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
-    gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
-    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+    gl.texImage2D(
+      WebGL.TEXTURE_2D,
+      0,
+      WebGL.RGBA,
+      WebGL.RGBA,
+      WebGL.UNSIGNED_BYTE,
+      image,
+    );
+    gl.texParameteri(
+      WebGL.TEXTURE_2D,
+      WebGL.TEXTURE_MAG_FILTER,
+      WebGL.LINEAR,
+    );
+    gl.texParameteri(
+      WebGL.TEXTURE_2D,
+      WebGL.TEXTURE_MIN_FILTER,
+      WebGL.LINEAR_MIPMAP_NEAREST,
+    );
     gl.generateMipmap(WebGL.TEXTURE_2D);
     gl.bindTexture(WebGL.TEXTURE_2D, null);
     texturesLoaded++;
@@ -280,7 +296,7 @@ class Lesson14 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """
+      """
     <input type="checkbox" id="specular" checked /> Show specular highlight<br/>
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
 
@@ -339,7 +355,8 @@ class Lesson14 extends Lesson {
     Galvanized texture courtesy of <a href="http://www.arroway-textures.com/">Arroway Textures</a>.<br/>
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

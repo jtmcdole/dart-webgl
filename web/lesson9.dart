@@ -14,9 +14,7 @@
  */
 part of learn_gl;
 
-/**
- * Twinkle, twinkle little star...
- */
+/// Twinkle, twinkle little star...
 class Lesson9 extends Lesson {
   GlProgram program;
   Texture texture;
@@ -31,9 +29,24 @@ class Lesson9 extends Lesson {
     loadTexture("star.gif", (Texture texture, ImageElement ele) {
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
-      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR);
+      gl.texImage2D(
+        WebGL.TEXTURE_2D,
+        0,
+        WebGL.RGBA,
+        WebGL.RGBA,
+        WebGL.UNSIGNED_BYTE,
+        ele,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MAG_FILTER,
+        WebGL.LINEAR,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MIN_FILTER,
+        WebGL.LINEAR,
+      );
 
       gl.bindTexture(WebGL.TEXTURE_2D, null);
       this.texture = texture;
@@ -42,7 +55,7 @@ class Lesson9 extends Lesson {
     var attributes = ['aVertexPosition', 'aTextureCoord'];
     var uniforms = ['uMVMatrix', 'uPMatrix', 'uColor', 'uSampler'];
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -56,7 +69,7 @@ class Lesson9 extends Lesson {
               gl_FragColor = textureColor * vec4(uColor, 1.0);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec2 aTextureCoord;
 
@@ -70,8 +83,9 @@ class Lesson9 extends Lesson {
               vTextureCoord = aTextureCoord;
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
     gl.useProgram(program.program);
   }
 
@@ -148,11 +162,12 @@ class Lesson9 extends Lesson {
   InputElement _twinkle;
   initHtml(DivElement hook) {
     hook.setInnerHtml(
-        '''
+      '''
     <input type="checkbox" id="twinkle" /> Twinkle<br/>
     (Use up/down cursor keys to rotate, and <code>Page Up</code>/<code>Page Down</code> to zoom out/in)
     ''',
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
 
     _twinkle = querySelector("#twinkle");
   }

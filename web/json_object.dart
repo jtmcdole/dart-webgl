@@ -14,17 +14,15 @@
  */
 part of learn_gl;
 
-/**
- * Load a JSON object that follows:
- *     {
- *       'vertexNormals': [],
- *       'vertexTextureCoords': [],
- *       'vertexPositions': [],
- *       'indices': [],
- *     }
- *  Use [fromUrl] to load and return the object in the future!
- *  If 'indicies' are absent - data is interpreted as a triangle strip.
- */
+/// Load a JSON object that follows:
+///     {
+///       'vertexNormals': [],
+///       'vertexTextureCoords': [],
+///       'vertexPositions': [],
+///       'indices': [],
+///     }
+///  Use [fromUrl] to load and return the object in the future!
+///  If 'indicies' are absent - data is interpreted as a triangle strip.
 class JsonObject implements Renderable {
   Buffer vertexNormalBuffer,
       textureCoordBuffer,
@@ -37,54 +35,64 @@ class JsonObject implements Renderable {
   JsonObject(String fromJson) {
     Map data = json.decode(fromJson);
 
-    List<num> numArray = data['vertexNormals'];
+    List<dynamic> numArray = data['vertexNormals'];
     if (numArray != null) {
       List<double> normals =
-          new List<double>.from(numArray.map((num index) => index.toDouble()));
+          new List<double>.from(numArray.map((index) => index.toDouble()));
 
       vertexNormalBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexNormalBuffer);
       gl.bufferData(
-          WebGL.ARRAY_BUFFER, new Float32List.fromList(normals), WebGL.STATIC_DRAW);
+        WebGL.ARRAY_BUFFER,
+        new Float32List.fromList(normals),
+        WebGL.STATIC_DRAW,
+      );
     }
 
     numArray = data['vertexTextureCoords'];
     if (numArray != null) {
       List<double> coords =
-          new List<double>.from(numArray.map((num index) => index.toDouble()));
+          new List<double>.from(numArray.map((index) => index.toDouble()));
 
       textureCoordBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
       gl.bufferData(
-          WebGL.ARRAY_BUFFER, new Float32List.fromList(coords), WebGL.STATIC_DRAW);
+        WebGL.ARRAY_BUFFER,
+        new Float32List.fromList(coords),
+        WebGL.STATIC_DRAW,
+      );
     }
 
     numArray = data['vertexPositions'];
     List<double> positions =
-        new List<double>.from(numArray.map((num index) => index.toDouble()));
+        new List<double>.from(numArray.map((index) => index.toDouble()));
 
     vertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexPositionBuffer);
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(positions), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(positions),
+      WebGL.STATIC_DRAW,
+    );
 
     numArray = data['indices'];
     if (numArray != null) {
       List<int> indices =
-          new List<int>.from(numArray.map((num index) => index.toInt()));
+          new List<int>.from(numArray.map((index) => index.toInt()));
       indexBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
       gl.bufferData(
-          WebGL.ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), WebGL.STATIC_DRAW);
+        WebGL.ELEMENT_ARRAY_BUFFER,
+        new Uint16List.fromList(indices),
+        WebGL.STATIC_DRAW,
+      );
       _itemSize = indices.length;
     } else {
       _itemSize = positions.length ~/ 3;
     }
   }
 
-  /**
-   * Return a future [JsonObject] by fetching the JSON data from [url].
-   */
+  /// Return a future [JsonObject] by fetching the JSON data from [url].
   static Future<JsonObject> fromUrl(String url) {
     Completer<JsonObject> complete = new Completer<JsonObject>();
     HttpRequest.getString(url).then((json) {

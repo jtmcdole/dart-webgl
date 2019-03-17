@@ -14,9 +14,7 @@
  */
 part of learn_gl;
 
-/**
- * Staticly draw a triangle and a square - With Color!
- */
+/// Staticly draw a triangle and a square - With Color!
 class Lesson2 extends Lesson {
   GlProgram program;
 
@@ -25,7 +23,7 @@ class Lesson2 extends Lesson {
 
   Lesson2() {
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec4 vColor;
@@ -34,7 +32,7 @@ class Lesson2 extends Lesson {
             gl_FragColor = vColor;
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec4 aVertexColor;
 
@@ -48,8 +46,9 @@ class Lesson2 extends Lesson {
               vColor = aVertexColor;
           }
         ''',
-        ['aVertexPosition', 'aVertexColor'],
-        ['uMVMatrix', 'uPMatrix']);
+      ['aVertexPosition', 'aVertexColor'],
+      ['uMVMatrix', 'uPMatrix'],
+    );
     gl.useProgram(program.program);
 
     // Allocate and build the two buffers we need to draw a triangle and box.
@@ -67,7 +66,11 @@ class Lesson2 extends Lesson {
     triangleVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, triangleVertexColorBuffer);
     var colors = [1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0];
-    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(colors), WebGL.STATIC_DRAW);
+    gl.bufferData(
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(colors),
+      WebGL.STATIC_DRAW,
+    );
 
     squareVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, squareVertexPositionBuffer);
@@ -97,7 +100,11 @@ class Lesson2 extends Lesson {
       1.0,
       1.0
     ];
-    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList(colors), WebGL.STATIC_DRAW);
+    gl.bufferData(
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(colors),
+      WebGL.STATIC_DRAW,
+    );
 
     // Specify the color to clear with (black with 100% alpha) and then enable
     // depth testing.
@@ -155,10 +162,8 @@ class Lesson2 extends Lesson {
     mvPopMatrix();
   }
 
-  /**
-   * Write the matrix uniforms (model view matrix and perspective matrix) so
-   * WebGL knows what to do with them.
-   */
+  /// Write the matrix uniforms (model view matrix and perspective matrix) so
+  /// WebGL knows what to do with them.
   setMatrixUniforms() {
     gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);

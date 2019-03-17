@@ -14,9 +14,7 @@
  */
 part of learn_gl;
 
-/**
- * Depth Buffer, Transparency and Blending
- */
+/// Depth Buffer, Transparency and Blending
 class Lesson8 extends Lesson {
   Cube cube;
   GlProgram program;
@@ -42,7 +40,7 @@ class Lesson8 extends Lesson {
     ];
 
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -57,7 +55,7 @@ class Lesson8 extends Lesson {
               gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a * uAlpha);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec3 aVertexNormal;
           attribute vec2 aTextureCoord;
@@ -89,8 +87,9 @@ class Lesson8 extends Lesson {
               }
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     gl.useProgram(program.program);
   }
@@ -136,7 +135,7 @@ class Lesson8 extends Lesson {
       gl.blendFunc(WebGL.SRC_ALPHA, WebGL.ONE);
       gl.enable(WebGL.BLEND);
       gl.disable(WebGL.DEPTH_TEST);
-      gl.uniform1f(uAlpha, double.parse(_alpha.value, (e) => 1.0));
+      gl.uniform1f(uAlpha, double.tryParse(_alpha.value) ?? 1.0);
     } else {
       gl.disable(WebGL.BLEND);
       gl.enable(WebGL.DEPTH_TEST);
@@ -211,7 +210,7 @@ class Lesson8 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """
+      """
     <input type="checkbox" id="blending" checked /> Use blending<br/>
     Alpha level <input type="text" id="alpha" value="0.5" /><br/>
 
@@ -246,7 +245,8 @@ class Lesson8 extends Lesson {
         </tr>
     </table>
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

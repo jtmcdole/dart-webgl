@@ -14,9 +14,7 @@
  */
 part of learn_gl;
 
-/**
- * Introducing Textures!
- */
+/// Introducing Textures!
 class Lesson5 extends Lesson {
   GlProgram program;
   Texture neheTexture;
@@ -29,9 +27,24 @@ class Lesson5 extends Lesson {
     loadTexture("nehe.gif", (Texture texture, ImageElement element) {
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
-      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, element);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
+      gl.texImage2D(
+        WebGL.TEXTURE_2D,
+        0,
+        WebGL.RGBA,
+        WebGL.RGBA,
+        WebGL.UNSIGNED_BYTE,
+        element,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MAG_FILTER,
+        WebGL.NEAREST,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MIN_FILTER,
+        WebGL.NEAREST,
+      );
       gl.bindTexture(WebGL.TEXTURE_2D, null);
       neheTexture = texture;
     });
@@ -40,7 +53,7 @@ class Lesson5 extends Lesson {
     var uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
 
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -51,7 +64,7 @@ class Lesson5 extends Lesson {
               gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec2 aTextureCoord;
 
@@ -65,8 +78,9 @@ class Lesson5 extends Lesson {
               vTextureCoord = aTextureCoord;
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     gl.useProgram(program.program);
   }

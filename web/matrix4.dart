@@ -2,24 +2,18 @@
 // instead of this code.
 part of learn_gl;
 
-/**
- * Thrown if you attempt to normalize a zero length vector.
- */
+/// Thrown if you attempt to normalize a zero length vector.
 class ZeroLengthVectorException implements Exception {
-  ZeroLengthVectorException() {}
+  ZeroLengthVectorException();
 }
 
-/**
- * Thrown if you attempt to invert a singular matrix.  (A
- * singular matrix has no inverse.)
- */
+/// Thrown if you attempt to invert a singular matrix.  (A
+/// singular matrix has no inverse.)
 class SingularMatrixException implements Exception {
-  SingularMatrixException() {}
+  SingularMatrixException();
 }
 
-/**
- * 3 dimensional vector.
- */
+/// 3 dimensional vector.
 class Vector3 {
   Float32List buf;
 
@@ -82,47 +76,39 @@ double radians(double degrees) {
   return degrees * degrees2radians;
 }
 
-/**
- * A 4x4 transformation matrix (for use with webgl)
- *
- * We label the elements of the matrix as follows:
- *
- *     c+ 1 2 3 4 + buff offset + Happy mRowCol
- *     r+_________|_____________|________________
- *     1| 1 0 0 0 |  0  4  8 12 | m00 m01 m02 m03
- *     2| 0 1 0 0 |  1  5  9 13 | m10 m11 m12 m13
- *     3| 0 0 1 0 |  2  6 10 14 | m20 m21 m22 m23
- *     4| 0 0 0 1 |  3  7 11 15 | m30 m31 m32 m33
- *
- * These are stored in a 16 element [Float32List], in column major
- * order, so they are ordered like this:
- *
- * [ m00,m10,m20,m30, m01,m11,m21,m31, m02,m12,m22,m32, m03,m13,m23,m33 ]
- *   0   1   2   3    4   5   6   7    8   9   10  11   12  13  14  15
- *
- * We use column major order because that is what WebGL APIs expect.
- *
- */
+/// A 4x4 transformation matrix (for use with webgl)
+///
+/// We label the elements of the matrix as follows:
+///
+///     c+ 1 2 3 4 + buff offset + Happy mRowCol
+///     r+_________|_____________|________________
+///     1| 1 0 0 0 |  0  4  8 12 | m00 m01 m02 m03
+///     2| 0 1 0 0 |  1  5  9 13 | m10 m11 m12 m13
+///     3| 0 0 1 0 |  2  6 10 14 | m20 m21 m22 m23
+///     4| 0 0 0 1 |  3  7 11 15 | m30 m31 m32 m33
+///
+/// These are stored in a 16 element [Float32List], in column major
+/// order, so they are ordered like this:
+///
+/// [ m00,m10,m20,m30, m01,m11,m21,m31, m02,m12,m22,m32, m03,m13,m23,m33 ]
+///   0   1   2   3    4   5   6   7    8   9   10  11   12  13  14  15
+///
+/// We use column major order because that is what WebGL APIs expect.
+///
 class Matrix4 {
   Float32List buf;
 
-  /**
-   * Constructs a new Matrix4 with all entries initialized
-   * to zero.
-   */
+  /// Constructs a new Matrix4 with all entries initialized
+  /// to zero.
   Matrix4() : buf = new Float32List(16);
 
-  /**
-   * Make a copy of another matrix.
-   */
+  /// Make a copy of another matrix.
   Matrix4.fromMatrix(Matrix4 other) : buf = new Float32List.fromList(other.buf);
 
   Matrix4.fromBuffer(Float32List this.buf);
 
-  /**
-   * returns the index into [buf] for a given
-   * row and column.
-   */
+  /// returns the index into [buf] for a given
+  /// row and column.
   static int rc(int row, int col) => row + col * 4;
 
   double get m00 => buf[rc(0, 0)];
@@ -142,67 +128,67 @@ class Matrix4 {
   double get m32 => buf[rc(3, 2)];
   double get m33 => buf[rc(3, 3)];
 
-  void set m00(double m) {
+  set m00(double m) {
     buf[rc(0, 0)] = m;
   }
 
-  void set m01(double m) {
+  set m01(double m) {
     buf[rc(0, 1)] = m;
   }
 
-  void set m02(double m) {
+  set m02(double m) {
     buf[rc(0, 2)] = m;
   }
 
-  void set m03(double m) {
+  set m03(double m) {
     buf[rc(0, 3)] = m;
   }
 
-  void set m10(double m) {
+  set m10(double m) {
     buf[rc(1, 0)] = m;
   }
 
-  void set m11(double m) {
+  set m11(double m) {
     buf[rc(1, 1)] = m;
   }
 
-  void set m12(double m) {
+  set m12(double m) {
     buf[rc(1, 2)] = m;
   }
 
-  void set m13(double m) {
+  set m13(double m) {
     buf[rc(1, 3)] = m;
   }
 
-  void set m20(double m) {
+  set m20(double m) {
     buf[rc(2, 0)] = m;
   }
 
-  void set m21(double m) {
+  set m21(double m) {
     buf[rc(2, 1)] = m;
   }
 
-  void set m22(double m) {
+  set m22(double m) {
     buf[rc(2, 2)] = m;
   }
 
-  void set m23(double m) {
+  set m23(double m) {
     buf[rc(2, 3)] = m;
   }
 
-  void set m30(double m) {
+  set m30(double m) {
     buf[rc(3, 0)] = m;
   }
 
-  void set m31(double m) {
+  set m31(double m) {
     buf[rc(3, 1)] = m;
   }
 
-  void set m32(double m) {
+  set m32(double m) {
     buf[rc(3, 2)] = m;
   }
 
-  void set m33(double m) {
+  set m33(double m) {
     buf[rc(3, 3)] = m;
   }
 
@@ -229,10 +215,8 @@ class Matrix4 {
     return "Matrix4:\n${rows.join('\n')}";
   }
 
-  /**
-   * Cosntructs a new Matrix4 that represents the identity transformation
-   * (all the diagonal entries are 1, and everything else is zero).
-   */
+  /// Cosntructs a new Matrix4 that represents the identity transformation
+  /// (all the diagonal entries are 1, and everything else is zero).
   void identity() {
     for (int i = 0; i < 16; i++) {
       buf[i] = 0.0;
@@ -243,12 +227,10 @@ class Matrix4 {
     m33 = 1.0;
   }
 
-  /**
-   * Constructs a new Matrix4 that represents a rotation around an axis.
-   *
-   * [radians] to rotate
-   * [axis] direction of axis of rotation (must not be zero length)
-   */
+  /// Constructs a new Matrix4 that represents a rotation around an axis.
+  ///
+  /// [radians] to rotate
+  /// [axis] direction of axis of rotation (must not be zero length)
   static Matrix4 rotation(double radians, Vector3 axis) {
     axis = axis.normalize();
 
@@ -345,11 +327,9 @@ class Matrix4 {
     return this;
   }
 
-  /**
-   * Translates a matrix by the given vector
-   *
-   * [v] vector representing which direction to move and how much to move
-   */
+  /// Translates a matrix by the given vector
+  ///
+  /// [v] vector representing which direction to move and how much to move
   Matrix4 translate(List<double> v) {
     var tx = v[0];
     var ty = v[1];
@@ -363,9 +343,7 @@ class Matrix4 {
     return this;
   }
 
-  /**
-   * returns the transpose of this matrix
-   */
+  /// returns the transpose of this matrix
   Matrix4 transpose() {
     Matrix4 m = new Matrix4();
     for (int row = 0; row < 4; row++) {
@@ -376,19 +354,17 @@ class Matrix4 {
     return m;
   }
 
-  /**
-   * Returns result of multiplication of this matrix
-   * by another matrix.
-   *
-   * In this equation:
-   *
-   * C = A * B
-   *
-   * C is the result of multiplying A * B.
-   * A is this matrix
-   * B is another matrix
-   *
-   */
+  /// Returns result of multiplication of this matrix
+  /// by another matrix.
+  ///
+  /// In this equation:
+  ///
+  /// C = A * B
+  ///
+  /// C is the result of multiplying A * B.
+  /// A is this matrix
+  /// B is another matrix
+  ///
   Matrix4 operator *(Matrix4 matrixB) {
     Matrix4 matrixC = new Matrix4();
     Float32List bufA = this.buf;
@@ -404,15 +380,14 @@ class Matrix4 {
     return matrixC;
   }
 
-  /**
-   * Makse a 4x4 matrix perspective projection matrix given a field of view and
-   * aspect ratio.
-   *
-   * [fovyDegrees] field of view (in degrees) of the y-axis
-   * [aspectRatio] width to height aspect ratio.
-   * [zNear] distance to the near clipping plane.
-   * [zFar] distance to the far clipping plane.
-   */
+  /// Makse a 4x4 matrix perspective projection matrix given a field of view and
+  /// aspect ratio.
+  ///
+  /// [fovyDegrees] field of view (in degrees) of the y-axis
+  /// [aspectRatio] width to height aspect ratio.
+  /// [zNear] distance to the near clipping plane.
+  /// [zFar] distance to the far clipping plane.
+  /// 
   static Matrix4 perspective(
       double fovyDegrees, double aspectRatio, double zNear, double zFar) {
     double height = tan(radians(fovyDegrees) * 0.5) * zNear.toDouble();
@@ -442,18 +417,17 @@ class Matrix4 {
     return dest;
   }
 
-  /**
-   * Generates a orthogonal projection matrix with the given bounds
-  *
-   * @param {mat4} out mat4 frustum matrix will be written into
-   * @param {number} left Left bound of the frustum
-   * @param {number} right Right bound of the frustum
-   * @param {number} bottom Bottom bound of the frustum
-   * @param {number} top Top bound of the frustum
-   * @param {number} near Near bound of the frustum
-   * @param {number} far Far bound of the frustum
-   * @returns {mat4} out
-   */
+  /// Generates a orthogonal projection matrix with the given bounds
+  ///
+  /// @param {mat4} out mat4 frustum matrix will be written into
+  /// @param {number} left Left bound of the frustum
+  /// @param {number} right Right bound of the frustum
+  /// @param {number} bottom Bottom bound of the frustum
+  /// @param {number} top Top bound of the frustum
+  /// @param {number} near Near bound of the frustum
+  /// @param {number} far Far bound of the frustum
+  /// @returns {mat4} out
+  /// 
   static Matrix4 ortho(left, right, bottom, top, near, far) {
     Float32List out = new Float32List(16);
     var lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
@@ -476,9 +450,7 @@ class Matrix4 {
     return new Matrix4.fromBuffer(out);
   }
 
-  /**
-   * Returns the inverse of this matrix.
-   */
+  /// Returns the inverse of this matrix.
   Matrix4 inverse() {
     double a0 = m00 * m11 - m10 * m01;
     double a1 = m00 * m21 - m20 * m01;
@@ -524,15 +496,14 @@ class Matrix4 {
     return m;
   }
 
-  /*
-   * mat4.toInverseMat3
-   * Calculates the inverse of the upper 3x3 elements of a mat4 and copies the
-   * result into a [Matrix3]. The resulting matrix is useful for calculating
-   * transformed normals.
-  *
-   * Returns:
-   * A new [Matrix3]
-   */
+  /// mat4.toInverseMat3
+  /// Calculates the inverse of the upper 3x3 elements of a mat4 and copies the
+  /// result into a [Matrix3]. The resulting matrix is useful for calculating
+  /// transformed normals.
+  ///
+  /// Returns:
+  /// A new [Matrix3]
+  /// 
   Matrix3 toInverseMat3() {
     // Cache the matrix values (makes for huge speed increases!)
     var a00 = m00, a01 = m10, a02 = m20;
@@ -616,36 +587,32 @@ class Matrix4 {
   }
 }
 
-/**
- * A 3x3 transformation matrix (for use with webgl)
- *
- * We label the elements of the matrix as follows:
- *
- *     c+ 1 2 3 + buff off + Happy mRowCol
- *     r+_______|__________|_______________
- *     1| 1 0 0 |  0  3  6 | m00 m01 m02
- *     2| 0 1 0 |  1  4  7 | m10 m11 m12
- *     3| 0 0 1 |  2  5  8 | m20 m21 m22
- *
- * These are stored in a 16 element [Float32List], in column major
- * order, so they are ordered like this:
- *
- * [ m00,m10,m20, m01,m11,m21, m02,m12,m22]
- *   0   1   2    3   4   5    6   7   8
- *
- * We use column major order because that is what WebGL APIs expect.
- *
- */
+/// A 3x3 transformation matrix (for use with webgl)
+///
+/// We label the elements of the matrix as follows:
+///
+///     c+ 1 2 3 + buff off + Happy mRowCol
+///     r+_______|__________|_______________
+///     1| 1 0 0 |  0  3  6 | m00 m01 m02
+///     2| 0 1 0 |  1  4  7 | m10 m11 m12
+///     3| 0 0 1 |  2  5  8 | m20 m21 m22
+///
+/// These are stored in a 16 element [Float32List], in column major
+/// order, so they are ordered like this:
+///
+/// [ m00,m10,m20, m01,m11,m21, m02,m12,m22]
+///   0   1   2    3   4   5    6   7   8
+///
+/// We use column major order because that is what WebGL APIs expect.
+///
 class Matrix3 {
   Float32List buf;
 
   Matrix3() : buf = new Float32List(9);
   Matrix3.fromMatrix(Matrix3 other) : buf = new Float32List.fromList(other.buf);
 
-  /**
-   * returns the index into [buf] for a given
-   * row and column.
-   */
+  /// returns the index into [buf] for a given
+  /// row and column.
   static int rc(int row, int col) => row + col * 3;
 
   double get m00 => buf[rc(0, 0)];
@@ -658,39 +625,39 @@ class Matrix3 {
   double get m21 => buf[rc(2, 1)];
   double get m22 => buf[rc(2, 2)];
 
-  void set m00(double m) {
+  set m00(double m) {
     buf[rc(0, 0)] = m;
   }
 
-  void set m01(double m) {
+  set m01(double m) {
     buf[rc(0, 1)] = m;
   }
 
-  void set m02(double m) {
+  set m02(double m) {
     buf[rc(0, 2)] = m;
   }
 
-  void set m10(double m) {
+  set m10(double m) {
     buf[rc(1, 0)] = m;
   }
 
-  void set m11(double m) {
+  set m11(double m) {
     buf[rc(1, 1)] = m;
   }
 
-  void set m12(double m) {
+  set m12(double m) {
     buf[rc(1, 2)] = m;
   }
 
-  void set m20(double m) {
+  set m20(double m) {
     buf[rc(2, 0)] = m;
   }
 
-  void set m21(double m) {
+  set m21(double m) {
     buf[rc(2, 1)] = m;
   }
 
-  void set m22(double m) {
+  set m22(double m) {
     buf[rc(2, 2)] = m;
   }
 
@@ -717,9 +684,7 @@ class Matrix3 {
     return "Matrix3:\n${rows.join('\n')}";
   }
 
-  /**
-   * Transposes a [Matrix3] (flips the values over the diagonal)
-   */
+  /// Transposes a [Matrix3] (flips the values over the diagonal)
   Matrix3 transpose() {
     Matrix3 dest = new Matrix3();
     for (int row = 0; row < 3; row++) {
@@ -730,12 +695,10 @@ class Matrix3 {
     return dest;
   }
 
-  /**
-   * Transpose ourselves
-   *     m00 m01 m02    m00 m10 m20
-   *     m10 m11 m12 => m01 m11 m21
-   *     m20 m21 m22    m02 m12 m22
-   */
+  /// Transpose ourselves
+  ///     m00 m01 m02    m00 m10 m20
+  ///     m10 m11 m12 => m01 m11 m21
+  ///     m20 m21 m22    m02 m12 m22
   void transposeSelf() {
     var a01 = m01, a02 = m02, a12 = m12;
     m01 = m10;

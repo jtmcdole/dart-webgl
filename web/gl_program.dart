@@ -14,10 +14,8 @@
  */
 part of learn_gl;
 
-/**
- * Create a WebGL [Program], compiling [Shader]s from passed in sources and
- * cache [UniformLocation]s and AttribLocations.
- */
+/// Create a WebGL [Program], compiling [Shader]s from passed in sources and
+/// cache [UniformLocation]s and AttribLocations.
 class GlProgram {
   Map<String, int> attributes = new Map<String, int>();
   Map<String, UniformLocation> uniforms = new Map<String, UniformLocation>();

@@ -14,11 +14,9 @@
  */
 part of learn_gl;
 
-/**
- * Draw a colored triangle and a square, and have them rotate on axis.
- * This lesson is nearly identical to Lesson 2, and we could clean it up...
- * however that's a future lesson.
- */
+/// Draw a colored triangle and a square, and have them rotate on axis.
+/// This lesson is nearly identical to Lesson 2, and we could clean it up...
+/// however that's a future lesson.
 class Lesson4 extends Lesson {
   GlProgram program;
 
@@ -29,7 +27,7 @@ class Lesson4 extends Lesson {
 
   Lesson4() {
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec4 vColor;
@@ -38,7 +36,7 @@ class Lesson4 extends Lesson {
             gl_FragColor = vColor;
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec4 aVertexColor;
 
@@ -52,8 +50,9 @@ class Lesson4 extends Lesson {
               vColor = aVertexColor;
           }
         ''',
-        ['aVertexPosition', 'aVertexColor'],
-        ['uMVMatrix', 'uPMatrix']);
+      ['aVertexPosition', 'aVertexColor'],
+      ['uMVMatrix', 'uPMatrix'],
+    );
     gl.useProgram(program.program);
 
     // Currently this is hardcoded, because well... everything else is textures
@@ -106,20 +105,16 @@ class Lesson4 extends Lesson {
     mvPopMatrix();
   }
 
-  /**
-   * Write the matrix uniforms (model view matrix and perspective matrix) so
-   * WebGL knows what to do with them.
-   */
+  /// Write the matrix uniforms (model view matrix and perspective matrix) so
+  /// WebGL knows what to do with them.
   setMatrixUniforms() {
     gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);
   }
 
-  /**
-   * Every time the browser tells us to draw the scene, animate is called.
-   * If there's something being movied, this is where that movement i
-   * calculated.
-   */
+  /// Every time the browser tells us to draw the scene, animate is called.
+  /// If there's something being movied, this is where that movement i
+  /// calculated.
   void animate(num now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;

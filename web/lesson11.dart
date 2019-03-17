@@ -14,9 +14,7 @@
  */
 part of learn_gl;
 
-/**
- * Spheres, rotations matricies, and mouse events
- */
+/// Spheres, rotations matricies, and mouse events
 class Lesson11 extends Lesson {
   GlProgram program;
   Sphere moon;
@@ -43,7 +41,7 @@ class Lesson11 extends Lesson {
       'uUseLighting'
     ];
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -56,7 +54,7 @@ class Lesson11 extends Lesson {
               gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec3 aVertexNormal;
           attribute vec2 aTextureCoord;
@@ -88,8 +86,9 @@ class Lesson11 extends Lesson {
               }
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
 
@@ -179,8 +178,8 @@ class Lesson11 extends Lesson {
   }
 
   var mouseDown = false;
-  var lastMouseX = null;
-  var lastMouseY = null;
+  var lastMouseX;
+  var lastMouseY;
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
@@ -204,7 +203,7 @@ class Lesson11 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """"
+      """"
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     Spin the moon by dragging it with the mouse.
     <br/>
@@ -241,7 +240,8 @@ class Lesson11 extends Lesson {
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

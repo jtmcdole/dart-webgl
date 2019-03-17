@@ -14,14 +14,12 @@
  */
 part of learn_gl;
 
-/**
- * Handle custome shaders, animation, etc for Lesson 12 - Point Lighting.
- * In this lesson, we spin a sphere and a cube around a central axis with at its core is a
- * point of directional lighting.
- *
- * In the original lesson, the moon and box are tidal locked (always showing the same face),
- * lets play around with that.
- */
+/// Handle custome shaders, animation, etc for Lesson 12 - Point Lighting.
+/// In this lesson, we spin a sphere and a cube around a central axis with at its core is a
+/// point of directional lighting.
+///
+/// In the original lesson, the moon and box are tidal locked (always showing the same face),
+/// lets play around with that.
 class Lesson12 extends Lesson {
   GlProgram program;
   Cube cube;
@@ -46,7 +44,7 @@ class Lesson12 extends Lesson {
       'uUseLighting'
     ];
     program = new GlProgram(
-        '''
+      '''
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -59,7 +57,7 @@ class Lesson12 extends Lesson {
               gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
           }
         ''',
-        '''
+      '''
           attribute vec3 aVertexPosition;
           attribute vec3 aVertexNormal;
           attribute vec2 aTextureCoord;
@@ -94,8 +92,9 @@ class Lesson12 extends Lesson {
               }
           }
         ''',
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
 
     loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
     loadTexture("crate.gif", handleMipMapTexture).then((t) => cubeTexture = t);
@@ -225,7 +224,7 @@ class Lesson12 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """
+      """
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     <br/>
 
@@ -260,7 +259,8 @@ class Lesson12 extends Lesson {
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
 
     // Re-look up our dom elements
     _lighting = querySelector("#lighting");

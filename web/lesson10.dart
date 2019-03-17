@@ -14,9 +14,7 @@
  */
 part of learn_gl;
 
-/**
- * Load a world!
- */
+/// Load a world!
 class Lesson10 extends Lesson {
   GlProgram program;
   Texture texture;
@@ -33,9 +31,24 @@ class Lesson10 extends Lesson {
     loadTexture("mcdole.gif", (Texture texture, ImageElement ele) {
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
-      gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, ele);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-      gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR);
+      gl.texImage2D(
+        WebGL.TEXTURE_2D,
+        0,
+        WebGL.RGBA,
+        WebGL.RGBA,
+        WebGL.UNSIGNED_BYTE,
+        ele,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MAG_FILTER,
+        WebGL.LINEAR,
+      );
+      gl.texParameteri(
+        WebGL.TEXTURE_2D,
+        WebGL.TEXTURE_MIN_FILTER,
+        WebGL.LINEAR,
+      );
       this.texture = texture;
       print("texture loaded");
     });
@@ -43,7 +56,7 @@ class Lesson10 extends Lesson {
     var attributes = ['aVertexPosition', 'aTextureCoord'];
     var uniforms = ['uMVMatrix', 'uPMatrix', 'uSampler'];
     program = new GlProgram(
-        """
+      """
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -54,7 +67,7 @@ class Lesson10 extends Lesson {
               gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
           }
         """,
-        """
+      """
           attribute vec3 aVertexPosition;
           attribute vec2 aTextureCoord;
 
@@ -68,8 +81,9 @@ class Lesson10 extends Lesson {
               vTextureCoord = aTextureCoord;
           }
         """,
-        attributes,
-        uniforms);
+      attributes,
+      uniforms,
+    );
     gl.useProgram(program.program);
   }
 
@@ -162,10 +176,11 @@ class Lesson10 extends Lesson {
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-        """
+      """
     Use the cursor keys or WASD to run around, and <code>Page Up</code>/<code>Page Down</code> to
     look up and down.
     """,
-        treeSanitizer: new NullTreeSanitizer());
+      treeSanitizer: new NullTreeSanitizer(),
+    );
   }
 }

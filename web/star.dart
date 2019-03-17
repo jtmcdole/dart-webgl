@@ -14,10 +14,8 @@
  */
 part of learn_gl;
 
-/**
- * Note; not happy about this, it just a texturized rectangle that's conflated
- * with particles. Needs clean up.
- */
+/// Note; not happy about this, it just a texturized rectangle that's conflated
+/// with particles. Needs clean up.
 class Star implements Renderable {
   static Random rand = new Random(42);
   static bool loaded = false;
@@ -53,13 +51,19 @@ class Star implements Renderable {
       0.0
     ];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(vertices), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(vertices),
+      WebGL.STATIC_DRAW,
+    );
 
     starVertexTextureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, starVertexTextureCoordBuffer);
     var textureCoords = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0];
     gl.bufferData(
-        WebGL.ARRAY_BUFFER, new Float32List.fromList(textureCoords), WebGL.STATIC_DRAW);
+      WebGL.ARRAY_BUFFER,
+      new Float32List.fromList(textureCoords),
+      WebGL.STATIC_DRAW,
+    );
   }
 
   void draw(
@@ -67,7 +71,7 @@ class Star implements Renderable {
       int normal,
       int coord,
       UniformLocation color,
-      bool twinkle: false,
+      bool twinkle = false,
       num tilt,
       num spin,
       setUniforms()}) {
