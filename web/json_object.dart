@@ -78,7 +78,7 @@ class JsonObject implements Renderable {
     numArray = data['indices'];
     if (numArray != null) {
       List<int> indices =
-          new List<int>.from(numArray.map((index) => (index as num).toInt()));
+          new List<int>.from(numArray.map((index) => index.toInt()));
       indexBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
       gl.bufferData(
