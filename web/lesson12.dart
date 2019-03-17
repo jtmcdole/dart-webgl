@@ -14,14 +14,12 @@
  */
 part of learn_gl;
 
-/**
- * Handle custome shaders, animation, etc for Lesson 12 - Point Lighting.
- * In this lesson, we spin a sphere and a cube around a central axis with at its core is a
- * point of directional lighting.
- *
- * In the original lesson, the moon and box are tidal locked (always showing the same face),
- * lets play around with that.
- */
+/// Handle custome shaders, animation, etc for Lesson 12 - Point Lighting.
+/// In this lesson, we spin a sphere and a cube around a central axis with at its core is a
+/// point of directional lighting.
+///
+/// In the original lesson, the moon and box are tidal locked (always showing the same face),
+/// lets play around with that.
 class Lesson12 extends Lesson {
   GlProgram program;
   Cube cube;

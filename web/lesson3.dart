@@ -14,11 +14,10 @@
  */
 part of learn_gl;
 
-/**
- * Draw a colored triangle and a square, and have them rotate on axis.
- * This lesson is nearly identical to Lesson 2, and we could clean it up...
- * however that's a future lesson.
- */
+
+/// Draw a colored triangle and a square, and have them rotate on axis.
+/// This lesson is nearly identical to Lesson 2, and we could clean it up...
+/// however that's a future lesson.
 class Lesson3 extends Lesson {
   GlProgram program;
 
@@ -174,20 +173,16 @@ class Lesson3 extends Lesson {
     mvPopMatrix();
   }
 
-  /**
-   * Write the matrix uniforms (model view matrix and perspective matrix) so
-   * WebGL knows what to do with them.
-   */
+  /// Write the matrix uniforms (model view matrix and perspective matrix) so
+  /// WebGL knows what to do with them.
   setMatrixUniforms() {
     gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);
   }
 
-  /**
-   * Every time the browser tells us to draw the scene, animate is called.
-   * If there's something being movied, this is where that movement i
-   * calculated.
-   */
+  /// Every time the browser tells us to draw the scene, animate is called.
+  /// If there's something being movied, this is where that movement i
+  /// calculated.
   void animate(num now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
