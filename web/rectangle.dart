@@ -15,21 +15,16 @@
 part of learn_gl;
 
 class Rectangle implements Renderable {
-  Buffer positionBuffer,
-      normalBuffer,
-      textureCoordBuffer,
-      colorBuffer,
-      indexBuffer;
+  late Buffer? positionBuffer, normalBuffer, textureCoordBuffer, colorBuffer, indexBuffer;
 
-  static const List<num> WHITE_COLOR = const [
+  static const List<double> WHITE_COLOR = const [
     1.0, 1.0, 1.0, 1.0, // bottom left
     1.0, 1.0, 1.0, 1.0, // bottom right
     1.0, 1.0, 1.0, 1.0, // top right
     1.0, 1.0, 1.0, 1.0, // top left
   ];
 
-  Rectangle(num width, num height,
-      {num left = 0.0, num bottom = 0.0, Float32List vertexColors}) {
+  Rectangle(double width, double height, {double left = 0.0, double bottom = 0.0, required Float32List vertexColors}) {
     positionBuffer = gl.createBuffer();
     normalBuffer = gl.createBuffer();
     textureCoordBuffer = gl.createBuffer();
@@ -80,7 +75,7 @@ class Rectangle implements Renderable {
     gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
     var colors = WHITE_COLOR;
     if (vertexColors != null) {
-      colors = new List<double>();
+      colors = <double>[];
       if (vertexColors.length == 4) {
         colors.addAll(vertexColors);
         colors.addAll(vertexColors);
@@ -116,7 +111,7 @@ class Rectangle implements Renderable {
         WebGL.STATIC_DRAW);
   }
 
-  void draw({int vertex, int normal, int coord, int color, setUniforms()}) {
+  void draw({int? vertex, int? normal, int? coord, int? color, setUniforms()?}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

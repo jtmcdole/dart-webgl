@@ -17,19 +17,19 @@ part of learn_gl;
 class Sphere implements Renderable {
   final int lats;
   final int lons;
-  final num radius;
+  final double radius;
 
-  Buffer _positionBuffer;
-  Buffer _normalBuffer;
-  Buffer _textureCoordBuffer;
-  Buffer _indexBuffer;
-  int _indexBufferSize;
+  late Buffer _positionBuffer;
+  late Buffer _normalBuffer;
+  late Buffer _textureCoordBuffer;
+  late Buffer _indexBuffer;
+  int _indexBufferSize = 0;
 
   Sphere({this.lats = 30, this.lons = 30, this.radius = 2}) {
-    List<double> vertexPositions = new List();
-    List<double> normals = new List();
-    List<double> textureCoords = new List();
-    List<int> indexData = new List();
+    List<double> vertexPositions = [];
+    List<double> normals = [];
+    List<double> textureCoords = [];
+    List<int> indexData = [];
 
     // Step 1: Generate normals, texture coordinates and vertex positions
     for (int lat = 0; lat <= lats; lat++) {
@@ -59,8 +59,7 @@ class Sphere implements Renderable {
       for (var lon = 0; lon < lons; lon++) {
         var first = (lat * (lons + 1)) + lon;
         var second = first + lons + 1;
-        indexData
-            .addAll([first, second, first + 1, second, second + 1, first + 1]);
+        indexData.addAll([first, second, first + 1, second, second + 1, first + 1]);
       }
     }
     _indexBufferSize = indexData.length;
@@ -98,7 +97,7 @@ class Sphere implements Renderable {
     );
   }
 
-  void draw({int vertex, int normal, int coord, setUniforms()}) {
+  void draw({int? vertex, int? normal, int? coord, setUniforms()?}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, _positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

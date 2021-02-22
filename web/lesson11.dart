@@ -16,9 +16,9 @@ part of learn_gl;
 
 /// Spheres, rotations matricies, and mouse events
 class Lesson11 extends Lesson {
-  GlProgram program;
-  Sphere moon;
-  Texture moonTexture;
+  late GlProgram program;
+  late Sphere moon;
+  Texture? moonTexture;
 
   Matrix4 _rotation = new Matrix4()..identity();
   bool _mouseDown = false;
@@ -134,7 +134,7 @@ class Lesson11 extends Lesson {
   get uDirectionalColor => program.uniforms['uDirectionalColor'];
   get uUseLighting => program.uniforms['uUseLighting'];
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -145,20 +145,17 @@ class Lesson11 extends Lesson {
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
     // One: setup lighting information
-    bool lighting = _lighting.checked;
+    bool lighting = _lighting.checked!;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
     if (lighting) {
-      gl.uniform3f(uAmbientColor, double.parse(_aR.value),
-          double.parse(_aG.value), double.parse(_aB.value));
+      gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
       // Take the lighting point and normalize / reverse it.
-      Vector3 direction = new Vector3(double.parse(_ldX.value),
-          double.parse(_ldY.value), double.parse(_ldZ.value));
+      Vector3 direction = new Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
       direction = direction.normalize().scale(-1.0);
       gl.uniform3fv(uLightingDirection, direction.buf);
 
-      gl.uniform3f(uDirectionalColor, double.parse(_dR.value),
-          double.parse(_dG.value), double.parse(_dB.value));
+      gl.uniform3f(uDirectionalColor, double.parse(_dR.value!), double.parse(_dG.value!), double.parse(_dB.value!));
     }
 
     mvPushMatrix();
@@ -169,11 +166,7 @@ class Lesson11 extends Lesson {
     gl.activeTexture(WebGL.TEXTURE0);
     gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
-    moon.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    moon.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -184,22 +177,22 @@ class Lesson11 extends Lesson {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
     var normalMatrix = mvMatrix.toInverseMat3();
-    normalMatrix.transposeSelf();
+    normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void animate(num now) {}
+  void animate(double now) {}
 
   void handleKeys() {}
 
   // Lighting enabled / Ambient color
-  InputElement _lighting, _aR, _aG, _aB;
+  late InputElement _lighting, _aR, _aG, _aB;
 
   // Light position
-  InputElement _ldX, _ldY, _ldZ;
+  late InputElement _ldX, _ldY, _ldZ;
 
   // Point color
-  InputElement _dR, _dG, _dB;
+  late InputElement _dR, _dG, _dB;
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
@@ -244,17 +237,17 @@ class Lesson11 extends Lesson {
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting");
-    _aR = querySelector("#ambientR");
-    _aG = querySelector("#ambientG");
-    _aB = querySelector("#ambientB");
+    _lighting = querySelector("#lighting") as InputElement;
+    _aR = querySelector("#ambientR") as InputElement;
+    _aG = querySelector("#ambientG") as InputElement;
+    _aB = querySelector("#ambientB") as InputElement;
 
-    _dR = querySelector("#directionalR");
-    _dG = querySelector("#directionalG");
-    _dB = querySelector("#directionalB");
+    _dR = querySelector("#directionalR") as InputElement;
+    _dG = querySelector("#directionalG") as InputElement;
+    _dB = querySelector("#directionalB") as InputElement;
 
-    _ldX = querySelector("#lightDirectionX");
-    _ldY = querySelector("#lightDirectionY");
-    _ldZ = querySelector("#lightDirectionZ");
+    _ldX = querySelector("#lightDirectionX") as InputElement;
+    _ldY = querySelector("#lightDirectionY") as InputElement;
+    _ldZ = querySelector("#lightDirectionZ") as InputElement;
   }
 }

@@ -14,25 +14,25 @@
  */
 library learn_gl;
 
-import 'dart:math';
-import 'dart:html';
-import 'dart:convert';
-import 'dart:web_gl';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:html';
+import 'dart:math';
 import 'dart:typed_data';
+import 'dart:web_gl';
 
-// Some of our objects that we're going to support
-part 'renderable.dart';
 part 'cube.dart';
 part 'gl_program.dart';
 part 'json_object.dart';
-part 'pyramid.dart';
-part 'rectangle.dart';
-part 'sphere.dart';
-part 'star.dart';
-
 // All the lessons
 part 'lesson1.dart';
+part 'lesson10.dart';
+part 'lesson11.dart';
+part 'lesson12.dart';
+part 'lesson13.dart';
+part 'lesson14.dart';
+part 'lesson15.dart';
+part 'lesson16.dart';
 part 'lesson2.dart';
 part 'lesson3.dart';
 part 'lesson4.dart';
@@ -41,35 +41,31 @@ part 'lesson6.dart';
 part 'lesson7.dart';
 part 'lesson8.dart';
 part 'lesson9.dart';
-part 'lesson10.dart';
-part 'lesson11.dart';
-part 'lesson12.dart';
-part 'lesson13.dart';
-part 'lesson14.dart';
-part 'lesson15.dart';
-part 'lesson16.dart';
-
 // Math
 part 'matrix4.dart';
+part 'pyramid.dart';
+part 'rectangle.dart';
+// Some of our objects that we're going to support
+part 'renderable.dart';
+part 'sphere.dart';
+part 'star.dart';
 
-CanvasElement canvas = querySelector("#lesson01-canvas");
-RenderingContext gl;
-Lesson lesson;
+CanvasElement canvas = querySelector("#lesson01-canvas") as CanvasElement;
+late RenderingContext2 gl;
+late Lesson lesson;
 
 void main() {
   mvMatrix = new Matrix4()..identity();
   // Nab the context we'll be drawing to.
-  gl = canvas.getContext3d();
-  if (gl == null) {
-    return;
-  }
+  // gl = canvas.getContext3d();
+  gl = canvas.getContext("webgl2") as RenderingContext2;
 
   // Allow some URL customization of the program.
   parseQueryString();
 
   trackFrameRate = urlParameters.containsKey("fps");
   if (!trackFrameRate) {
-    querySelector("#fps").remove();
+    querySelector("#fps")!.remove();
   }
   if (urlParameters.containsKey("width")) {
     String width = urlParameters["width"];
@@ -82,7 +78,7 @@ void main() {
   }
 
   if (urlParameters.containsKey("overflow")) {
-    document.body.style.overflow = "hidden";
+    document.body!.style.overflow = "hidden";
   }
 
   int defaultLesson = 1;
@@ -90,15 +86,14 @@ void main() {
     defaultLesson = int.parse(urlParameters["lsn"]);
   }
 
-  SelectElement lessonSelect = querySelector("#lessonNumber");
+  SelectElement lessonSelect = querySelector("#lessonNumber") as SelectElement;
   for (int i = 1; i < 17; i++) {
-    lessonSelect.children.add(new OptionElement(
-        data: "Lesson $i", value: "$i", selected: defaultLesson == i));
+    lessonSelect.children.add(new OptionElement(data: "Lesson $i", value: "$i", selected: defaultLesson == i));
   }
   lessonSelect.onChange.listen((event) {
-    lesson = selectLesson(lessonSelect.selectedIndex + 1)..initHtml(lessonHook);
+    lesson = selectLesson(lessonSelect.selectedIndex! + 1)!..initHtml(lessonHook);
   });
-  lesson = selectLesson(lessonSelect.selectedIndex + 1)..initHtml(lessonHook);
+  lesson = selectLesson(lessonSelect.selectedIndex! + 1)!..initHtml(lessonHook);
 
   // Set the fill color to black
   gl.clearColor(0, 0, 0, 1.0);
@@ -124,7 +119,7 @@ tick(time) {
   if (trackFrameRate) frameCount(time);
   lesson.handleKeys();
   lesson.animate(time);
-  lesson.drawScene(canvas.width, canvas.height, canvas.width / canvas.height);
+  lesson.drawScene(canvas.width!, canvas.height!, canvas.width! / canvas.height!);
 }
 
 /// The global key-state map.
@@ -135,14 +130,12 @@ bool isActive(int code) => currentlyPressedKeys.contains(code);
 
 /// Test if any of the given [KeyCode]s are active, returning true.
 bool anyActive(List<int> codes) {
-  return codes.firstWhere((code) => currentlyPressedKeys.contains(code),
-          orElse: () => null) !=
-      null;
+  return codes.firstWhere((code) => currentlyPressedKeys.contains(code), orElse: () => -1) != -1;
 }
 
 /// Parse and store the URL parameters for start up.
 parseQueryString() {
-  String search = window.location.search;
+  String search = window.location.search!;
   if (search.startsWith("?")) {
     search = search.substring(1);
   }
@@ -160,12 +153,12 @@ parseQueryString() {
 Map urlParameters = {};
 
 /// Perspective matrix
-Matrix4 pMatrix;
+late Matrix4 pMatrix;
 
 /// Model-View matrix.
-Matrix4 mvMatrix;
+late Matrix4 mvMatrix;
 
-List<Matrix4> mvStack = new List<Matrix4>();
+List<Matrix4> mvStack = <Matrix4>[];
 
 /// Add a copy of the current Model-View matrix to the the stack for future
 /// restoration.
@@ -175,7 +168,7 @@ mvPushMatrix() => mvStack.add(new Matrix4.fromMatrix(mvMatrix));
 mvPopMatrix() => mvMatrix = mvStack.removeLast();
 
 /// Handle common keys through callbacks, making lessons a little easier to code
-void handleDirection({up(), down(), left(), right()}) {
+void handleDirection({up()?, down()?, left()?, right()?}) {
   if (left != null && anyActive([KeyCode.A, KeyCode.LEFT])) {
     left();
   }
@@ -191,20 +184,19 @@ void handleDirection({up(), down(), left(), right()}) {
 }
 
 /// FPS meter - activated when the url parameter "fps" is included.
-const num ALPHA_DECAY = 0.1;
-const num INVERSE_ALPHA_DECAY = 1 - ALPHA_DECAY;
+const double ALPHA_DECAY = 0.1;
+const double INVERSE_ALPHA_DECAY = 1 - ALPHA_DECAY;
 const SAMPLE_RATE_MS = 500;
 const SAMPLE_FACTOR = 1000 ~/ SAMPLE_RATE_MS;
 int frames = 0;
-num lastSample = 0;
-num averageFps = 1;
-DivElement fps = querySelector("#fps");
+double lastSample = 0;
+double averageFps = 1;
+DivElement fps = querySelector("#fps") as DivElement;
 
-void frameCount(num now) {
+void frameCount(double now) {
   frames++;
   if ((now - lastSample) < SAMPLE_RATE_MS) return;
-  averageFps =
-      averageFps * ALPHA_DECAY + frames * INVERSE_ALPHA_DECAY * SAMPLE_FACTOR;
+  averageFps = averageFps * ALPHA_DECAY + frames * INVERSE_ALPHA_DECAY * SAMPLE_FACTOR;
   fps.text = averageFps.toStringAsFixed(2);
   frames = 0;
   lastSample = now;
@@ -213,11 +205,11 @@ void frameCount(num now) {
 /// The base for all Learn WebGL lessons.
 abstract class Lesson {
   /// Render the scene to the [viewWidth], [viewHeight], and [aspect] ratio.
-  void drawScene(num viewWidth, num viewHeight, num aspect);
+  void drawScene(int viewWidth, int viewHeight, double aspect);
 
   /// Animate the scene any way you like. [now] is provided as a clock reference
   /// since the scene rendering started.
-  void animate(num now) {}
+  void animate(double now) {}
 
   /// Handle any keyboard events.
   void handleKeys() {}
@@ -231,7 +223,7 @@ abstract class Lesson {
   }
 
   /// Added for your convenience to track time between [animate] callbacks.
-  num lastTime = 0;
+  double lastTime = 0;
 }
 
 /// Load the given image at [url] and call [handle] to execute some GL code.
@@ -275,10 +267,10 @@ void handleMipMapTexture(Texture texture, ImageElement image) {
   gl.bindTexture(WebGL.TEXTURE_2D, null);
 }
 
-DivElement lessonHook = querySelector("#lesson_html");
+DivElement lessonHook = querySelector("#lesson_html") as DivElement;
 bool trackFrameRate = false;
 
-Lesson selectLesson(int number) {
+Lesson? selectLesson(int number) {
   switch (number) {
     case 1:
       return new Lesson1();
@@ -318,12 +310,12 @@ Lesson selectLesson(int number) {
 
 /// Work around for setInnerHtml()
 class NullTreeSanitizer implements NodeTreeSanitizer {
-  static NullTreeSanitizer instance;
+  static NullTreeSanitizer? instance;
   factory NullTreeSanitizer() {
     if (instance == null) {
       instance = new NullTreeSanitizer._();
     }
-    return instance;
+    return instance!;
   }
 
   NullTreeSanitizer._();

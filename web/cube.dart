@@ -15,7 +15,7 @@
 part of learn_gl;
 
 class Cube implements Renderable {
-  Buffer positionBuffer, normalBuffer, textureCoordBuffer, indexBuffer;
+  late Buffer positionBuffer, normalBuffer, textureCoordBuffer, indexBuffer;
 
   Cube() {
     positionBuffer = gl.createBuffer();
@@ -168,7 +168,7 @@ class Cube implements Renderable {
         WebGL.STATIC_DRAW);
   }
 
-  void draw({int vertex, int normal, int coord, int color, setUniforms()}) {
+  void draw({int? vertex, int? normal, int? coord, int? color, setUniforms()?}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);
@@ -194,15 +194,15 @@ class Cube implements Renderable {
     gl.drawElements(WebGL.TRIANGLES, 36, WebGL.UNSIGNED_SHORT, 0);
   }
 
-  CubeColor color;
+  late CubeColor color;
   addColor(CubeColor color) {
     this.color = color;
   }
 }
 
-/// Holds a color [Buffer] for our cube's element array
+/// Holds a color [late Buffer] for our cube's element array
 class CubeColor {
-  Buffer colorBuffer;
+  late Buffer colorBuffer;
 
   CubeColor() {
     colorBuffer = gl.createBuffer();
@@ -217,7 +217,7 @@ class CubeColor {
       [1.0, 0.0, 1.0, 1.0], // Right face
       [0.0, 0.0, 1.0, 1.0] // Left face
     ];
-    var unpackedColors = new List<double>();
+    var unpackedColors = <double>[];
     for (var i in colors) {
       for (var j = 0; j < 4; j++) {
         unpackedColors.addAll(i);

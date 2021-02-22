@@ -17,14 +17,14 @@ part of learn_gl;
 class Lesson16 extends Lesson {
   bool get isLoaded => laptop != null;
 
-  GlProgram currentProgram;
+  late GlProgram currentProgram;
 
-  JsonObject laptop;
-  JsonObject laptopScreen;
+  JsonObject? laptop;
+  JsonObject? laptopScreen;
 
-  num laptopAngle = 0.0;
+  double laptopAngle = 0.0;
 
-  Lesson13 lesson13;
+  late Lesson13 lesson13;
 
   Lesson16() {
     lesson13 = new Lesson13();
@@ -214,8 +214,7 @@ class Lesson16 extends Lesson {
 
     renderbuffer = gl.createRenderbuffer();
     gl.bindRenderbuffer(WebGL.RENDERBUFFER, renderbuffer);
-    gl.renderbufferStorage(
-        WebGL.RENDERBUFFER, WebGL.DEPTH_COMPONENT16, rttWidth, rttHeight);
+    gl.renderbufferStorage(WebGL.RENDERBUFFER, WebGL.DEPTH_COMPONENT16, rttWidth, rttHeight);
 
     gl.framebufferTexture2D(
       WebGL.FRAMEBUFFER,
@@ -236,9 +235,9 @@ class Lesson16 extends Lesson {
     gl.bindFramebuffer(WebGL.FRAMEBUFFER, null);
   }
 
-  Framebuffer rttFramebuffer;
-  Texture rttTexture;
-  Renderbuffer renderbuffer;
+  late Framebuffer rttFramebuffer;
+  late Texture rttTexture;
+  late Renderbuffer renderbuffer;
   static const rttWidth = 512;
   static const rttHeight = 512;
 
@@ -246,8 +245,7 @@ class Lesson16 extends Lesson {
   get aVertexNormal => currentProgram.attributes["aVertexNormal"];
   get aTextureCoord => currentProgram.attributes["aTextureCoord"];
 
-  get uShowSpecularHighlights =>
-      currentProgram.uniforms["uShowSpecularHighlights"];
+  get uShowSpecularHighlights => currentProgram.uniforms["uShowSpecularHighlights"];
   get uMaterialShininess => currentProgram.uniforms["uMaterialShininess"];
 
   get uPMatrix => currentProgram.uniforms["uPMatrix"];
@@ -257,22 +255,17 @@ class Lesson16 extends Lesson {
   get uUseTextures => currentProgram.uniforms["uUseTextures"];
   get uUseLighting => currentProgram.uniforms["uUseLighting"];
   get uAmbientColor => currentProgram.uniforms["uAmbientColor"];
-  get uPointLightingLocation =>
-      currentProgram.uniforms["uPointLightingLocation"];
-  get uPointLightingSpecularColor =>
-      currentProgram.uniforms["uPointLightingSpecularColor"];
-  get uPointLightingDiffuseColor =>
-      currentProgram.uniforms["uPointLightingDiffuseColor"];
+  get uPointLightingLocation => currentProgram.uniforms["uPointLightingLocation"];
+  get uPointLightingSpecularColor => currentProgram.uniforms["uPointLightingSpecularColor"];
+  get uPointLightingDiffuseColor => currentProgram.uniforms["uPointLightingDiffuseColor"];
 
   get uAmbientLightingColor => currentProgram.uniforms["uAmbientLightingColor"];
   get uMaterialAmbientColor => currentProgram.uniforms["uMaterialAmbientColor"];
   get uMaterialDiffuseColor => currentProgram.uniforms["uMaterialDiffuseColor"];
-  get uMaterialSpecularColor =>
-      currentProgram.uniforms["uMaterialSpecularColor"];
-  get uMaterialEmissiveColor =>
-      currentProgram.uniforms["uMaterialEmissiveColor"];
+  get uMaterialSpecularColor => currentProgram.uniforms["uMaterialSpecularColor"];
+  get uMaterialEmissiveColor => currentProgram.uniforms["uMaterialEmissiveColor"];
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
     // First: render lesson 13 to the render buffer!
@@ -325,11 +318,7 @@ class Lesson16 extends Lesson {
     gl.uniform3f(uMaterialEmissiveColor, 0.0, 0.0, 0.0);
     gl.uniform1i(uUseTextures, 0);
 
-    laptop.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    laptop?.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
 
     /*
      * Now draw the laptop screen with different lighting parameters.
@@ -345,11 +334,8 @@ class Lesson16 extends Lesson {
     gl.activeTexture(WebGL.TEXTURE0);
     gl.bindTexture(WebGL.TEXTURE_2D, rttTexture);
     gl.uniform1i(uSampler, 0);
-    laptopScreen.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    laptopScreen?.draw(
+        vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
 
     mvPopMatrix();
   }
@@ -358,11 +344,11 @@ class Lesson16 extends Lesson {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
     var normalMatrix = mvMatrix.toInverseMat3();
-    normalMatrix.transposeSelf();
+    normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void animate(num now) {
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
       laptopAngle -= 0.005 * elapsed;

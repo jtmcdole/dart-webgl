@@ -15,15 +15,15 @@
 part of learn_gl;
 
 class Lesson14 extends Lesson {
-  GlProgram currentProgram;
-  Texture earthTexture, galvanizedTexture, moonTexture;
-  JsonObject teapot;
+  late GlProgram currentProgram;
+  Texture? earthTexture, galvanizedTexture, moonTexture;
+  late JsonObject? teapot;
 
   int texturesLoaded = 0;
   bool get isLoaded => teapot != null && texturesLoaded == 3;
 
-  num teapotAngle = 180;
-  num tilt = 23.4;
+  double teapotAngle = 180;
+  double tilt = 23.4;
 
   Lesson14() {
     JsonObject.fromUrl("Teapot.json").then((JsonObject obj) {
@@ -176,8 +176,7 @@ class Lesson14 extends Lesson {
   get aVertexNormal => currentProgram.attributes["aVertexNormal"];
   get aTextureCoord => currentProgram.attributes["aTextureCoord"];
 
-  get uShowSpecularHighlights =>
-      currentProgram.uniforms["uShowSpecularHighlights"];
+  get uShowSpecularHighlights => currentProgram.uniforms["uShowSpecularHighlights"];
   get uMaterialShininess => currentProgram.uniforms["uMaterialShininess"];
   get uPMatrix => currentProgram.uniforms["uPMatrix"];
   get uMVMatrix => currentProgram.uniforms["uMVMatrix"];
@@ -186,14 +185,11 @@ class Lesson14 extends Lesson {
   get uUseTextures => currentProgram.uniforms["uUseTextures"];
   get uUseLighting => currentProgram.uniforms["uUseLighting"];
   get uAmbientColor => currentProgram.uniforms["uAmbientColor"];
-  get uPointLightingLocation =>
-      currentProgram.uniforms["uPointLightingLocation"];
-  get uPointLightingSpecularColor =>
-      currentProgram.uniforms["uPointLightingSpecularColor"];
-  get uPointLightingDiffuseColor =>
-      currentProgram.uniforms["uPointLightingDiffuseColor"];
+  get uPointLightingLocation => currentProgram.uniforms["uPointLightingLocation"];
+  get uPointLightingSpecularColor => currentProgram.uniforms["uPointLightingSpecularColor"];
+  get uPointLightingDiffuseColor => currentProgram.uniforms["uPointLightingDiffuseColor"];
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Setup the viewport, pulling information from the element.
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -206,22 +202,21 @@ class Lesson14 extends Lesson {
 
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
-    bool specularHighlights = _specular.checked;
+    bool specularHighlights = _specular.checked!;
     gl.uniform1i(uShowSpecularHighlights, specularHighlights ? 1 : 0);
-    bool lighting = _lighting.checked;
+    bool lighting = _lighting.checked!;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
     if (lighting) {
-      gl.uniform3f(uAmbientColor, double.parse(_aR.value),
-          double.parse(_aG.value), double.parse(_aB.value));
+      gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
-      gl.uniform3f(uPointLightingLocation, double.parse(_lpX.value),
-          double.parse(_lpY.value), double.parse(_lpZ.value));
+      gl.uniform3f(
+          uPointLightingLocation, double.parse(_lpX.value!), double.parse(_lpY.value!), double.parse(_lpZ.value!));
 
-      gl.uniform3f(uPointLightingSpecularColor, double.parse(_sR.value),
-          double.parse(_sG.value), double.parse(_sB.value));
+      gl.uniform3f(
+          uPointLightingSpecularColor, double.parse(_sR.value!), double.parse(_sG.value!), double.parse(_sB.value!));
 
-      gl.uniform3f(uPointLightingDiffuseColor, double.parse(_dR.value),
-          double.parse(_dG.value), double.parse(_dB.value));
+      gl.uniform3f(
+          uPointLightingDiffuseColor, double.parse(_dR.value!), double.parse(_dG.value!), double.parse(_dB.value!));
     }
 
     var texture = _texture.value;
@@ -244,13 +239,9 @@ class Lesson14 extends Lesson {
     }
     gl.uniform1i(uSampler, 0);
 
-    gl.uniform1f(uMaterialShininess, double.parse(_shininess.value));
+    gl.uniform1f(uMaterialShininess, double.parse(_shininess.value!));
 
-    teapot.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    teapot?.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -258,11 +249,11 @@ class Lesson14 extends Lesson {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
     var normalMatrix = mvMatrix.toInverseMat3();
-    normalMatrix.transposeSelf();
+    normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void animate(num now) {
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
       teapotAngle += 0.05 * elapsed;
@@ -279,20 +270,20 @@ class Lesson14 extends Lesson {
   }
 
   // Lighting enabled / Ambient color
-  InputElement _lighting, _aR, _aG, _aB;
+  late InputElement _lighting, _aR, _aG, _aB;
 
   // Light position
-  InputElement _lpX, _lpY, _lpZ;
+  late InputElement _lpX, _lpY, _lpZ;
 
   // Difuse color
-  InputElement _dR, _dG, _dB;
+  late InputElement _dR, _dG, _dB;
 
   // Specular color
-  InputElement _specular;
-  InputElement _sR, _sG, _sB;
+  late InputElement _specular;
+  late InputElement _sR, _sG, _sB;
 
-  InputElement _shininess;
-  SelectElement _texture;
+  late InputElement _shininess;
+  late SelectElement _texture;
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
@@ -359,25 +350,25 @@ class Lesson14 extends Lesson {
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting");
-    _aR = querySelector("#ambientR");
-    _aG = querySelector("#ambientG");
-    _aB = querySelector("#ambientB");
+    _lighting = querySelector("#lighting") as InputElement;
+    _aR = querySelector("#ambientR") as InputElement;
+    _aG = querySelector("#ambientG") as InputElement;
+    _aB = querySelector("#ambientB") as InputElement;
 
-    _lpX = querySelector("#lightPositionX");
-    _lpY = querySelector("#lightPositionY");
-    _lpZ = querySelector("#lightPositionZ");
+    _lpX = querySelector("#lightPositionX") as InputElement;
+    _lpY = querySelector("#lightPositionY") as InputElement;
+    _lpZ = querySelector("#lightPositionZ") as InputElement;
 
-    _dR = querySelector("#diffuseR");
-    _dG = querySelector("#diffuseG");
-    _dB = querySelector("#diffuseB");
+    _dR = querySelector("#diffuseR") as InputElement;
+    _dG = querySelector("#diffuseG") as InputElement;
+    _dB = querySelector("#diffuseB") as InputElement;
 
-    _specular = querySelector("#specular");
-    _sR = querySelector("#specularR");
-    _sG = querySelector("#specularG");
-    _sB = querySelector("#specularB");
+    _specular = querySelector("#specular") as InputElement;
+    _sR = querySelector("#specularR") as InputElement;
+    _sG = querySelector("#specularG") as InputElement;
+    _sB = querySelector("#specularB") as InputElement;
 
-    _shininess = querySelector("#shininess");
-    _texture = querySelector("#texture");
+    _shininess = querySelector("#shininess") as InputElement;
+    _texture = querySelector("#texture") as SelectElement;
   }
 }

@@ -16,9 +16,9 @@ part of learn_gl;
 
 /// Staticly draw a triangle and a square!
 class Lesson1 extends Lesson {
-  GlProgram program;
+  late GlProgram program;
 
-  Buffer triangleVertexPositionBuffer, squareVertexPositionBuffer;
+  late Buffer triangleVertexPositionBuffer, squareVertexPositionBuffer;
 
   Lesson1() {
     program = new GlProgram(
@@ -50,26 +50,20 @@ class Lesson1 extends Lesson {
 
     // bindBuffer() tells the WebGL system the target of future calls
     gl.bindBuffer(WebGL.ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.bufferData(
-        WebGL.ARRAY_BUFFER,
-        new Float32List.fromList(
-            [0.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]),
+    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList([0.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]),
         WebGL.STATIC_DRAW);
 
     squareVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, squareVertexPositionBuffer);
-    gl.bufferData(
-        WebGL.ARRAY_BUFFER,
-        new Float32List.fromList(
-            [1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]),
-        WebGL.STATIC_DRAW);
+    gl.bufferData(WebGL.ARRAY_BUFFER,
+        new Float32List.fromList([1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]), WebGL.STATIC_DRAW);
 
     // Specify the color to clear with (black with 100% alpha) and then enable
     // depth testing.
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
   }
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
     gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
@@ -89,8 +83,7 @@ class Lesson1 extends Lesson {
     // Here's that bindBuffer() again, as seen in the constructor
     gl.bindBuffer(WebGL.ARRAY_BUFFER, triangleVertexPositionBuffer);
     // Set the vertex attribute to the size of each individual element (x,y,z)
-    gl.vertexAttribPointer(
-        program.attributes['aVertexPosition'], 3, WebGL.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(program.attributes['aVertexPosition']!, 3, WebGL.FLOAT, false, 0, 0);
     setMatrixUniforms();
     // Now draw 3 vertices
     gl.drawArrays(WebGL.TRIANGLES, 0, 3);
@@ -100,8 +93,7 @@ class Lesson1 extends Lesson {
 
     // And get ready to draw the square just like we did the triangle...
     gl.bindBuffer(WebGL.ARRAY_BUFFER, squareVertexPositionBuffer);
-    gl.vertexAttribPointer(
-        program.attributes['aVertexPosition'], 3, WebGL.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(program.attributes['aVertexPosition']!, 3, WebGL.FLOAT, false, 0, 0);
     setMatrixUniforms();
     // Except now draw 2 triangles, re-using the vertices found in the buffer.
     gl.drawArrays(WebGL.TRIANGLE_STRIP, 0, 4);
@@ -117,7 +109,7 @@ class Lesson1 extends Lesson {
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);
   }
 
-  void animate(num now) {
+  void animate(double now) {
     // We're not animating the scene, but if you want to experiment, here's
     // where you get to play around.
   }

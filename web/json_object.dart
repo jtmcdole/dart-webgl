@@ -24,21 +24,17 @@ part of learn_gl;
 ///  Use [fromUrl] to load and return the object in the future!
 ///  If 'indicies' are absent - data is interpreted as a triangle strip.
 class JsonObject implements Renderable {
-  Buffer vertexNormalBuffer,
-      textureCoordBuffer,
-      vertexPositionBuffer,
-      indexBuffer;
-  int _itemSize;
+  late Buffer? vertexNormalBuffer, textureCoordBuffer, vertexPositionBuffer, indexBuffer;
+  int _itemSize = 0;
 
   bool strip = false;
 
   JsonObject(String fromJson) {
     Map data = json.decode(fromJson);
 
-    List<dynamic> numArray = data['vertexNormals'];
+    List<dynamic>? numArray = data['vertexNormals'];
     if (numArray != null) {
-      List<double> normals =
-          new List<double>.from(numArray.map((index) => index.toDouble()));
+      List<double> normals = new List<double>.from(numArray.map((index) => index.toDouble()));
 
       vertexNormalBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexNormalBuffer);
@@ -51,8 +47,7 @@ class JsonObject implements Renderable {
 
     numArray = data['vertexTextureCoords'];
     if (numArray != null) {
-      List<double> coords =
-          new List<double>.from(numArray.map((index) => index.toDouble()));
+      List<double> coords = new List<double>.from(numArray.map((index) => index.toDouble()));
 
       textureCoordBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
@@ -64,8 +59,7 @@ class JsonObject implements Renderable {
     }
 
     numArray = data['vertexPositions'];
-    List<double> positions =
-        new List<double>.from(numArray.map((index) => index.toDouble()));
+    List<double> positions = new List<double>.from(numArray!.map((index) => index.toDouble()));
 
     vertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexPositionBuffer);
@@ -77,8 +71,7 @@ class JsonObject implements Renderable {
 
     numArray = data['indices'];
     if (numArray != null) {
-      List<int> indices =
-          new List<int>.from(numArray.map((index) => index.toInt()));
+      List<int> indices = new List<int>.from(numArray.map((index) => index.toInt()));
       indexBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
       gl.bufferData(
@@ -103,7 +96,7 @@ class JsonObject implements Renderable {
     return complete.future;
   }
 
-  void draw({int vertex, int normal, int coord, setUniforms()}) {
+  void draw({int? vertex, int? normal, int? coord, setUniforms()?}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexPositionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

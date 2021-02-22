@@ -16,9 +16,9 @@ part of learn_gl;
 
 /// Introducing Textures!
 class Lesson5 extends Lesson {
-  GlProgram program;
-  Texture neheTexture;
-  Cube cube;
+  late GlProgram program;
+  Texture? neheTexture;
+  late Cube cube;
 
   bool get isLoaded => neheTexture != null;
 
@@ -85,7 +85,7 @@ class Lesson5 extends Lesson {
     gl.useProgram(program.program);
   }
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
     // Basic viewport setup and clearing of the screen
@@ -129,9 +129,9 @@ class Lesson5 extends Lesson {
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
   }
 
-  num xRot = 0.0, yRot = 0.0, zRot = 0.0;
+  double xRot = 0.0, yRot = 0.0, zRot = 0.0;
 
-  void animate(num now) {
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
 
@@ -143,10 +143,6 @@ class Lesson5 extends Lesson {
   }
 
   void handleKeys() {
-    handleDirection(
-        up: () => yRot -= 0.5,
-        down: () => yRot += 0.5,
-        left: () => xRot -= 0.5,
-        right: () => xRot += 0.5);
+    handleDirection(up: () => yRot -= 0.5, down: () => yRot += 0.5, left: () => xRot -= 0.5, right: () => xRot += 0.5);
   }
 }

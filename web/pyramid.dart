@@ -15,8 +15,8 @@
 part of learn_gl;
 
 class Pyramid implements Renderable {
-  Buffer positionBuffer, normalBuffer, textureCoordBuffer;
-  Buffer colorBuffer;
+  late Buffer positionBuffer, normalBuffer, textureCoordBuffer;
+  late Buffer colorBuffer;
 
   Pyramid() {
     positionBuffer = gl.createBuffer();
@@ -146,7 +146,7 @@ class Pyramid implements Renderable {
     //    }
   }
 
-  void draw({int vertex, int normal, int coord, int color, setUniforms()}) {
+  void draw({int? vertex, int? normal, int? coord, int? color, setUniforms()?}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

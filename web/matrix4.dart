@@ -193,9 +193,9 @@ class Matrix4 {
   }
 
   String toString() {
-    List<String> rows = new List();
+    List<String> rows = [];
     for (int row = 0; row < 4; row++) {
-      List<String> items = new List();
+      List<String> items = [];
       for (int col = 0; col < 4; col++) {
         double v = buf[rc(row, col)];
         if (v.abs() < 1e-16) {
@@ -387,9 +387,8 @@ class Matrix4 {
   /// [aspectRatio] width to height aspect ratio.
   /// [zNear] distance to the near clipping plane.
   /// [zFar] distance to the far clipping plane.
-  /// 
-  static Matrix4 perspective(
-      double fovyDegrees, double aspectRatio, double zNear, double zFar) {
+  ///
+  static Matrix4 perspective(double fovyDegrees, double aspectRatio, double zNear, double zFar) {
     double height = tan(radians(fovyDegrees) * 0.5) * zNear.toDouble();
     double width = height * aspectRatio.toDouble();
     return frustum(-width, width, -height, height, zNear, zFar);
@@ -427,7 +426,7 @@ class Matrix4 {
   /// @param {number} near Near bound of the frustum
   /// @param {number} far Far bound of the frustum
   /// @returns {mat4} out
-  /// 
+  ///
   static Matrix4 ortho(left, right, bottom, top, near, far) {
     Float32List out = new Float32List(16);
     var lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
@@ -503,8 +502,8 @@ class Matrix4 {
   ///
   /// Returns:
   /// A new [Matrix3]
-  /// 
-  Matrix3 toInverseMat3() {
+  ///
+  Matrix3? toInverseMat3() {
     // Cache the matrix values (makes for huge speed increases!)
     var a00 = m00, a01 = m10, a02 = m20;
     var a10 = m01, a11 = m11, a12 = m21;
@@ -536,11 +535,10 @@ class Matrix4 {
   }
 
   static const double GLMAT_EPSILON = 0.000001;
-  Matrix4 rotate(num rad, List<num> axis) {
-    num x = axis[0], y = axis[1], z = axis[2];
-    num len = sqrt(x * x + y * y + z * z);
-    if (len.abs() < GLMAT_EPSILON)
-      throw "length of normal vector <~ $GLMAT_EPSILON";
+  Matrix4 rotate(double rad, List<double> axis) {
+    double x = axis[0], y = axis[1], z = axis[2];
+    double len = sqrt(x * x + y * y + z * z);
+    if (len.abs() < GLMAT_EPSILON) throw "length of normal vector <~ $GLMAT_EPSILON";
     if (len != 1) {
       len = 1 / len;
       x *= len;
@@ -662,9 +660,9 @@ class Matrix3 {
   }
 
   String toString() {
-    List<String> rows = new List();
+    List<String> rows = [];
     for (int row = 0; row < 3; row++) {
-      List<String> items = new List();
+      List<String> items = [];
       for (int col = 0; col < 3; col++) {
         double v = buf[rc(row, col)];
         if (v.abs() < 1e-16) {

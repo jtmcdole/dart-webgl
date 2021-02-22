@@ -18,15 +18,41 @@ part of learn_gl;
 /// This lesson is nearly identical to Lesson 2, and we could clean it up...
 /// however that's a future lesson.
 class Lesson4 extends Lesson {
-  GlProgram program;
+  late GlProgram program;
 
-  Pyramid pyramid = new Pyramid();
-  Cube cube = new Cube();
+  Pyramid pyramid = Pyramid();
+  Cube cube = Cube();
 
-  num rPyramid = 0.0, rCube = 0.0;
+  double rPyramid = 0.0, rCube = 0.0;
 
   Lesson4() {
-    program = new GlProgram(
+    program = GlProgram(
+      // '''
+      //    #version 200
+      //    precision mediump float;
+      //     out vec4 FragColor;
+
+      //     in vec4 vColor;
+
+      //     void main(void) {
+      //       FragColor = vColor;
+      //     }
+      //   ''',
+      // '''
+      //     #version 200
+      //     in vec3 aVertexPosition;
+      //     in vec4 aVertexColor;
+
+      //     uniform mat4 uMVMatrix;
+      //     uniform mat4 uPMatrix;
+
+      //    out vec4 vColor;
+
+      //     void main(void) {
+      //         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+      //         vColor = aVertexColor;
+      //     }
+      // ''',
       '''
           precision mediump float;
 
@@ -57,14 +83,14 @@ class Lesson4 extends Lesson {
 
     // Currently this is hardcoded, because well... everything else is textures
     // from here out.
-    cube.addColor(new CubeColor());
+    cube.addColor(CubeColor());
 
     // Specify the color to clear with (black with 100% alpha) and then enable
     // depth testing.
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
   }
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
     gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
@@ -115,7 +141,7 @@ class Lesson4 extends Lesson {
   /// Every time the browser tells us to draw the scene, animate is called.
   /// If there's something being movied, this is where that movement i
   /// calculated.
-  void animate(num now) {
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
       rPyramid += (90 * elapsed) / 1000.0;
@@ -124,12 +150,8 @@ class Lesson4 extends Lesson {
     lastTime = now;
   }
 
-  num x = 0.0, y = 0.0, z = 0.0;
+  double x = 0.0, y = 0.0, z = 0.0;
   void handleKeys() {
-    handleDirection(
-        up: () => y -= 0.5,
-        down: () => y += 0.5,
-        left: () => x -= 0.5,
-        right: () => x += 0.5);
+    handleDirection(up: () => y -= 0.5, down: () => y += 0.5, left: () => x -= 0.5, right: () => x += 0.5);
   }
 }

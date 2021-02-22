@@ -16,9 +16,9 @@ part of learn_gl;
 
 /// Textures part two: filtering.
 class Lesson6 extends Lesson {
-  GlProgram program;
+  late GlProgram program;
   List<Texture> textures = [];
-  Cube cube;
+  late Cube cube;
 
   bool get isLoaded => textures.length == 3;
 
@@ -143,7 +143,7 @@ class Lesson6 extends Lesson {
 
   int activeFilter = 0;
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -185,11 +185,11 @@ class Lesson6 extends Lesson {
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
   }
 
-  num xSpeed = 0.0, ySpeed = 0.0;
-  num xRot = 0.0, yRot = 0.0;
-  num z = -5.0;
+  double xSpeed = 0.0, ySpeed = 0.0;
+  double xRot = 0.0, yRot = 0.0;
+  double z = -5.0;
 
-  void animate(num now) {
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
 
@@ -201,10 +201,7 @@ class Lesson6 extends Lesson {
 
   void handleKeys() {
     handleDirection(
-        up: () => ySpeed -= 1.0,
-        down: () => ySpeed += 1.0,
-        left: () => xSpeed -= 1.0,
-        right: () => xSpeed += 1.0);
+        up: () => ySpeed -= 1.0, down: () => ySpeed += 1.0, left: () => xSpeed -= 1.0, right: () => xSpeed += 1.0);
     if (isActive(KeyCode.PAGE_UP)) {
       z -= 0.05;
     }

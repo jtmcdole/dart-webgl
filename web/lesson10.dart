@@ -16,16 +16,16 @@ part of learn_gl;
 
 /// Load a world!
 class Lesson10 extends Lesson {
-  GlProgram program;
-  Texture texture;
-  JsonObject world;
+  late GlProgram program;
+  Texture? texture;
+  JsonObject? world;
 
   bool get isLoaded => world != null && texture != null;
 
   Lesson10() {
     JsonObject.fromUrl("world.json").then((object) {
       world = object;
-      print("world loaded with ${world._itemSize}");
+      print("world loaded with ${world?._itemSize}");
     });
 
     loadTexture("mcdole.gif", (Texture texture, ImageElement ele) {
@@ -94,7 +94,7 @@ class Lesson10 extends Lesson {
   get uPMatrix => program.uniforms["uPMatrix"];
   get uMVMatrix => program.uniforms["uMVMatrix"];
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
     gl.disable(WebGL.BLEND);
@@ -120,7 +120,7 @@ class Lesson10 extends Lesson {
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
     gl.uniform1i(uSampler, 0);
 
-    world.draw(
+    world?.draw(
         vertex: aVertexPosition,
         coord: aTextureCoord,
         setUniforms: () {
@@ -136,7 +136,7 @@ class Lesson10 extends Lesson {
   double xPos = 0.0, yPos = 0.4, zPos = 0.0;
   double speed = 0.0;
 
-  void animate(num now) {
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
 

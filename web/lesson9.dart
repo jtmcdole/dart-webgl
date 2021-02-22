@@ -16,14 +16,14 @@ part of learn_gl;
 
 /// Twinkle, twinkle little star...
 class Lesson9 extends Lesson {
-  GlProgram program;
-  Texture texture;
+  late GlProgram program;
+  Texture? texture;
   List<Star> stars = [];
 
   bool get isLoaded => texture != null;
 
   Lesson9() {
-    for (num i = 0; i < 50; i++) {
+    for (double i = 0; i < 50; i++) {
       stars.add(new Star((i / 50) * 5.0, i / 50));
     }
     loadTexture("star.gif", (Texture texture, ImageElement ele) {
@@ -89,7 +89,7 @@ class Lesson9 extends Lesson {
     gl.useProgram(program.program);
   }
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -116,10 +116,10 @@ class Lesson9 extends Lesson {
 
     for (Star star in stars) {
       star.draw(
-          vertex: program.attributes['aVertexPosition'],
-          coord: program.attributes['aTextureCoord'],
+          vertex: program.attributes['aVertexPosition']!,
+          coord: program.attributes['aTextureCoord']!,
           color: program.uniforms['uColor'],
-          twinkle: _twinkle.checked,
+          twinkle: _twinkle.checked!,
           tilt: tilt,
           spin: spin,
           setUniforms: setMatrixUniforms);
@@ -135,11 +135,11 @@ class Lesson9 extends Lesson {
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
   }
 
-  num tilt = 90.0;
-  num spin = 0.0;
-  num zoom = -15.0;
+  double tilt = 90.0;
+  double spin = 0.0;
+  double zoom = -15.0;
 
-  void animate(num now) {
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
       for (Star star in stars) {
@@ -159,7 +159,7 @@ class Lesson9 extends Lesson {
     }
   }
 
-  InputElement _twinkle;
+  late InputElement _twinkle;
   initHtml(DivElement hook) {
     hook.setInnerHtml(
       '''
@@ -169,6 +169,6 @@ class Lesson9 extends Lesson {
       treeSanitizer: new NullTreeSanitizer(),
     );
 
-    _twinkle = querySelector("#twinkle");
+    _twinkle = querySelector("#twinkle") as InputElement;
   }
 }

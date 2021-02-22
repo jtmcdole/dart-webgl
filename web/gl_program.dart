@@ -19,26 +19,30 @@ part of learn_gl;
 class GlProgram {
   Map<String, int> attributes = new Map<String, int>();
   Map<String, UniformLocation> uniforms = new Map<String, UniformLocation>();
-  Program program;
+  late Program program;
 
-  Shader fragShader, vertShader;
+  late Shader fragShader, vertShader;
 
-  GlProgram(String fragSrc, String vertSrc, List<String> attributeNames,
-      List<String> uniformNames) {
+  GlProgram(String fragSrc, String vertSrc, List<String> attributeNames, List<String> uniformNames) {
     fragShader = gl.createShader(WebGL.FRAGMENT_SHADER);
     gl.shaderSource(fragShader, fragSrc);
     gl.compileShader(fragShader);
-
+    if (gl.getShaderParameter(fragShader, WebGL.COMPILE_STATUS) == 0) {
+      print("Could not compile fragment shaders");
+    }
     vertShader = gl.createShader(WebGL.VERTEX_SHADER);
     gl.shaderSource(vertShader, vertSrc);
     gl.compileShader(vertShader);
+    if (gl.getShaderParameter(vertShader, WebGL.COMPILE_STATUS) == 0) {
+      print("Could not compile vertex shaders");
+    }
 
     program = gl.createProgram();
     gl.attachShader(program, vertShader);
     gl.attachShader(program, fragShader);
     gl.linkProgram(program);
 
-    if (!gl.getProgramParameter(program, WebGL.LINK_STATUS)) {
+    if (gl.getProgramParameter(program, WebGL.LINK_STATUS) == 0) {
       print("Could not initialise shaders");
     }
 

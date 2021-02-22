@@ -21,15 +21,15 @@ part of learn_gl;
 /// In the original lesson, the moon and box are tidal locked (always showing the same face),
 /// lets play around with that.
 class Lesson13 extends Lesson {
-  Cube cube;
-  Sphere moon;
+  late Cube cube;
+  late Sphere moon;
 
-  GlProgram perVertexProgram;
-  GlProgram perFragmentProgram;
+  late GlProgram perVertexProgram;
+  late GlProgram perFragmentProgram;
 
-  GlProgram currentProgram;
+  late GlProgram currentProgram;
 
-  Texture moonTexture, cubeTexture;
+  Texture? moonTexture, cubeTexture;
   bool get isLoaded => moonTexture != null && cubeTexture != null;
 
   Lesson13() {
@@ -191,11 +191,10 @@ class Lesson13 extends Lesson {
   get uUseTextures => currentProgram.uniforms["uUseTextures"];
   get uUseLighting => currentProgram.uniforms["uUseLighting"];
   get uAmbientColor => currentProgram.uniforms["uAmbientColor"];
-  get uPointLightingLocation =>
-      currentProgram.uniforms["uPointLightingLocation"];
+  get uPointLightingLocation => currentProgram.uniforms["uPointLightingLocation"];
   get uPointLightingColor => currentProgram.uniforms["uPointLightingColor"];
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
     gl.enable(WebGL.DEPTH_TEST);
@@ -205,7 +204,7 @@ class Lesson13 extends Lesson {
     gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
-    bool perFragmentLighting = _perFragment.checked;
+    bool perFragmentLighting = _perFragment.checked!;
     if (perFragmentLighting) {
       currentProgram = perFragmentProgram;
     } else {
@@ -214,19 +213,17 @@ class Lesson13 extends Lesson {
     gl.useProgram(currentProgram.program);
 
     // One: setup lighting information
-    bool lighting = _lighting.checked;
+    bool lighting = _lighting.checked!;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
     if (lighting) {
-      gl.uniform3f(uAmbientColor, double.parse(_aR.value),
-          double.parse(_aG.value), double.parse(_aB.value));
+      gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
-      gl.uniform3f(uPointLightingLocation, double.parse(_lpX.value),
-          double.parse(_lpY.value), double.parse(_lpZ.value));
+      gl.uniform3f(
+          uPointLightingLocation, double.parse(_lpX.value!), double.parse(_lpY.value!), double.parse(_lpZ.value!));
 
-      gl.uniform3f(uPointLightingColor, double.parse(_pR.value),
-          double.parse(_pG.value), double.parse(_pB.value));
+      gl.uniform3f(uPointLightingColor, double.parse(_pR.value!), double.parse(_pG.value!), double.parse(_pB.value!));
     }
-    gl.uniform1i(uUseTextures, _textures.checked ? 1 : 0);
+    gl.uniform1i(uUseTextures, _textures.checked! ? 1 : 0);
 
     mvPushMatrix();
 
@@ -243,11 +240,7 @@ class Lesson13 extends Lesson {
     gl.activeTexture(WebGL.TEXTURE0);
     gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
-    moon.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    moon.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
     mvPopMatrix();
 
     mvMatrix
@@ -256,11 +249,7 @@ class Lesson13 extends Lesson {
     gl.activeTexture(WebGL.TEXTURE0);
     gl.bindTexture(WebGL.TEXTURE_2D, cubeTexture);
     gl.uniform1i(uSampler, 0);
-    cube.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    cube.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -272,11 +261,11 @@ class Lesson13 extends Lesson {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
     var normalMatrix = mvMatrix.toInverseMat3();
-    normalMatrix.transposeSelf();
+    normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void animate(num now) {
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
       moonAngle += 0.05 * elapsed;
@@ -299,17 +288,17 @@ class Lesson13 extends Lesson {
         });
   }
 
-  InputElement _perFragment;
-  InputElement _textures;
+  late InputElement _perFragment;
+  late InputElement _textures;
 
   // Lighting enabled / Ambient color
-  InputElement _lighting, _aR, _aG, _aB;
+  late InputElement _lighting, _aR, _aG, _aB;
 
   // Light position
-  InputElement _lpX, _lpY, _lpZ;
+  late InputElement _lpX, _lpY, _lpZ;
 
   // Point color
-  InputElement _pR, _pG, _pB;
+  late InputElement _pR, _pG, _pB;
 
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
@@ -356,20 +345,20 @@ class Lesson13 extends Lesson {
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting");
-    _aR = querySelector("#ambientR");
-    _aG = querySelector("#ambientG");
-    _aB = querySelector("#ambientB");
+    _lighting = querySelector("#lighting") as InputElement;
+    _aR = querySelector("#ambientR") as InputElement;
+    _aG = querySelector("#ambientG") as InputElement;
+    _aB = querySelector("#ambientB") as InputElement;
 
-    _pR = querySelector("#pointR");
-    _pG = querySelector("#pointG");
-    _pB = querySelector("#pointB");
+    _pR = querySelector("#pointR") as InputElement;
+    _pG = querySelector("#pointG") as InputElement;
+    _pB = querySelector("#pointB") as InputElement;
 
-    _lpX = querySelector("#lightPositionX");
-    _lpY = querySelector("#lightPositionY");
-    _lpZ = querySelector("#lightPositionZ");
+    _lpX = querySelector("#lightPositionX") as InputElement;
+    _lpY = querySelector("#lightPositionY") as InputElement;
+    _lpZ = querySelector("#lightPositionZ") as InputElement;
 
-    _perFragment = querySelector("#per-fragment");
-    _textures = querySelector("#textures");
+    _perFragment = querySelector("#per-fragment") as InputElement;
+    _textures = querySelector("#textures") as InputElement;
   }
 }
