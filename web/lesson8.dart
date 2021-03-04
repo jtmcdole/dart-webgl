@@ -252,6 +252,10 @@ class Lesson8 extends Lesson {
     _dG = querySelector("#directionalG") as InputElement;
     _dB = querySelector("#directionalB") as InputElement;
 
+    _ldX = querySelector("#lightDirectionX") as InputElement;
+    _ldY = querySelector("#lightDirectionY") as InputElement;
+    _ldZ = querySelector("#lightDirectionZ") as InputElement;
+
     _blending = querySelector("#blending") as InputElement;
     _alpha = querySelector("#alpha") as InputElement;
   }

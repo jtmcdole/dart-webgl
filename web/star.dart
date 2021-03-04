@@ -77,14 +77,14 @@ class Star implements Renderable {
     if (twinkle) {
       // Draw a non-rotating star in the alternate "twinkling" color
       gl.uniform3f(color, rT, gT, bT);
-      drawStar(vertex, normal!, coord, setUniforms!);
+      drawStar(vertex, normal, coord, setUniforms!);
     }
 
     mvMatrix.rotateZ(radians(spin));
 
     // Draw the star in its main color
     gl.uniform3f(color, r, g, b);
-    drawStar(vertex, normal!, coord, setUniforms!);
+    drawStar(vertex, normal, coord, setUniforms!);
 
     mvPopMatrix();
   }
@@ -114,7 +114,7 @@ class Star implements Renderable {
   late Buffer starVertexPositionBuffer;
   late Buffer starVertexTextureCoordBuffer;
 
-  void drawStar(int vertex, int normal, int coord, setUniforms()) {
+  void drawStar(int vertex, int? normal, int coord, setUniforms()) {
     gl.bindBuffer(WebGL.ARRAY_BUFFER, starVertexTextureCoordBuffer);
     gl.vertexAttribPointer(coord, 2, WebGL.FLOAT, false, 0, 0);
 

@@ -24,7 +24,7 @@ part of learn_gl;
 ///  Use [fromUrl] to load and return the object in the future!
 ///  If 'indicies' are absent - data is interpreted as a triangle strip.
 class JsonObject implements Renderable {
-  late Buffer? vertexNormalBuffer, textureCoordBuffer, vertexPositionBuffer, indexBuffer;
+  Buffer? vertexNormalBuffer, textureCoordBuffer, vertexPositionBuffer, indexBuffer;
   int _itemSize = 0;
 
   bool strip = false;
