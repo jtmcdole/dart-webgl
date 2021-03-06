@@ -24,7 +24,7 @@ class Lesson9 extends Lesson {
 
   Lesson9() {
     for (double i = 0; i < 50; i++) {
-      stars.add(new Star((i / 50) * 5.0, i / 50));
+      stars.add(Star((i / 50) * 5.0, i / 50));
     }
     loadTexture("star.gif", (Texture texture, ImageElement ele) {
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
@@ -54,7 +54,7 @@ class Lesson9 extends Lesson {
 
     var attributes = ['aVertexPosition', 'aTextureCoord'];
     var uniforms = ['uMVMatrix', 'uPMatrix', 'uColor', 'uSampler'];
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -166,7 +166,7 @@ class Lesson9 extends Lesson {
     <input type="checkbox" id="twinkle" /> Twinkle<br/>
     (Use up/down cursor keys to rotate, and <code>Page Up</code>/<code>Page Down</code> to zoom out/in)
     ''',
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     _twinkle = querySelector("#twinkle") as InputElement;

@@ -47,7 +47,7 @@ class Lesson14 extends Lesson {
       'uShowSpecularHighlights'
     ];
 
-    currentProgram = new GlProgram(
+    currentProgram = GlProgram(
       '''
           precision mediump float;
           
@@ -346,7 +346,7 @@ class Lesson14 extends Lesson {
     Galvanized texture courtesy of <a href="http://www.arroway-textures.com/">Arroway Textures</a>.<br/>
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements

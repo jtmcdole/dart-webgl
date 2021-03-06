@@ -55,7 +55,7 @@ late RenderingContext2 gl;
 late Lesson lesson;
 
 void main() {
-  mvMatrix = new Matrix4()..identity();
+  mvMatrix = Matrix4()..identity();
   // Nab the context we'll be drawing to.
   // gl = canvas.getContext3d();
   gl = canvas.getContext("webgl2") as RenderingContext2;
@@ -88,7 +88,7 @@ void main() {
 
   SelectElement lessonSelect = querySelector("#lessonNumber") as SelectElement;
   for (int i = 1; i < 17; i++) {
-    lessonSelect.children.add(new OptionElement(data: "Lesson $i", value: "$i", selected: defaultLesson == i));
+    lessonSelect.children.add(OptionElement(data: "Lesson $i", value: "$i", selected: defaultLesson == i));
   }
   lessonSelect.onChange.listen((event) {
     lesson = selectLesson(lessonSelect.selectedIndex! + 1)!..initHtml(lessonHook);
@@ -112,7 +112,7 @@ void main() {
 }
 
 /// This is the infinite animation loop; we request that the web browser
-/// call us back every time its ready for a new frame to be rendered. The [time]
+/// call us back every time its ready for a  frame to be rendered. The [time]
 /// parameter is an increasing value based on when the animation loop started.
 tick(time) {
   window.animationFrame.then(tick);
@@ -123,7 +123,7 @@ tick(time) {
 }
 
 /// The global key-state map.
-Set<int> currentlyPressedKeys = new Set<int>();
+Set<int> currentlyPressedKeys = Set<int>();
 
 /// Test if the given [KeyCode] is active.
 bool isActive(int code) => currentlyPressedKeys.contains(code);
@@ -162,7 +162,7 @@ List<Matrix4> mvStack = <Matrix4>[];
 
 /// Add a copy of the current Model-View matrix to the the stack for future
 /// restoration.
-mvPushMatrix() => mvStack.add(new Matrix4.fromMatrix(mvMatrix));
+mvPushMatrix() => mvStack.add(Matrix4.fromMatrix(mvMatrix));
 
 /// Pop the last matrix off the stack and set the Model View matrix.
 mvPopMatrix() => mvMatrix = mvStack.removeLast();
@@ -229,9 +229,9 @@ abstract class Lesson {
 /// Load the given image at [url] and call [handle] to execute some GL code.
 /// Return a [Future] to asynchronously notify when the texture is complete.
 Future<Texture> loadTexture(String url, handle(Texture tex, ImageElement ele)) {
-  var completer = new Completer<Texture>();
+  var completer = Completer<Texture>();
   var texture = gl.createTexture();
-  var element = new ImageElement();
+  var element = ImageElement();
   element.onLoad.listen((e) {
     handle(texture, element);
     completer.complete(texture);
@@ -273,37 +273,37 @@ bool trackFrameRate = false;
 Lesson? selectLesson(int number) {
   switch (number) {
     case 1:
-      return new Lesson1();
+      return Lesson1();
     case 2:
-      return new Lesson2();
+      return Lesson2();
     case 3:
-      return new Lesson3();
+      return Lesson3();
     case 4:
-      return new Lesson4();
+      return Lesson4();
     case 5:
-      return new Lesson5();
+      return Lesson5();
     case 6:
-      return new Lesson6();
+      return Lesson6();
     case 7:
-      return new Lesson7();
+      return Lesson7();
     case 8:
-      return new Lesson8();
+      return Lesson8();
     case 9:
-      return new Lesson9();
+      return Lesson9();
     case 10:
-      return new Lesson10();
+      return Lesson10();
     case 11:
-      return new Lesson11();
+      return Lesson11();
     case 12:
-      return new Lesson12();
+      return Lesson12();
     case 13:
-      return new Lesson13();
+      return Lesson13();
     case 14:
-      return new Lesson14();
+      return Lesson14();
     case 15:
-      return new Lesson15();
+      return Lesson15();
     case 16:
-      return new Lesson16();
+      return Lesson16();
   }
   return null;
 }
@@ -313,7 +313,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   static NullTreeSanitizer? instance;
   factory NullTreeSanitizer() {
     if (instance == null) {
-      instance = new NullTreeSanitizer._();
+      instance = NullTreeSanitizer._();
     }
     return instance!;
   }

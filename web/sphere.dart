@@ -68,7 +68,7 @@ class Sphere implements Renderable {
     gl.bindBuffer(WebGL.ARRAY_BUFFER, _normalBuffer);
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(normals),
+      Float32List.fromList(normals),
       WebGL.STATIC_DRAW,
     );
 
@@ -76,7 +76,7 @@ class Sphere implements Renderable {
     gl.bindBuffer(WebGL.ARRAY_BUFFER, _textureCoordBuffer);
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(textureCoords),
+      Float32List.fromList(textureCoords),
       WebGL.STATIC_DRAW,
     );
 
@@ -84,7 +84,7 @@ class Sphere implements Renderable {
     gl.bindBuffer(WebGL.ARRAY_BUFFER, _positionBuffer);
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(vertexPositions),
+      Float32List.fromList(vertexPositions),
       WebGL.STATIC_DRAW,
     );
 
@@ -92,7 +92,7 @@ class Sphere implements Renderable {
     gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, _indexBuffer);
     gl.bufferData(
       WebGL.ELEMENT_ARRAY_BUFFER,
-      new Uint16List.fromList(indexData),
+      Uint16List.fromList(indexData),
       WebGL.STATIC_DRAW,
     );
   }

@@ -17,13 +17,13 @@ class SingularMatrixException implements Exception {
 class Vector3 {
   Float32List buf;
 
-  Vector3(double x, double y, double z) : buf = new Float32List(3) {
+  Vector3(double x, double y, double z) : buf = Float32List(3) {
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
-  Vector3.fromList(List<double> list) : buf = new Float32List.fromList(list);
+  Vector3.fromList(List<double> list) : buf = Float32List.fromList(list);
 
   double get x => buf[0];
   double get y => buf[1];
@@ -37,24 +37,24 @@ class Vector3 {
   Vector3 normalize() {
     double len = magnitude();
     if (len == 0.0) {
-      throw new ZeroLengthVectorException();
+      throw ZeroLengthVectorException();
     }
-    return new Vector3(x / len, y / len, z / len);
+    return Vector3(x / len, y / len, z / len);
   }
 
   Vector3 operator -() {
-    return new Vector3(-x, -y, -z);
+    return Vector3(-x, -y, -z);
   }
 
   Vector3 operator -(Vector3 other) {
-    return new Vector3(x - other.x, y - other.y, z - other.z);
+    return Vector3(x - other.x, y - other.y, z - other.z);
   }
 
   Vector3 cross(Vector3 other) {
     double xResult = y * other.z - z * other.y;
     double yResult = z * other.x - x * other.z;
     double zResult = x * other.y - y * other.x;
-    return new Vector3(xResult, yResult, zResult);
+    return Vector3(xResult, yResult, zResult);
   }
 
   Vector3 scale(double by) {
@@ -98,12 +98,12 @@ double radians(double degrees) {
 class Matrix4 {
   Float32List buf;
 
-  /// Constructs a new Matrix4 with all entries initialized
+  /// Constructs a  Matrix4 with all entries initialized
   /// to zero.
-  Matrix4() : buf = new Float32List(16);
+  Matrix4() : buf = Float32List(16);
 
   /// Make a copy of another matrix.
-  Matrix4.fromMatrix(Matrix4 other) : buf = new Float32List.fromList(other.buf);
+  Matrix4.fromMatrix(Matrix4 other) : buf = Float32List.fromList(other.buf);
 
   Matrix4.fromBuffer(Float32List this.buf);
 
@@ -215,7 +215,7 @@ class Matrix4 {
     return "Matrix4:\n${rows.join('\n')}";
   }
 
-  /// Cosntructs a new Matrix4 that represents the identity transformation
+  /// Cosntructs a  Matrix4 that represents the identity transformation
   /// (all the diagonal entries are 1, and everything else is zero).
   void identity() {
     for (int i = 0; i < 16; i++) {
@@ -227,7 +227,7 @@ class Matrix4 {
     m33 = 1.0;
   }
 
-  /// Constructs a new Matrix4 that represents a rotation around an axis.
+  /// Constructs a  Matrix4 that represents a rotation around an axis.
   ///
   /// [radians] to rotate
   /// [axis] direction of axis of rotation (must not be zero length)
@@ -241,7 +241,7 @@ class Matrix4 {
     double c = cos(radians);
     double t = 1 - c;
 
-    Matrix4 m = new Matrix4();
+    Matrix4 m = Matrix4();
     m.m00 = x * x * t + c;
     m.m10 = x * y * t + z * s;
     m.m20 = x * z * t - y * s;
@@ -345,7 +345,7 @@ class Matrix4 {
 
   /// returns the transpose of this matrix
   Matrix4 transpose() {
-    Matrix4 m = new Matrix4();
+    Matrix4 m = Matrix4();
     for (int row = 0; row < 4; row++) {
       for (int col = 0; col < 4; col++) {
         m.buf[rc(col, row)] = this.buf[rc(row, col)];
@@ -366,7 +366,7 @@ class Matrix4 {
   /// B is another matrix
   ///
   Matrix4 operator *(Matrix4 matrixB) {
-    Matrix4 matrixC = new Matrix4();
+    Matrix4 matrixC = Matrix4();
     Float32List bufA = this.buf;
     Float32List bufB = matrixB.buf;
     Float32List bufC = matrixC.buf;
@@ -395,7 +395,7 @@ class Matrix4 {
   }
 
   static Matrix4 frustum(left, right, bottom, top, near, far) {
-    Matrix4 dest = new Matrix4();
+    Matrix4 dest = Matrix4();
     left = left.toDouble();
     right = right.toDouble();
     bottom = bottom.toDouble();
@@ -428,7 +428,7 @@ class Matrix4 {
   /// @returns {mat4} out
   ///
   static Matrix4 ortho(left, right, bottom, top, near, far) {
-    Float32List out = new Float32List(16);
+    Float32List out = Float32List(16);
     var lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
     out[0] = -2 * lr;
     out[1] = 0.0;
@@ -446,7 +446,7 @@ class Matrix4 {
     out[13] = (top + bottom) * bt;
     out[14] = (far + near) * nf;
     out[15] = 1.0;
-    return new Matrix4.fromBuffer(out);
+    return Matrix4.fromBuffer(out);
   }
 
   /// Returns the inverse of this matrix.
@@ -468,10 +468,10 @@ class Matrix4 {
     // compute determinant
     double det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
     if (det == 0) {
-      throw new SingularMatrixException();
+      throw SingularMatrixException();
     }
 
-    Matrix4 m = new Matrix4();
+    Matrix4 m = Matrix4();
     m.m00 = (m11 * b5 - m21 * b4 + m31 * b3) / det;
     m.m10 = (-m10 * b5 + m20 * b4 - m30 * b3) / det;
     m.m20 = (m13 * a5 - m23 * a4 + m33 * a3) / det;
@@ -501,7 +501,7 @@ class Matrix4 {
   /// transformed normals.
   ///
   /// Returns:
-  /// A new [Matrix3]
+  /// A  [Matrix3]
   ///
   Matrix3? toInverseMat3() {
     // Cache the matrix values (makes for huge speed increases!)
@@ -519,7 +519,7 @@ class Matrix4 {
     }
     var id = 1 / d;
 
-    Matrix3 dest = new Matrix3();
+    Matrix3 dest = Matrix3();
 
     dest.m00 = b01 * id;
     dest.m10 = (-a22 * a01 + a02 * a21) * id;
@@ -606,8 +606,8 @@ class Matrix4 {
 class Matrix3 {
   Float32List buf;
 
-  Matrix3() : buf = new Float32List(9);
-  Matrix3.fromMatrix(Matrix3 other) : buf = new Float32List.fromList(other.buf);
+  Matrix3() : buf = Float32List(9);
+  Matrix3.fromMatrix(Matrix3 other) : buf = Float32List.fromList(other.buf);
 
   /// returns the index into [buf] for a given
   /// row and column.
@@ -684,7 +684,7 @@ class Matrix3 {
 
   /// Transposes a [Matrix3] (flips the values over the diagonal)
   Matrix3 transpose() {
-    Matrix3 dest = new Matrix3();
+    Matrix3 dest = Matrix3();
     for (int row = 0; row < 3; row++) {
       for (int col = 0; col < 3; col++) {
         dest.buf[rc(col, row)] = this.buf[rc(row, col)];

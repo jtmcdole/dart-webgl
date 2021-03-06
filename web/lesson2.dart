@@ -22,7 +22,7 @@ class Lesson2 extends Lesson {
   late Buffer triangleVertexColorBuffer, squareVertexColorBuffer;
 
   Lesson2() {
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -57,29 +57,29 @@ class Lesson2 extends Lesson {
 
     // bindBuffer() tells the WebGL system the target of future calls
     gl.bindBuffer(WebGL.ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList([0.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]),
-        WebGL.STATIC_DRAW);
+    gl.bufferData(
+        WebGL.ARRAY_BUFFER, Float32List.fromList([0.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]), WebGL.STATIC_DRAW);
 
     triangleVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, triangleVertexColorBuffer);
     var colors = [1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(colors),
+      Float32List.fromList(colors),
       WebGL.STATIC_DRAW,
     );
 
     squareVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, squareVertexPositionBuffer);
     gl.bufferData(WebGL.ARRAY_BUFFER,
-        new Float32List.fromList([1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]), WebGL.STATIC_DRAW);
+        Float32List.fromList([1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]), WebGL.STATIC_DRAW);
 
     squareVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, squareVertexColorBuffer);
     colors = [0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(colors),
+      Float32List.fromList(colors),
       WebGL.STATIC_DRAW,
     );
 

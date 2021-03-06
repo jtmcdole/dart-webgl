@@ -27,21 +27,21 @@ class Lesson16 extends Lesson {
   late Lesson13 lesson13;
 
   Lesson16() {
-    lesson13 = new Lesson13();
+    lesson13 = Lesson13();
 
     // There is no HTML, so we're going to override these options.
-    lesson13._lighting = new InputElement()..checked = true;
-    lesson13._aR = new InputElement()..value = "0.2";
-    lesson13._aG = new InputElement()..value = "0.2";
-    lesson13._aB = new InputElement()..value = "0.2";
-    lesson13._lpX = new InputElement()..value = "0.0";
-    lesson13._lpY = new InputElement()..value = "0.0";
-    lesson13._lpZ = new InputElement()..value = "-5.0";
-    lesson13._pR = new InputElement()..value = "0.8";
-    lesson13._pG = new InputElement()..value = "0.8";
-    lesson13._pB = new InputElement()..value = "0.8";
-    lesson13._perFragment = new InputElement()..checked = true;
-    lesson13._textures = new InputElement()..checked = true;
+    lesson13._lighting = InputElement()..checked = true;
+    lesson13._aR = InputElement()..value = "0.2";
+    lesson13._aG = InputElement()..value = "0.2";
+    lesson13._aB = InputElement()..value = "0.2";
+    lesson13._lpX = InputElement()..value = "0.0";
+    lesson13._lpY = InputElement()..value = "0.0";
+    lesson13._lpZ = InputElement()..value = "-5.0";
+    lesson13._pR = InputElement()..value = "0.8";
+    lesson13._pG = InputElement()..value = "0.8";
+    lesson13._pB = InputElement()..value = "0.8";
+    lesson13._perFragment = InputElement()..checked = true;
+    lesson13._textures = InputElement()..checked = true;
 
     JsonObject.fromUrl("macbook.json").then((JsonObject obj) {
       print("macbook: $obj");
@@ -70,7 +70,7 @@ class Lesson16 extends Lesson {
         ]
       }
     ''';
-    laptopScreen = new JsonObject(laptopScreenJson)..strip = true;
+    laptopScreen = JsonObject(laptopScreenJson)..strip = true;
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
     var uniforms = [
@@ -91,7 +91,7 @@ class Lesson16 extends Lesson {
       'uAmbientLightingColor'
     ];
 
-    currentProgram = new GlProgram(
+    currentProgram = GlProgram(
       '''
           precision mediump float;
       

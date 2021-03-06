@@ -23,7 +23,7 @@ class Lesson5 extends Lesson {
   bool get isLoaded => neheTexture != null;
 
   Lesson5() {
-    cube = new Cube();
+    cube = Cube();
     loadTexture("nehe.gif", (Texture texture, ImageElement element) {
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
@@ -52,7 +52,7 @@ class Lesson5 extends Lesson {
     var attributes = ['aVertexPosition', 'aTextureCoord'];
     var uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
 
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 

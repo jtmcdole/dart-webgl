@@ -55,7 +55,7 @@ class Lesson10 extends Lesson {
 
     var attributes = ['aVertexPosition', 'aTextureCoord'];
     var uniforms = ['uMVMatrix', 'uPMatrix', 'uSampler'];
-    program = new GlProgram(
+    program = GlProgram(
       """
           precision mediump float;
 
@@ -180,7 +180,7 @@ class Lesson10 extends Lesson {
     Use the cursor keys or WASD to run around, and <code>Page Up</code>/<code>Page Down</code> to
     look up and down.
     """,
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
   }
 }

@@ -23,12 +23,12 @@ class Lesson6 extends Lesson {
   bool get isLoaded => textures.length == 3;
 
   Lesson6() {
-    cube = new Cube();
+    cube = Cube();
 
     var attributes = ['aVertexPosition', 'aTextureCoord'];
     var uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
 
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -221,7 +221,7 @@ class Lesson6 extends Lesson {
         <li><code>F</code> to toggle through three different kinds of texture filters
     </ul>
     """,
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
   }
 }

@@ -26,7 +26,7 @@ class Lesson15 extends Lesson {
   double tilt = 23.4;
 
   Lesson15() {
-    sphere = new Sphere(lats: 30, lons: 30, radius: 13);
+    sphere = Sphere(lats: 30, lons: 30, radius: 13);
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
     var uniforms = [
@@ -44,7 +44,7 @@ class Lesson15 extends Lesson {
       'uSpecularMapSampler'
     ];
 
-    currentProgram = new GlProgram(
+    currentProgram = GlProgram(
       '''
           precision mediump float;
       
@@ -305,7 +305,7 @@ class Lesson15 extends Lesson {
     Galvanized texture courtesy of <a href="http://www.arroway-textures.com/">Arroway Textures</a>.<br/>
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements

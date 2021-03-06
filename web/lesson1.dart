@@ -21,7 +21,7 @@ class Lesson1 extends Lesson {
   late Buffer triangleVertexPositionBuffer, squareVertexPositionBuffer;
 
   Lesson1() {
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -50,13 +50,13 @@ class Lesson1 extends Lesson {
 
     // bindBuffer() tells the WebGL system the target of future calls
     gl.bindBuffer(WebGL.ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.bufferData(WebGL.ARRAY_BUFFER, new Float32List.fromList([0.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]),
-        WebGL.STATIC_DRAW);
+    gl.bufferData(
+        WebGL.ARRAY_BUFFER, Float32List.fromList([0.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]), WebGL.STATIC_DRAW);
 
     squareVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, squareVertexPositionBuffer);
     gl.bufferData(WebGL.ARRAY_BUFFER,
-        new Float32List.fromList([1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]), WebGL.STATIC_DRAW);
+        Float32List.fromList([1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]), WebGL.STATIC_DRAW);
 
     // Specify the color to clear with (black with 100% alpha) and then enable
     // depth testing.

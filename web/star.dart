@@ -17,7 +17,7 @@ part of learn_gl;
 /// Note; not happy about this, it just a texturized rectangle that's conflated
 /// with particles. Needs clean up.
 class Star implements Renderable {
-  static Random rand = new Random(42);
+  static Random rand = Random(42);
   static bool loaded = false;
   static int starCount = 0;
   final int id = starCount++;
@@ -39,7 +39,7 @@ class Star implements Renderable {
     var vertices = [-1.0, -1.0, 0.0, 1.0, -1.0, 0.0, -1.0, 1.0, 0.0, 1.0, 1.0, 0.0];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(vertices),
+      Float32List.fromList(vertices),
       WebGL.STATIC_DRAW,
     );
 
@@ -48,7 +48,7 @@ class Star implements Renderable {
     var textureCoords = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(textureCoords),
+      Float32List.fromList(textureCoords),
       WebGL.STATIC_DRAW,
     );
   }

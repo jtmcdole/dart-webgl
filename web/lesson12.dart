@@ -29,8 +29,8 @@ class Lesson12 extends Lesson {
   bool get isLoaded => moonTexture != null && cubeTexture != null;
 
   Lesson12() {
-    moon = new Sphere(lats: 30, lons: 30, radius: 2);
-    cube = new Cube();
+    moon = Sphere(lats: 30, lons: 30, radius: 2);
+    cube = Cube();
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
     var uniforms = [
@@ -43,7 +43,7 @@ class Lesson12 extends Lesson {
       'uPointLightingColor',
       'uUseLighting'
     ];
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -249,7 +249,7 @@ class Lesson12 extends Lesson {
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements

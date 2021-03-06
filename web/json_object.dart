@@ -34,49 +34,49 @@ class JsonObject implements Renderable {
 
     List<dynamic>? numArray = data['vertexNormals'];
     if (numArray != null) {
-      List<double> normals = new List<double>.from(numArray.map((index) => index.toDouble()));
+      List<double> normals = List<double>.from(numArray.map((index) => index.toDouble()));
 
       vertexNormalBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexNormalBuffer);
       gl.bufferData(
         WebGL.ARRAY_BUFFER,
-        new Float32List.fromList(normals),
+        Float32List.fromList(normals),
         WebGL.STATIC_DRAW,
       );
     }
 
     numArray = data['vertexTextureCoords'];
     if (numArray != null) {
-      List<double> coords = new List<double>.from(numArray.map((index) => index.toDouble()));
+      List<double> coords = List<double>.from(numArray.map((index) => index.toDouble()));
 
       textureCoordBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
       gl.bufferData(
         WebGL.ARRAY_BUFFER,
-        new Float32List.fromList(coords),
+        Float32List.fromList(coords),
         WebGL.STATIC_DRAW,
       );
     }
 
     numArray = data['vertexPositions'];
-    List<double> positions = new List<double>.from(numArray!.map((index) => index.toDouble()));
+    List<double> positions = List<double>.from(numArray!.map((index) => index.toDouble()));
 
     vertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexPositionBuffer);
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(positions),
+      Float32List.fromList(positions),
       WebGL.STATIC_DRAW,
     );
 
     numArray = data['indices'];
     if (numArray != null) {
-      List<int> indices = new List<int>.from(numArray.map((index) => index.toInt()));
+      List<int> indices = List<int>.from(numArray.map((index) => index.toInt()));
       indexBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
       gl.bufferData(
         WebGL.ELEMENT_ARRAY_BUFFER,
-        new Uint16List.fromList(indices),
+        Uint16List.fromList(indices),
         WebGL.STATIC_DRAW,
       );
       _itemSize = indices.length;
@@ -87,9 +87,9 @@ class JsonObject implements Renderable {
 
   /// Return a future [JsonObject] by fetching the JSON data from [url].
   static Future<JsonObject> fromUrl(String url) {
-    Completer<JsonObject> complete = new Completer<JsonObject>();
+    Completer<JsonObject> complete = Completer<JsonObject>();
     HttpRequest.getString(url).then((json) {
-      JsonObject obj = new JsonObject(json);
+      JsonObject obj = JsonObject(json);
       print("json object from $url loaded as $obj");
       complete.complete(obj);
     });

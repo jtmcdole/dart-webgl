@@ -55,7 +55,7 @@ class Pyramid implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(vertices),
+      Float32List.fromList(vertices),
       WebGL.STATIC_DRAW,
     );
 
@@ -92,7 +92,7 @@ class Pyramid implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(vertexNormals),
+      Float32List.fromList(vertexNormals),
       WebGL.STATIC_DRAW,
     );
 
@@ -130,15 +130,15 @@ class Pyramid implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(colors),
+      Float32List.fromList(colors),
       WebGL.STATIC_DRAW,
     );
 
     // Normal discovery from a list triangles
     //    for (int i = 0; i < vertices.length; i += 9 ) {
-    //      Vector3 p0 = new Vector3(vertices[i], vertices[i+1], vertices[i+2]),
-    //          p1 = new Vector3(vertices[i+3], vertices[i+4], vertices[i+5]),
-    //          p2 = new Vector3(vertices[i+6], vertices[i+7], vertices[i+8]);
+    //      Vector3 p0 =  Vector3(vertices[i], vertices[i+1], vertices[i+2]),
+    //          p1 =  Vector3(vertices[i+3], vertices[i+4], vertices[i+5]),
+    //          p2 =  Vector3(vertices[i+6], vertices[i+7], vertices[i+8]);
     //
     //      Vector3 v0 = p1 - p0, v1 = p2 - p0;
     //      Vector3 normal = v0.cross(v1).normalize();

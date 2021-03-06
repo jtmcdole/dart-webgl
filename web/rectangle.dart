@@ -39,7 +39,7 @@ class Rectangle implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(vertices),
+      Float32List.fromList(vertices),
       WebGL.STATIC_DRAW,
     );
 
@@ -53,7 +53,7 @@ class Rectangle implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(vertexNormals),
+      Float32List.fromList(vertexNormals),
       WebGL.STATIC_DRAW,
     );
 
@@ -67,7 +67,7 @@ class Rectangle implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(coords),
+      Float32List.fromList(coords),
       WebGL.STATIC_DRAW,
     );
 
@@ -97,7 +97,7 @@ class Rectangle implements Renderable {
 //    ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(colors),
+      Float32List.fromList(colors),
       WebGL.STATIC_DRAW,
     );
 
@@ -105,7 +105,7 @@ class Rectangle implements Renderable {
     gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(
         WebGL.ELEMENT_ARRAY_BUFFER,
-        new Uint16List.fromList([
+        Uint16List.fromList([
           0, 1, 2, 0, 2, 3, // Front face
         ]),
         WebGL.STATIC_DRAW);

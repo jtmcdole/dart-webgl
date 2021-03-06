@@ -20,14 +20,14 @@ class Lesson11 extends Lesson {
   late Sphere moon;
   Texture? moonTexture;
 
-  Matrix4 _rotation = new Matrix4()..identity();
+  Matrix4 _rotation = Matrix4()..identity();
   bool _mouseDown = false;
   var _lastMouseX, _lastMouseY;
 
   bool get isLoaded => moonTexture != null;
 
   Lesson11() {
-    moon = new Sphere(lats: 30, lons: 30, radius: 2);
+    moon = Sphere(lats: 30, lons: 30, radius: 2);
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
     var uniforms = [
@@ -40,7 +40,7 @@ class Lesson11 extends Lesson {
       'uDirectionalColor',
       'uUseLighting'
     ];
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -110,7 +110,7 @@ class Lesson11 extends Lesson {
       var newX = event.client.x;
       var newY = event.client.y;
       var deltaX = newX - _lastMouseX;
-      Matrix4 newRot = new Matrix4()
+      Matrix4 newRot = Matrix4()
         ..identity()
         ..rotateY(radians(deltaX / 10));
       var deltaY = newY - _lastMouseY;
@@ -151,7 +151,7 @@ class Lesson11 extends Lesson {
       gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
       // Take the lighting point and normalize / reverse it.
-      Vector3 direction = new Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
+      Vector3 direction = Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
       direction = direction.normalize().scale(-1.0);
       gl.uniform3fv(uLightingDirection, direction.buf);
 
@@ -233,7 +233,7 @@ class Lesson11 extends Lesson {
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     """,
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements

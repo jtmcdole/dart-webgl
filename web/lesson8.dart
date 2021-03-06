@@ -23,7 +23,7 @@ class Lesson8 extends Lesson {
   bool get isLoaded => texture != null;
 
   Lesson8() {
-    cube = new Cube();
+    cube = Cube();
     loadTexture('glass.gif', handleMipMapTexture).then((t) => texture = t);
 
     var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
@@ -39,7 +39,7 @@ class Lesson8 extends Lesson {
       'uAlpha'
     ];
 
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -146,7 +146,7 @@ class Lesson8 extends Lesson {
       gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
       // Take the lighting point and normalize / reverse it.
-      Vector3 direction = new Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
+      Vector3 direction = Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
       direction = direction.normalize().scale(-1.0);
       gl.uniform3fv(uLightingDirection, direction.buf);
 
@@ -239,7 +239,7 @@ class Lesson8 extends Lesson {
         </tr>
     </table>
     """,
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements
