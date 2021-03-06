@@ -16,21 +16,21 @@ part of learn_gl;
 
 /// Spheres, rotations matricies, and mouse events
 class Lesson11 extends Lesson {
-  GlProgram program;
-  Sphere moon;
-  Texture moonTexture;
+  late GlProgram program;
+  late Sphere moon;
+  Texture? moonTexture;
 
-  Matrix4 _rotation = new Matrix4()..identity();
+  Matrix4 _rotation = Matrix4()..identity();
   bool _mouseDown = false;
   var _lastMouseX, _lastMouseY;
 
   bool get isLoaded => moonTexture != null;
 
   Lesson11() {
-    moon = new Sphere(lats: 30, lons: 30, radius: 2);
+    moon = Sphere(lats: 30, lons: 30, radius: 2);
 
-    var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = [
+    final attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
+    final uniforms = [
       'uSampler',
       'uMVMatrix',
       'uPMatrix',
@@ -40,7 +40,7 @@ class Lesson11 extends Lesson {
       'uDirectionalColor',
       'uUseLighting'
     ];
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -90,7 +90,7 @@ class Lesson11 extends Lesson {
       uniforms,
     );
 
-    loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
+    loadTexture('moon.bmp', handleMipMapTexture).then((t) => moonTexture = t);
 
     gl.useProgram(program.program);
 
@@ -107,13 +107,13 @@ class Lesson11 extends Lesson {
 
     document.onMouseMove.listen((MouseEvent event) {
       if (!_mouseDown) return;
-      var newX = event.client.x;
-      var newY = event.client.y;
-      var deltaX = newX - _lastMouseX;
-      Matrix4 newRot = new Matrix4()
+      final newX = event.client.x;
+      final newY = event.client.y;
+      final deltaX = newX - _lastMouseX;
+      final newRot = Matrix4()
         ..identity()
         ..rotateY(radians(deltaX / 10));
-      var deltaY = newY - _lastMouseY;
+      final deltaY = newY - _lastMouseY;
       newRot.rotateX(radians(deltaY / 10));
       _rotation = newRot * _rotation; // C = A * B, first operand = newRot.
       _lastMouseX = newX;
@@ -121,20 +121,21 @@ class Lesson11 extends Lesson {
     });
   }
 
-  get aVertexPosition => program.attributes['aVertexPosition'];
-  get aVertexNormal => program.attributes['aVertexNormal'];
-  get aTextureCoord => program.attributes['aTextureCoord'];
+  int? get aVertexPosition => program.attributes['aVertexPosition'];
+  int? get aVertexNormal => program.attributes['aVertexNormal'];
+  int? get aTextureCoord => program.attributes['aTextureCoord'];
 
-  get uSampler => program.uniforms['uSampler'];
-  get uMVMatrix => program.uniforms['uMVMatrix'];
-  get uPMatrix => program.uniforms['uPMatrix'];
-  get uNMatrix => program.uniforms['uNMatrix'];
-  get uAmbientColor => program.uniforms['uAmbientColor'];
-  get uLightingDirection => program.uniforms['uLightingDirection'];
-  get uDirectionalColor => program.uniforms['uDirectionalColor'];
-  get uUseLighting => program.uniforms['uUseLighting'];
+  UniformLocation? get uSampler => program.uniforms['uSampler'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uNMatrix => program.uniforms['uNMatrix'];
+  UniformLocation? get uAmbientColor => program.uniforms['uAmbientColor'];
+  UniformLocation? get uLightingDirection => program.uniforms['uLightingDirection'];
+  UniformLocation? get uDirectionalColor => program.uniforms['uDirectionalColor'];
+  UniformLocation? get uUseLighting => program.uniforms['uUseLighting'];
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  @override
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -145,20 +146,17 @@ class Lesson11 extends Lesson {
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
     // One: setup lighting information
-    bool lighting = _lighting.checked;
+    final lighting = _lighting.checked!;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
     if (lighting) {
-      gl.uniform3f(uAmbientColor, double.parse(_aR.value),
-          double.parse(_aG.value), double.parse(_aB.value));
+      gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
       // Take the lighting point and normalize / reverse it.
-      Vector3 direction = new Vector3(double.parse(_ldX.value),
-          double.parse(_ldY.value), double.parse(_ldZ.value));
+      var direction = Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
       direction = direction.normalize().scale(-1.0);
       gl.uniform3fv(uLightingDirection, direction.buf);
 
-      gl.uniform3f(uDirectionalColor, double.parse(_dR.value),
-          double.parse(_dG.value), double.parse(_dB.value));
+      gl.uniform3f(uDirectionalColor, double.parse(_dR.value!), double.parse(_dG.value!), double.parse(_dB.value!));
     }
 
     mvPushMatrix();
@@ -169,11 +167,7 @@ class Lesson11 extends Lesson {
     gl.activeTexture(WebGL.TEXTURE0);
     gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
-    moon.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    moon.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -183,27 +177,30 @@ class Lesson11 extends Lesson {
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
-    var normalMatrix = mvMatrix.toInverseMat3();
-    normalMatrix.transposeSelf();
+    final normalMatrix = mvMatrix.toInverseMat3();
+    normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void animate(num now) {}
+  @override
+  void animate(double now) {}
 
+  @override
   void handleKeys() {}
 
   // Lighting enabled / Ambient color
-  InputElement _lighting, _aR, _aG, _aB;
+  late InputElement _lighting, _aR, _aG, _aB;
 
   // Light position
-  InputElement _ldX, _ldY, _ldZ;
+  late InputElement _ldX, _ldY, _ldZ;
 
   // Point color
-  InputElement _dR, _dG, _dB;
+  late InputElement _dR, _dG, _dB;
 
+  @override
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-      """"
+      '''"
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     Spin the moon by dragging it with the mouse.
     <br/>
@@ -239,22 +236,22 @@ class Lesson11 extends Lesson {
     <br/>
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """,
-      treeSanitizer: new NullTreeSanitizer(),
+    ''',
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting");
-    _aR = querySelector("#ambientR");
-    _aG = querySelector("#ambientG");
-    _aB = querySelector("#ambientB");
+    _lighting = querySelector('#lighting') as InputElement;
+    _aR = querySelector('#ambientR') as InputElement;
+    _aG = querySelector('#ambientG') as InputElement;
+    _aB = querySelector('#ambientB') as InputElement;
 
-    _dR = querySelector("#directionalR");
-    _dG = querySelector("#directionalG");
-    _dB = querySelector("#directionalB");
+    _dR = querySelector('#directionalR') as InputElement;
+    _dG = querySelector('#directionalG') as InputElement;
+    _dB = querySelector('#directionalB') as InputElement;
 
-    _ldX = querySelector("#lightDirectionX");
-    _ldY = querySelector("#lightDirectionY");
-    _ldZ = querySelector("#lightDirectionZ");
+    _ldX = querySelector('#lightDirectionX') as InputElement;
+    _ldY = querySelector('#lightDirectionY') as InputElement;
+    _ldZ = querySelector('#lightDirectionZ') as InputElement;
   }
 }

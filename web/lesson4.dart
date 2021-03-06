@@ -18,15 +18,15 @@ part of learn_gl;
 /// This lesson is nearly identical to Lesson 2, and we could clean it up...
 /// however that's a future lesson.
 class Lesson4 extends Lesson {
-  GlProgram program;
+  late GlProgram program;
 
-  Pyramid pyramid = new Pyramid();
-  Cube cube = new Cube();
+  Pyramid pyramid = Pyramid();
+  Cube cube = Cube();
 
-  num rPyramid = 0.0, rCube = 0.0;
+  double rPyramid = 0.0, rCube = 0.0;
 
   Lesson4() {
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -57,14 +57,15 @@ class Lesson4 extends Lesson {
 
     // Currently this is hardcoded, because well... everything else is textures
     // from here out.
-    cube.addColor(new CubeColor());
+    cube.addColor(CubeColor());
 
     // Specify the color to clear with (black with 100% alpha) and then enable
     // depth testing.
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
   }
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  @override
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
     gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
@@ -83,7 +84,7 @@ class Lesson4 extends Lesson {
     mvMatrix.translate([-1.5, 0.0, -8.0]);
 
     // Let the user play around with some directional changes.
-    mvMatrix.rotateX(radians(x))..rotateY(radians(y));
+    mvMatrix.rotateX(radians(x)).rotateY(radians(y));
 
     mvPushMatrix();
     mvMatrix.rotate(radians(rPyramid), [0, 1, 0]);
@@ -107,7 +108,7 @@ class Lesson4 extends Lesson {
 
   /// Write the matrix uniforms (model view matrix and perspective matrix) so
   /// WebGL knows what to do with them.
-  setMatrixUniforms() {
+  void setMatrixUniforms() {
     gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);
   }
@@ -115,7 +116,8 @@ class Lesson4 extends Lesson {
   /// Every time the browser tells us to draw the scene, animate is called.
   /// If there's something being movied, this is where that movement i
   /// calculated.
-  void animate(num now) {
+  @override
+  void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
       rPyramid += (90 * elapsed) / 1000.0;
@@ -124,12 +126,9 @@ class Lesson4 extends Lesson {
     lastTime = now;
   }
 
-  num x = 0.0, y = 0.0, z = 0.0;
+  double x = 0.0, y = 0.0, z = 0.0;
+  @override
   void handleKeys() {
-    handleDirection(
-        up: () => y -= 0.5,
-        down: () => y += 0.5,
-        left: () => x -= 0.5,
-        right: () => x += 0.5);
+    handleDirection(up: () => y -= 0.5, down: () => y += 0.5, left: () => x -= 0.5, right: () => x += 0.5);
   }
 }

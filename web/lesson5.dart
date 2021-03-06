@@ -16,15 +16,15 @@ part of learn_gl;
 
 /// Introducing Textures!
 class Lesson5 extends Lesson {
-  GlProgram program;
-  Texture neheTexture;
-  Cube cube;
+  late GlProgram program;
+  Texture? neheTexture;
+  late Cube cube;
 
   bool get isLoaded => neheTexture != null;
 
   Lesson5() {
-    cube = new Cube();
-    loadTexture("nehe.gif", (Texture texture, ImageElement element) {
+    cube = Cube();
+    loadTexture('nehe.gif', (Texture texture, ImageElement element) {
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       gl.texImage2D(
@@ -49,10 +49,10 @@ class Lesson5 extends Lesson {
       neheTexture = texture;
     });
 
-    var attributes = ['aVertexPosition', 'aTextureCoord'];
-    var uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
+    final attributes = ['aVertexPosition', 'aTextureCoord'];
+    final uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
 
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -85,7 +85,8 @@ class Lesson5 extends Lesson {
     gl.useProgram(program.program);
   }
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  @override
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
     // Basic viewport setup and clearing of the screen
@@ -120,20 +121,21 @@ class Lesson5 extends Lesson {
     mvPopMatrix();
   }
 
-  get uPMatrix => program.uniforms["uPMatrix"];
-  get uMVMatrix => program.uniforms["uMVMatrix"];
-  get uSampler => program.uniforms["uSampler"];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
+  UniformLocation? get uSampler => program.uniforms['uSampler'];
 
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
   }
 
-  num xRot = 0.0, yRot = 0.0, zRot = 0.0;
+  double xRot = 0.0, yRot = 0.0, zRot = 0.0;
 
-  void animate(num now) {
+  @override
+  void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
 
       xRot += (90 * elapsed) / 1000.0;
       yRot += (90 * elapsed) / 1000.0;
@@ -142,11 +144,8 @@ class Lesson5 extends Lesson {
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
-    handleDirection(
-        up: () => yRot -= 0.5,
-        down: () => yRot += 0.5,
-        left: () => xRot -= 0.5,
-        right: () => xRot += 0.5);
+    handleDirection(up: () => yRot -= 0.5, down: () => yRot += 0.5, left: () => xRot -= 0.5, right: () => xRot += 0.5);
   }
 }

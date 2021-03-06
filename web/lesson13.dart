@@ -21,23 +21,23 @@ part of learn_gl;
 /// In the original lesson, the moon and box are tidal locked (always showing the same face),
 /// lets play around with that.
 class Lesson13 extends Lesson {
-  Cube cube;
-  Sphere moon;
+  late Cube cube;
+  late Sphere moon;
 
-  GlProgram perVertexProgram;
-  GlProgram perFragmentProgram;
+  late GlProgram perVertexProgram;
+  late GlProgram perFragmentProgram;
 
-  GlProgram currentProgram;
+  late GlProgram currentProgram;
 
-  Texture moonTexture, cubeTexture;
+  Texture? moonTexture, cubeTexture;
   bool get isLoaded => moonTexture != null && cubeTexture != null;
 
   Lesson13() {
-    moon = new Sphere(lats: 30, lons: 30, radius: 1);
-    cube = new Cube();
+    moon = Sphere(lats: 30, lons: 30, radius: 1);
+    cube = Cube();
 
-    var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = [
+    final attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
+    final uniforms = [
       'uPMatrix',
       'uMVMatrix',
       'uNMatrix',
@@ -49,7 +49,7 @@ class Lesson13 extends Lesson {
       'uPointLightingColor'
     ];
 
-    perVertexProgram = new GlProgram(
+    perVertexProgram = GlProgram(
       '''
         precision mediump float;
     
@@ -109,7 +109,7 @@ class Lesson13 extends Lesson {
       uniforms,
     );
 
-    currentProgram = perFragmentProgram = new GlProgram(
+    currentProgram = perFragmentProgram = GlProgram(
       '''
           precision mediump float;
       
@@ -174,28 +174,28 @@ class Lesson13 extends Lesson {
     );
 
     // Handle textures
-    loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
-    loadTexture("crate.gif", handleMipMapTexture).then((t) => cubeTexture = t);
+    loadTexture('moon.bmp', handleMipMapTexture).then((t) => moonTexture = t);
+    loadTexture('crate.gif', handleMipMapTexture).then((t) => cubeTexture = t);
 
     gl.enable(WebGL.DEPTH_TEST);
   }
 
-  get aVertexPosition => currentProgram.attributes["aVertexPosition"];
-  get aVertexNormal => currentProgram.attributes["aVertexNormal"];
-  get aTextureCoord => currentProgram.attributes["aTextureCoord"];
+  int? get aVertexPosition => currentProgram.attributes['aVertexPosition'];
+  int? get aVertexNormal => currentProgram.attributes['aVertexNormal'];
+  int? get aTextureCoord => currentProgram.attributes['aTextureCoord'];
 
-  get uPMatrix => currentProgram.uniforms["uPMatrix"];
-  get uMVMatrix => currentProgram.uniforms["uMVMatrix"];
-  get uNMatrix => currentProgram.uniforms["uNMatrix"];
-  get uSampler => currentProgram.uniforms["uSampler"];
-  get uUseTextures => currentProgram.uniforms["uUseTextures"];
-  get uUseLighting => currentProgram.uniforms["uUseLighting"];
-  get uAmbientColor => currentProgram.uniforms["uAmbientColor"];
-  get uPointLightingLocation =>
-      currentProgram.uniforms["uPointLightingLocation"];
-  get uPointLightingColor => currentProgram.uniforms["uPointLightingColor"];
+  UniformLocation? get uPMatrix => currentProgram.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => currentProgram.uniforms['uMVMatrix'];
+  UniformLocation? get uNMatrix => currentProgram.uniforms['uNMatrix'];
+  UniformLocation? get uSampler => currentProgram.uniforms['uSampler'];
+  UniformLocation? get uUseTextures => currentProgram.uniforms['uUseTextures'];
+  UniformLocation? get uUseLighting => currentProgram.uniforms['uUseLighting'];
+  UniformLocation? get uAmbientColor => currentProgram.uniforms['uAmbientColor'];
+  UniformLocation? get uPointLightingLocation => currentProgram.uniforms['uPointLightingLocation'];
+  UniformLocation? get uPointLightingColor => currentProgram.uniforms['uPointLightingColor'];
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  @override
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
     gl.enable(WebGL.DEPTH_TEST);
@@ -205,7 +205,7 @@ class Lesson13 extends Lesson {
     gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
-    bool perFragmentLighting = _perFragment.checked;
+    final perFragmentLighting = _perFragment.checked!;
     if (perFragmentLighting) {
       currentProgram = perFragmentProgram;
     } else {
@@ -214,19 +214,17 @@ class Lesson13 extends Lesson {
     gl.useProgram(currentProgram.program);
 
     // One: setup lighting information
-    bool lighting = _lighting.checked;
+    final lighting = _lighting.checked!;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
     if (lighting) {
-      gl.uniform3f(uAmbientColor, double.parse(_aR.value),
-          double.parse(_aG.value), double.parse(_aB.value));
+      gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
-      gl.uniform3f(uPointLightingLocation, double.parse(_lpX.value),
-          double.parse(_lpY.value), double.parse(_lpZ.value));
+      gl.uniform3f(
+          uPointLightingLocation, double.parse(_lpX.value!), double.parse(_lpY.value!), double.parse(_lpZ.value!));
 
-      gl.uniform3f(uPointLightingColor, double.parse(_pR.value),
-          double.parse(_pG.value), double.parse(_pB.value));
+      gl.uniform3f(uPointLightingColor, double.parse(_pR.value!), double.parse(_pG.value!), double.parse(_pB.value!));
     }
-    gl.uniform1i(uUseTextures, _textures.checked ? 1 : 0);
+    gl.uniform1i(uUseTextures, _textures.checked! ? 1 : 0);
 
     mvPushMatrix();
 
@@ -243,11 +241,7 @@ class Lesson13 extends Lesson {
     gl.activeTexture(WebGL.TEXTURE0);
     gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     gl.uniform1i(uSampler, 0);
-    moon.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    moon.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
     mvPopMatrix();
 
     mvMatrix
@@ -256,11 +250,7 @@ class Lesson13 extends Lesson {
     gl.activeTexture(WebGL.TEXTURE0);
     gl.bindTexture(WebGL.TEXTURE_2D, cubeTexture);
     gl.uniform1i(uSampler, 0);
-    cube.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    cube.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
@@ -271,20 +261,22 @@ class Lesson13 extends Lesson {
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
-    var normalMatrix = mvMatrix.toInverseMat3();
-    normalMatrix.transposeSelf();
+    final normalMatrix = mvMatrix.toInverseMat3();
+    normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void animate(num now) {
+  @override
+  void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
       moonAngle += 0.05 * elapsed;
       cubeAngle += 0.05 * elapsed;
     }
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(
         up: () => tilt -= 1.0,
@@ -299,21 +291,22 @@ class Lesson13 extends Lesson {
         });
   }
 
-  InputElement _perFragment;
-  InputElement _textures;
+  late InputElement _perFragment;
+  late InputElement _textures;
 
   // Lighting enabled / Ambient color
-  InputElement _lighting, _aR, _aG, _aB;
+  late InputElement _lighting, _aR, _aG, _aB;
 
   // Light position
-  InputElement _lpX, _lpY, _lpZ;
+  late InputElement _lpX, _lpY, _lpZ;
 
   // Point color
-  InputElement _pR, _pG, _pB;
+  late InputElement _pR, _pG, _pB;
 
+  @override
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-      """
+      '''
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     <input type="checkbox" id="per-fragment" checked /> Per-fragment lighting<br/>
     <input type="checkbox" id="textures" checked /> Use textures<br/>
@@ -351,25 +344,25 @@ class Lesson13 extends Lesson {
     <br/>
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """,
-      treeSanitizer: new NullTreeSanitizer(),
+    ''',
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting");
-    _aR = querySelector("#ambientR");
-    _aG = querySelector("#ambientG");
-    _aB = querySelector("#ambientB");
+    _lighting = querySelector('#lighting') as InputElement;
+    _aR = querySelector('#ambientR') as InputElement;
+    _aG = querySelector('#ambientG') as InputElement;
+    _aB = querySelector('#ambientB') as InputElement;
 
-    _pR = querySelector("#pointR");
-    _pG = querySelector("#pointG");
-    _pB = querySelector("#pointB");
+    _pR = querySelector('#pointR') as InputElement;
+    _pG = querySelector('#pointG') as InputElement;
+    _pB = querySelector('#pointB') as InputElement;
 
-    _lpX = querySelector("#lightPositionX");
-    _lpY = querySelector("#lightPositionY");
-    _lpZ = querySelector("#lightPositionZ");
+    _lpX = querySelector('#lightPositionX') as InputElement;
+    _lpY = querySelector('#lightPositionY') as InputElement;
+    _lpZ = querySelector('#lightPositionZ') as InputElement;
 
-    _perFragment = querySelector("#per-fragment");
-    _textures = querySelector("#textures");
+    _perFragment = querySelector('#per-fragment') as InputElement;
+    _textures = querySelector('#textures') as InputElement;
   }
 }

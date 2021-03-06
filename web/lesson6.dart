@@ -16,19 +16,19 @@ part of learn_gl;
 
 /// Textures part two: filtering.
 class Lesson6 extends Lesson {
-  GlProgram program;
+  late GlProgram program;
   List<Texture> textures = [];
-  Cube cube;
+  late Cube cube;
 
   bool get isLoaded => textures.length == 3;
 
   Lesson6() {
-    cube = new Cube();
+    cube = Cube();
 
-    var attributes = ['aVertexPosition', 'aTextureCoord'];
-    var uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
+    final attributes = ['aVertexPosition', 'aTextureCoord'];
+    final uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
 
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -61,7 +61,7 @@ class Lesson6 extends Lesson {
     gl.useProgram(program.program);
 
     // Do some extra texture filters after loading the create texture
-    loadTexture("crate.gif", (Texture text, ImageElement ele) {
+    loadTexture('crate.gif', (Texture text, ImageElement ele) {
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       textures.add(text);
 
@@ -143,7 +143,8 @@ class Lesson6 extends Lesson {
 
   int activeFilter = 0;
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  @override
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -176,22 +177,23 @@ class Lesson6 extends Lesson {
     mvPopMatrix();
   }
 
-  get uPMatrix => program.uniforms["uPMatrix"];
-  get uMVMatrix => program.uniforms["uMVMatrix"];
-  get uSampler => program.uniforms["uSampler"];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
+  UniformLocation? get uSampler => program.uniforms['uSampler'];
 
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
   }
 
-  num xSpeed = 0.0, ySpeed = 0.0;
-  num xRot = 0.0, yRot = 0.0;
-  num z = -5.0;
+  double xSpeed = 0.0, ySpeed = 0.0;
+  double xRot = 0.0, yRot = 0.0;
+  double z = -5.0;
 
-  void animate(num now) {
+  @override
+  void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
 
       xRot += (xSpeed * elapsed) / 1000.0;
       yRot += (ySpeed * elapsed) / 1000.0;
@@ -199,12 +201,10 @@ class Lesson6 extends Lesson {
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(
-        up: () => ySpeed -= 1.0,
-        down: () => ySpeed += 1.0,
-        left: () => xSpeed -= 1.0,
-        right: () => xSpeed += 1.0);
+        up: () => ySpeed -= 1.0, down: () => ySpeed += 1.0, left: () => xSpeed -= 1.0, right: () => xSpeed += 1.0);
     if (isActive(KeyCode.PAGE_UP)) {
       z -= 0.05;
     }
@@ -213,9 +213,10 @@ class Lesson6 extends Lesson {
     }
   }
 
+  @override
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-      """
+      '''
     <h2>Controls:</h2>
 
     <ul>
@@ -223,8 +224,8 @@ class Lesson6 extends Lesson {
         <li>Cursor keys: make the cube rotate (the longer you hold down a cursor key, the more it accelerates)
         <li><code>F</code> to toggle through three different kinds of texture filters
     </ul>
-    """,
-      treeSanitizer: new NullTreeSanitizer(),
+    ''',
+      treeSanitizer: NullTreeSanitizer(),
     );
   }
 }

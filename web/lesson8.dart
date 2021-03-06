@@ -14,20 +14,20 @@
  */
 part of learn_gl;
 
-/// Depth Buffer, Transparency and Blending
+/// Depth late Buffer, Transparency and Blending
 class Lesson8 extends Lesson {
-  Cube cube;
-  GlProgram program;
-  Texture texture;
+  late Cube cube;
+  late GlProgram program;
+  Texture? texture;
 
   bool get isLoaded => texture != null;
 
   Lesson8() {
-    cube = new Cube();
+    cube = Cube();
     loadTexture('glass.gif', handleMipMapTexture).then((t) => texture = t);
 
-    var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = [
+    final attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
+    final uniforms = [
       'uPMatrix',
       'uMVMatrix',
       'uNMatrix',
@@ -39,7 +39,7 @@ class Lesson8 extends Lesson {
       'uAlpha'
     ];
 
-    program = new GlProgram(
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -94,25 +94,26 @@ class Lesson8 extends Lesson {
     gl.useProgram(program.program);
   }
 
-  get uPMatrix => program.uniforms["uPMatrix"];
-  get uMVMatrix => program.uniforms["uMVMatrix"];
-  get uNMatrix => program.uniforms["uNMatrix"];
-  get uSampler => program.uniforms["uSampler"];
-  get uAmbientColor => program.uniforms["uAmbientColor"];
-  get uLightingDirection => program.uniforms["uLightingDirection"];
-  get uDirectionalColor => program.uniforms["uDirectionalColor"];
-  get uUseLighting => program.uniforms["uUseLighting"];
-  get uAlpha => program.uniforms["uAlpha"];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
+  UniformLocation? get uNMatrix => program.uniforms['uNMatrix'];
+  UniformLocation? get uSampler => program.uniforms['uSampler'];
+  UniformLocation? get uAmbientColor => program.uniforms['uAmbientColor'];
+  UniformLocation? get uLightingDirection => program.uniforms['uLightingDirection'];
+  UniformLocation? get uDirectionalColor => program.uniforms['uDirectionalColor'];
+  UniformLocation? get uUseLighting => program.uniforms['uUseLighting'];
+  UniformLocation? get uAlpha => program.uniforms['uAlpha'];
 
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
-    var normalMatrix = mvMatrix.toInverseMat3();
-    normalMatrix.transposeSelf();
+    final normalMatrix = mvMatrix.toInverseMat3();
+    normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  @override
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -131,29 +132,26 @@ class Lesson8 extends Lesson {
       ..rotateX(radians(xRot))
       ..rotateY(radians(yRot));
 
-    if (_blending.checked) {
+    if (_blending.checked!) {
       gl.blendFunc(WebGL.SRC_ALPHA, WebGL.ONE);
       gl.enable(WebGL.BLEND);
       gl.disable(WebGL.DEPTH_TEST);
-      gl.uniform1f(uAlpha, double.tryParse(_alpha.value) ?? 1.0);
+      gl.uniform1f(uAlpha, double.tryParse(_alpha.value!) ?? 1.0);
     } else {
       gl.disable(WebGL.BLEND);
       gl.enable(WebGL.DEPTH_TEST);
     }
 
-    gl.uniform1i(uUseLighting, _lighting.checked ? 1 : 0);
-    if (_lighting.checked) {
-      gl.uniform3f(uAmbientColor, double.parse(_aR.value),
-          double.parse(_aG.value), double.parse(_aB.value));
+    gl.uniform1i(uUseLighting, _lighting.checked! ? 1 : 0);
+    if (_lighting.checked!) {
+      gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
       // Take the lighting point and normalize / reverse it.
-      Vector3 direction = new Vector3(double.parse(_ldX.value),
-          double.parse(_ldY.value), double.parse(_ldZ.value));
+      var direction = Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
       direction = direction.normalize().scale(-1.0);
       gl.uniform3fv(uLightingDirection, direction.buf);
 
-      gl.uniform3f(uDirectionalColor, double.parse(_dR.value),
-          double.parse(_dG.value), double.parse(_dB.value));
+      gl.uniform3f(uDirectionalColor, double.parse(_dR.value!), double.parse(_dG.value!), double.parse(_dB.value!));
     }
 
     gl.activeTexture(WebGL.TEXTURE0);
@@ -169,13 +167,14 @@ class Lesson8 extends Lesson {
     mvPopMatrix();
   }
 
-  num xSpeed = 3.0, ySpeed = -3.0;
-  num xRot = 0.0, yRot = 0.0;
-  num z = -5.0;
+  double xSpeed = 3.0, ySpeed = -3.0;
+  double xRot = 0.0, yRot = 0.0;
+  double z = -5.0;
 
-  void animate(num now) {
+  @override
+  void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
 
       xRot += (xSpeed * elapsed) / 1000.0;
       yRot += (ySpeed * elapsed) / 1000.0;
@@ -183,12 +182,10 @@ class Lesson8 extends Lesson {
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(
-        up: () => ySpeed -= 1.0,
-        down: () => ySpeed += 1.0,
-        left: () => xSpeed -= 1.0,
-        right: () => xSpeed += 1.0);
+        up: () => ySpeed -= 1.0, down: () => ySpeed += 1.0, left: () => xSpeed -= 1.0, right: () => xSpeed += 1.0);
     if (isActive(KeyCode.PAGE_UP)) {
       z -= 0.05;
     }
@@ -198,19 +195,20 @@ class Lesson8 extends Lesson {
   }
 
   // Lighting enabled / Ambient color
-  InputElement _lighting, _aR, _aG, _aB;
+  late InputElement _lighting, _aR, _aG, _aB;
 
   // Light position
-  InputElement _ldX, _ldY, _ldZ;
+  late InputElement _ldX, _ldY, _ldZ;
 
   // Directional light color
-  InputElement _dR, _dG, _dB;
+  late InputElement _dR, _dG, _dB;
 
-  InputElement _blending, _alpha;
+  late InputElement _blending, _alpha;
 
+  @override
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-      """
+      '''
     <input type="checkbox" id="blending" checked /> Use blending<br/>
     Alpha level <input type="text" id="alpha" value="0.5" /><br/>
 
@@ -244,25 +242,25 @@ class Lesson8 extends Lesson {
             <td>B: <input type="text" id="ambientB" value="0.2" />
         </tr>
     </table>
-    """,
-      treeSanitizer: new NullTreeSanitizer(),
+    ''',
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting");
-    _aR = querySelector("#ambientR");
-    _aG = querySelector("#ambientG");
-    _aB = querySelector("#ambientB");
+    _lighting = querySelector('#lighting') as InputElement;
+    _aR = querySelector('#ambientR') as InputElement;
+    _aG = querySelector('#ambientG') as InputElement;
+    _aB = querySelector('#ambientB') as InputElement;
 
-    _dR = querySelector("#directionalR");
-    _dG = querySelector("#directionalG");
-    _dB = querySelector("#directionalB");
+    _dR = querySelector('#directionalR') as InputElement;
+    _dG = querySelector('#directionalG') as InputElement;
+    _dB = querySelector('#directionalB') as InputElement;
 
-    _ldX = querySelector("#lightDirectionX");
-    _ldY = querySelector("#lightDirectionY");
-    _ldZ = querySelector("#lightDirectionZ");
+    _ldX = querySelector('#lightDirectionX') as InputElement;
+    _ldY = querySelector('#lightDirectionY') as InputElement;
+    _ldZ = querySelector('#lightDirectionZ') as InputElement;
 
-    _blending = querySelector("#blending");
-    _alpha = querySelector("#alpha");
+    _blending = querySelector('#blending') as InputElement;
+    _alpha = querySelector('#alpha') as InputElement;
   }
 }

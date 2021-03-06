@@ -14,25 +14,25 @@
  */
 library learn_gl;
 
-import 'dart:math';
-import 'dart:html';
-import 'dart:convert';
-import 'dart:web_gl';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:html';
+import 'dart:math';
 import 'dart:typed_data';
+import 'dart:web_gl';
 
-// Some of our objects that we're going to support
-part 'renderable.dart';
 part 'cube.dart';
 part 'gl_program.dart';
 part 'json_object.dart';
-part 'pyramid.dart';
-part 'rectangle.dart';
-part 'sphere.dart';
-part 'star.dart';
-
 // All the lessons
 part 'lesson1.dart';
+part 'lesson10.dart';
+part 'lesson11.dart';
+part 'lesson12.dart';
+part 'lesson13.dart';
+part 'lesson14.dart';
+part 'lesson15.dart';
+part 'lesson16.dart';
 part 'lesson2.dart';
 part 'lesson3.dart';
 part 'lesson4.dart';
@@ -41,64 +41,63 @@ part 'lesson6.dart';
 part 'lesson7.dart';
 part 'lesson8.dart';
 part 'lesson9.dart';
-part 'lesson10.dart';
-part 'lesson11.dart';
-part 'lesson12.dart';
-part 'lesson13.dart';
-part 'lesson14.dart';
-part 'lesson15.dart';
-part 'lesson16.dart';
-
 // Math
 part 'matrix4.dart';
+part 'pyramid.dart';
+part 'rectangle.dart';
+// Some of our objects that we're going to support
+part 'renderable.dart';
+part 'sphere.dart';
+part 'star.dart';
 
-CanvasElement canvas = querySelector("#lesson01-canvas");
-RenderingContext gl;
-Lesson lesson;
+final canvas = querySelector('#lesson01-canvas') as CanvasElement;
+late RenderingContext2 gl;
+late Lesson lesson;
 
 void main() {
-  mvMatrix = new Matrix4()..identity();
+  mvMatrix = Matrix4()..identity();
   // Nab the context we'll be drawing to.
-  gl = canvas.getContext3d();
-  if (gl == null) {
-    return;
-  }
+  // gl = canvas.getContext3d();
+  gl = canvas.getContext('webgl2') as RenderingContext2;
 
   // Allow some URL customization of the program.
   parseQueryString();
 
-  trackFrameRate = urlParameters.containsKey("fps");
+  trackFrameRate = urlParameters.containsKey('fps');
   if (!trackFrameRate) {
-    querySelector("#fps").remove();
+    querySelector('#fps')!.remove();
   }
-  if (urlParameters.containsKey("width")) {
-    String width = urlParameters["width"];
+  if (urlParameters.containsKey('width')) {
+    final String width = urlParameters['width'];
     canvas.width = int.tryParse(width) ?? 500;
   }
 
-  if (urlParameters.containsKey("height")) {
-    String height = urlParameters["height"];
+  if (urlParameters.containsKey('height')) {
+    final String height = urlParameters['height'];
     canvas.height = int.tryParse(height) ?? 500;
   }
 
-  if (urlParameters.containsKey("overflow")) {
-    document.body.style.overflow = "hidden";
+  if (urlParameters.containsKey('overflow')) {
+    document.body!.style.overflow = 'hidden';
   }
 
-  int defaultLesson = 1;
-  if (urlParameters.containsKey("lsn")) {
-    defaultLesson = int.parse(urlParameters["lsn"]);
+  var defaultLesson = 1;
+  if (urlParameters.containsKey('lsn')) {
+    defaultLesson = int.parse(urlParameters['lsn']);
   }
 
-  SelectElement lessonSelect = querySelector("#lessonNumber");
-  for (int i = 1; i < 17; i++) {
-    lessonSelect.children.add(new OptionElement(
-        data: "Lesson $i", value: "$i", selected: defaultLesson == i));
+  final lessonSelect = querySelector('#lessonNumber') as SelectElement;
+  for (var i = 1; i < 17; i++) {
+    lessonSelect.children.add(OptionElement(
+      data: 'Lesson $i',
+      value: '$i',
+      selected: defaultLesson == i,
+    ));
   }
   lessonSelect.onChange.listen((event) {
-    lesson = selectLesson(lessonSelect.selectedIndex + 1)..initHtml(lessonHook);
+    lesson = selectLesson(lessonSelect.selectedIndex! + 1)!..initHtml(lessonHook);
   });
-  lesson = selectLesson(lessonSelect.selectedIndex + 1)..initHtml(lessonHook);
+  lesson = selectLesson(lessonSelect.selectedIndex! + 1)!..initHtml(lessonHook);
 
   // Set the fill color to black
   gl.clearColor(0, 0, 0, 1.0);
@@ -117,40 +116,38 @@ void main() {
 }
 
 /// This is the infinite animation loop; we request that the web browser
-/// call us back every time its ready for a new frame to be rendered. The [time]
+/// call us back every time its ready for a  frame to be rendered. The [time]
 /// parameter is an increasing value based on when the animation loop started.
-tick(time) {
+void tick(time) {
   window.animationFrame.then(tick);
   if (trackFrameRate) frameCount(time);
   lesson.handleKeys();
   lesson.animate(time);
-  lesson.drawScene(canvas.width, canvas.height, canvas.width / canvas.height);
+  lesson.drawScene(canvas.width!, canvas.height!, canvas.width! / canvas.height!);
 }
 
 /// The global key-state map.
-Set<int> currentlyPressedKeys = new Set<int>();
+Set<int> currentlyPressedKeys = <int>{};
 
 /// Test if the given [KeyCode] is active.
 bool isActive(int code) => currentlyPressedKeys.contains(code);
 
 /// Test if any of the given [KeyCode]s are active, returning true.
 bool anyActive(List<int> codes) {
-  return codes.firstWhere((code) => currentlyPressedKeys.contains(code),
-          orElse: () => null) !=
-      null;
+  return codes.firstWhere((code) => currentlyPressedKeys.contains(code), orElse: () => -1) != -1;
 }
 
 /// Parse and store the URL parameters for start up.
-parseQueryString() {
-  String search = window.location.search;
-  if (search.startsWith("?")) {
+void parseQueryString() {
+  var search = window.location.search!;
+  if (search.startsWith('?')) {
     search = search.substring(1);
   }
-  List<String> params = search.split("&");
-  for (String param in params) {
-    List<String> pair = param.split("=");
+  final params = search.split('&');
+  for (var param in params) {
+    final pair = param.split('=');
     if (pair.length == 1) {
-      urlParameters[pair[0]] = "";
+      urlParameters[pair[0]] = '';
     } else {
       urlParameters[pair[0]] = pair[1];
     }
@@ -160,22 +157,22 @@ parseQueryString() {
 Map urlParameters = {};
 
 /// Perspective matrix
-Matrix4 pMatrix;
+late Matrix4 pMatrix;
 
 /// Model-View matrix.
-Matrix4 mvMatrix;
+late Matrix4 mvMatrix;
 
-List<Matrix4> mvStack = new List<Matrix4>();
+List<Matrix4> mvStack = <Matrix4>[];
 
 /// Add a copy of the current Model-View matrix to the the stack for future
 /// restoration.
-mvPushMatrix() => mvStack.add(new Matrix4.fromMatrix(mvMatrix));
+void mvPushMatrix() => mvStack.add(Matrix4.fromMatrix(mvMatrix));
 
 /// Pop the last matrix off the stack and set the Model View matrix.
-mvPopMatrix() => mvMatrix = mvStack.removeLast();
+void mvPopMatrix() => mvMatrix = mvStack.removeLast();
 
 /// Handle common keys through callbacks, making lessons a little easier to code
-void handleDirection({up(), down(), left(), right()}) {
+void handleDirection({Function()? up, Function()? down, Function()? left, Function()? right}) {
   if (left != null && anyActive([KeyCode.A, KeyCode.LEFT])) {
     left();
   }
@@ -191,20 +188,19 @@ void handleDirection({up(), down(), left(), right()}) {
 }
 
 /// FPS meter - activated when the url parameter "fps" is included.
-const num ALPHA_DECAY = 0.1;
-const num INVERSE_ALPHA_DECAY = 1 - ALPHA_DECAY;
+const double ALPHA_DECAY = 0.1;
+const double INVERSE_ALPHA_DECAY = 1 - ALPHA_DECAY;
 const SAMPLE_RATE_MS = 500;
 const SAMPLE_FACTOR = 1000 ~/ SAMPLE_RATE_MS;
 int frames = 0;
-num lastSample = 0;
-num averageFps = 1;
-DivElement fps = querySelector("#fps");
+double lastSample = 0;
+double averageFps = 1;
+DivElement fps = querySelector('#fps') as DivElement;
 
-void frameCount(num now) {
+void frameCount(double now) {
   frames++;
   if ((now - lastSample) < SAMPLE_RATE_MS) return;
-  averageFps =
-      averageFps * ALPHA_DECAY + frames * INVERSE_ALPHA_DECAY * SAMPLE_FACTOR;
+  averageFps = averageFps * ALPHA_DECAY + frames * INVERSE_ALPHA_DECAY * SAMPLE_FACTOR;
   fps.text = averageFps.toStringAsFixed(2);
   frames = 0;
   lastSample = now;
@@ -213,11 +209,11 @@ void frameCount(num now) {
 /// The base for all Learn WebGL lessons.
 abstract class Lesson {
   /// Render the scene to the [viewWidth], [viewHeight], and [aspect] ratio.
-  void drawScene(num viewWidth, num viewHeight, num aspect);
+  void drawScene(int viewWidth, int viewHeight, double aspect);
 
   /// Animate the scene any way you like. [now] is provided as a clock reference
   /// since the scene rendering started.
-  void animate(num now) {}
+  void animate(double now) {}
 
   /// Handle any keyboard events.
   void handleKeys() {}
@@ -226,20 +222,20 @@ abstract class Lesson {
   /// This is provided by default.
   void initHtml(DivElement hook) {
     hook.innerHtml = "If you see this, don't worry, the lesson doesn't have "
-        "any parameters for you to change! Generally up/down/left/right or "
-        "WASD work.";
+        'any parameters for you to change! Generally up/down/left/right or '
+        'WASD work.';
   }
 
   /// Added for your convenience to track time between [animate] callbacks.
-  num lastTime = 0;
+  double lastTime = 0;
 }
 
 /// Load the given image at [url] and call [handle] to execute some GL code.
 /// Return a [Future] to asynchronously notify when the texture is complete.
-Future<Texture> loadTexture(String url, handle(Texture tex, ImageElement ele)) {
-  var completer = new Completer<Texture>();
-  var texture = gl.createTexture();
-  var element = new ImageElement();
+Future<Texture> loadTexture(String url, Function(Texture tex, ImageElement ele) handle) {
+  final completer = Completer<Texture>();
+  final texture = gl.createTexture();
+  final element = ImageElement();
   element.onLoad.listen((e) {
     handle(texture, element);
     completer.complete(texture);
@@ -275,57 +271,56 @@ void handleMipMapTexture(Texture texture, ImageElement image) {
   gl.bindTexture(WebGL.TEXTURE_2D, null);
 }
 
-DivElement lessonHook = querySelector("#lesson_html");
+DivElement lessonHook = querySelector('#lesson_html') as DivElement;
 bool trackFrameRate = false;
 
-Lesson selectLesson(int number) {
+Lesson? selectLesson(int number) {
   switch (number) {
     case 1:
-      return new Lesson1();
+      return Lesson1();
     case 2:
-      return new Lesson2();
+      return Lesson2();
     case 3:
-      return new Lesson3();
+      return Lesson3();
     case 4:
-      return new Lesson4();
+      return Lesson4();
     case 5:
-      return new Lesson5();
+      return Lesson5();
     case 6:
-      return new Lesson6();
+      return Lesson6();
     case 7:
-      return new Lesson7();
+      return Lesson7();
     case 8:
-      return new Lesson8();
+      return Lesson8();
     case 9:
-      return new Lesson9();
+      return Lesson9();
     case 10:
-      return new Lesson10();
+      return Lesson10();
     case 11:
-      return new Lesson11();
+      return Lesson11();
     case 12:
-      return new Lesson12();
+      return Lesson12();
     case 13:
-      return new Lesson13();
+      return Lesson13();
     case 14:
-      return new Lesson14();
+      return Lesson14();
     case 15:
-      return new Lesson15();
+      return Lesson15();
     case 16:
-      return new Lesson16();
+      return Lesson16();
   }
   return null;
 }
 
 /// Work around for setInnerHtml()
 class NullTreeSanitizer implements NodeTreeSanitizer {
-  static NullTreeSanitizer instance;
+  static NullTreeSanitizer? instance;
   factory NullTreeSanitizer() {
-    if (instance == null) {
-      instance = new NullTreeSanitizer._();
-    }
-    return instance;
+    instance ??= NullTreeSanitizer._();
+    return instance!;
   }
 
   NullTreeSanitizer._();
+  @override
   void sanitizeTree(Node node) {}
 }

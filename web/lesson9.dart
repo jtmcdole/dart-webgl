@@ -16,17 +16,17 @@ part of learn_gl;
 
 /// Twinkle, twinkle little star...
 class Lesson9 extends Lesson {
-  GlProgram program;
-  Texture texture;
+  late GlProgram program;
+  Texture? texture;
   List<Star> stars = [];
 
   bool get isLoaded => texture != null;
 
   Lesson9() {
-    for (num i = 0; i < 50; i++) {
-      stars.add(new Star((i / 50) * 5.0, i / 50));
+    for (var i = 0; i < 50; i++) {
+      stars.add(Star((i / 50) * 5.0, i / 50));
     }
-    loadTexture("star.gif", (Texture texture, ImageElement ele) {
+    loadTexture('star.gif', (Texture texture, ImageElement ele) {
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
       gl.texImage2D(
@@ -52,9 +52,9 @@ class Lesson9 extends Lesson {
       this.texture = texture;
     });
 
-    var attributes = ['aVertexPosition', 'aTextureCoord'];
-    var uniforms = ['uMVMatrix', 'uPMatrix', 'uColor', 'uSampler'];
-    program = new GlProgram(
+    final attributes = ['aVertexPosition', 'aTextureCoord'];
+    final uniforms = ['uMVMatrix', 'uPMatrix', 'uColor', 'uSampler'];
+    program = GlProgram(
       '''
           precision mediump float;
 
@@ -89,7 +89,8 @@ class Lesson9 extends Lesson {
     gl.useProgram(program.program);
   }
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  @override
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -114,12 +115,12 @@ class Lesson9 extends Lesson {
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
     gl.uniform1i(program.uniforms['uSampler'], 0);
 
-    for (Star star in stars) {
+    for (var star in stars) {
       star.draw(
-          vertex: program.attributes['aVertexPosition'],
-          coord: program.attributes['aTextureCoord'],
+          vertex: program.attributes['aVertexPosition']!,
+          coord: program.attributes['aTextureCoord']!,
           color: program.uniforms['uColor'],
-          twinkle: _twinkle.checked,
+          twinkle: _twinkle.checked!,
           tilt: tilt,
           spin: spin,
           setUniforms: setMatrixUniforms);
@@ -127,28 +128,30 @@ class Lesson9 extends Lesson {
     mvPopMatrix();
   }
 
-  get uPMatrix => program.uniforms["uPMatrix"];
-  get uMVMatrix => program.uniforms["uMVMatrix"];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
 
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
   }
 
-  num tilt = 90.0;
-  num spin = 0.0;
-  num zoom = -15.0;
+  double tilt = 90.0;
+  double spin = 0.0;
+  double zoom = -15.0;
 
-  void animate(num now) {
+  @override
+  void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
-      for (Star star in stars) {
+      final elapsed = now - lastTime;
+      for (var star in stars) {
         star.animate(elapsed);
       }
     }
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(up: () => tilt += 2.0, down: () => tilt -= 2.0);
     if (isActive(KeyCode.PAGE_UP)) {
@@ -159,16 +162,17 @@ class Lesson9 extends Lesson {
     }
   }
 
-  InputElement _twinkle;
-  initHtml(DivElement hook) {
+  late InputElement _twinkle;
+  @override
+  void initHtml(DivElement hook) {
     hook.setInnerHtml(
       '''
     <input type="checkbox" id="twinkle" /> Twinkle<br/>
     (Use up/down cursor keys to rotate, and <code>Page Up</code>/<code>Page Down</code> to zoom out/in)
     ''',
-      treeSanitizer: new NullTreeSanitizer(),
+      treeSanitizer: NullTreeSanitizer(),
     );
 
-    _twinkle = querySelector("#twinkle");
+    _twinkle = querySelector('#twinkle') as InputElement;
   }
 }

@@ -15,8 +15,8 @@
 part of learn_gl;
 
 class Pyramid implements Renderable {
-  Buffer positionBuffer, normalBuffer, textureCoordBuffer;
-  Buffer colorBuffer;
+  late Buffer positionBuffer, normalBuffer, textureCoordBuffer;
+  late Buffer colorBuffer;
 
   Pyramid() {
     positionBuffer = gl.createBuffer();
@@ -24,7 +24,7 @@ class Pyramid implements Renderable {
     textureCoordBuffer = gl.createBuffer();
 
     gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
-    var vertices = [
+    final vertices = [
       // Front face
       0.0, 1.0, 0.0,
       -1.0, -1.0, 1.0,
@@ -55,13 +55,13 @@ class Pyramid implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(vertices),
+      Float32List.fromList(vertices),
       WebGL.STATIC_DRAW,
     );
 
     normalBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
-    var vertexNormals = [
+    final vertexNormals = [
       // Front face
       0.0, 0.4472135901451111, 0.8944271802902222,
       0.0, 0.4472135901451111, 0.8944271802902222,
@@ -92,14 +92,14 @@ class Pyramid implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(vertexNormals),
+      Float32List.fromList(vertexNormals),
       WebGL.STATIC_DRAW,
     );
 
     // TODO: Come up with a better way to store color buffer vs texture buffer :)
     colorBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
-    var colors = [
+    final colors = [
       // Front face
       1.0, 0.0, 0.0, 1.0,
       0.0, 1.0, 0.0, 1.0,
@@ -130,15 +130,15 @@ class Pyramid implements Renderable {
     ];
     gl.bufferData(
       WebGL.ARRAY_BUFFER,
-      new Float32List.fromList(colors),
+      Float32List.fromList(colors),
       WebGL.STATIC_DRAW,
     );
 
     // Normal discovery from a list triangles
     //    for (int i = 0; i < vertices.length; i += 9 ) {
-    //      Vector3 p0 = new Vector3(vertices[i], vertices[i+1], vertices[i+2]),
-    //          p1 = new Vector3(vertices[i+3], vertices[i+4], vertices[i+5]),
-    //          p2 = new Vector3(vertices[i+6], vertices[i+7], vertices[i+8]);
+    //      Vector3 p0 =  Vector3(vertices[i], vertices[i+1], vertices[i+2]),
+    //          p1 =  Vector3(vertices[i+3], vertices[i+4], vertices[i+5]),
+    //          p2 =  Vector3(vertices[i+6], vertices[i+7], vertices[i+8]);
     //
     //      Vector3 v0 = p1 - p0, v1 = p2 - p0;
     //      Vector3 normal = v0.cross(v1).normalize();
@@ -146,7 +146,8 @@ class Pyramid implements Renderable {
     //    }
   }
 
-  void draw({int vertex, int normal, int coord, int color, setUniforms()}) {
+  @override
+  void draw({int? vertex, int? normal, int? coord, int? color, Function()? setUniforms}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

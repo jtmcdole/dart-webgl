@@ -15,5 +15,5 @@
 part of learn_gl;
 
 abstract class Renderable {
-  void draw({int vertex, int normal, int coord, setUniforms()});
+  void draw({required int vertex, required int normal, required int coord, Function()? setUniforms});
 }

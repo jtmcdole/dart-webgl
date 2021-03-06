@@ -1,3 +1,4 @@
+// ignore_for_file: unnecessary_this
 // Trimmed down matrix code - its best you use a well known library
 // instead of this code.
 part of learn_gl;
@@ -17,13 +18,13 @@ class SingularMatrixException implements Exception {
 class Vector3 {
   Float32List buf;
 
-  Vector3(double x, double y, double z) : buf = new Float32List(3) {
+  Vector3(double x, double y, double z) : buf = Float32List(3) {
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
-  Vector3.fromList(List<double> list) : buf = new Float32List.fromList(list);
+  Vector3.fromList(List<double> list) : buf = Float32List.fromList(list);
 
   double get x => buf[0];
   double get y => buf[1];
@@ -35,26 +36,26 @@ class Vector3 {
   double magnitude() => sqrt(x * x + y * y + z * z);
 
   Vector3 normalize() {
-    double len = magnitude();
+    final len = magnitude();
     if (len == 0.0) {
-      throw new ZeroLengthVectorException();
+      throw ZeroLengthVectorException();
     }
-    return new Vector3(x / len, y / len, z / len);
+    return Vector3(x / len, y / len, z / len);
   }
 
   Vector3 operator -() {
-    return new Vector3(-x, -y, -z);
+    return Vector3(-x, -y, -z);
   }
 
   Vector3 operator -(Vector3 other) {
-    return new Vector3(x - other.x, y - other.y, z - other.z);
+    return Vector3(x - other.x, y - other.y, z - other.z);
   }
 
   Vector3 cross(Vector3 other) {
-    double xResult = y * other.z - z * other.y;
-    double yResult = z * other.x - x * other.z;
-    double zResult = x * other.y - y * other.x;
-    return new Vector3(xResult, yResult, zResult);
+    final xResult = y * other.z - z * other.y;
+    final yResult = z * other.x - x * other.z;
+    final zResult = x * other.y - y * other.x;
+    return Vector3(xResult, yResult, zResult);
   }
 
   Vector3 scale(double by) {
@@ -64,8 +65,9 @@ class Vector3 {
     return this;
   }
 
+  @override
   String toString() {
-    return "Vector3($x,$y,$z)";
+    return 'Vector3($x,$y,$z)';
   }
 }
 
@@ -98,14 +100,14 @@ double radians(double degrees) {
 class Matrix4 {
   Float32List buf;
 
-  /// Constructs a new Matrix4 with all entries initialized
+  /// Constructs a  Matrix4 with all entries initialized
   /// to zero.
-  Matrix4() : buf = new Float32List(16);
+  Matrix4() : buf = Float32List(16);
 
   /// Make a copy of another matrix.
-  Matrix4.fromMatrix(Matrix4 other) : buf = new Float32List.fromList(other.buf);
+  Matrix4.fromMatrix(Matrix4 other) : buf = Float32List.fromList(other.buf);
 
-  Matrix4.fromBuffer(Float32List this.buf);
+  Matrix4.fromBuffer(this.buf);
 
   /// returns the index into [buf] for a given
   /// row and column.
@@ -192,12 +194,13 @@ class Matrix4 {
     buf[rc(3, 3)] = m;
   }
 
+  @override
   String toString() {
-    List<String> rows = new List();
-    for (int row = 0; row < 4; row++) {
-      List<String> items = new List();
-      for (int col = 0; col < 4; col++) {
-        double v = buf[rc(row, col)];
+    final rows = <String>[];
+    for (var row = 0; row < 4; row++) {
+      final items = <String>[];
+      for (var col = 0; col < 4; col++) {
+        var v = buf[rc(row, col)];
         if (v.abs() < 1e-16) {
           v = 0.0;
         }
@@ -215,10 +218,10 @@ class Matrix4 {
     return "Matrix4:\n${rows.join('\n')}";
   }
 
-  /// Cosntructs a new Matrix4 that represents the identity transformation
+  /// Cosntructs a  Matrix4 that represents the identity transformation
   /// (all the diagonal entries are 1, and everything else is zero).
   void identity() {
-    for (int i = 0; i < 16; i++) {
+    for (var i = 0; i < 16; i++) {
       buf[i] = 0.0;
     }
     m00 = 1.0;
@@ -227,21 +230,21 @@ class Matrix4 {
     m33 = 1.0;
   }
 
-  /// Constructs a new Matrix4 that represents a rotation around an axis.
+  /// Constructs a  Matrix4 that represents a rotation around an axis.
   ///
   /// [radians] to rotate
   /// [axis] direction of axis of rotation (must not be zero length)
   static Matrix4 rotation(double radians, Vector3 axis) {
     axis = axis.normalize();
 
-    double x = axis.x;
-    double y = axis.y;
-    double z = axis.z;
-    double s = sin(radians);
-    double c = cos(radians);
-    double t = 1 - c;
+    final x = axis.x;
+    final y = axis.y;
+    final z = axis.z;
+    final s = sin(radians);
+    final c = cos(radians);
+    final t = 1 - c;
 
-    Matrix4 m = new Matrix4();
+    final m = Matrix4();
     m.m00 = x * x * t + c;
     m.m10 = x * y * t + z * s;
     m.m20 = x * z * t - y * s;
@@ -260,16 +263,16 @@ class Matrix4 {
 
   /// Rotate this [radians] around X
   Matrix4 rotateX(double radians) {
-    double c = cos(radians);
-    double s = sin(radians);
-    var t1 = buf[4] * c + buf[8] * s;
-    var t2 = buf[5] * c + buf[9] * s;
-    var t3 = buf[6] * c + buf[10] * s;
-    var t4 = buf[7] * c + buf[11] * s;
-    var t5 = buf[4] * -s + buf[8] * c;
-    var t6 = buf[5] * -s + buf[9] * c;
-    var t7 = buf[6] * -s + buf[10] * c;
-    var t8 = buf[7] * -s + buf[11] * c;
+    final c = cos(radians);
+    final s = sin(radians);
+    final t1 = buf[4] * c + buf[8] * s;
+    final t2 = buf[5] * c + buf[9] * s;
+    final t3 = buf[6] * c + buf[10] * s;
+    final t4 = buf[7] * c + buf[11] * s;
+    final t5 = buf[4] * -s + buf[8] * c;
+    final t6 = buf[5] * -s + buf[9] * c;
+    final t7 = buf[6] * -s + buf[10] * c;
+    final t8 = buf[7] * -s + buf[11] * c;
     buf[4] = t1;
     buf[5] = t2;
     buf[6] = t3;
@@ -283,16 +286,16 @@ class Matrix4 {
 
   /// Rotate this matrix [radians] around Y
   Matrix4 rotateY(double radians) {
-    double c = cos(radians);
-    double s = sin(radians);
-    var t1 = buf[0] * c + buf[8] * -s;
-    var t2 = buf[1] * c + buf[9] * -s;
-    var t3 = buf[2] * c + buf[10] * -s;
-    var t4 = buf[3] * c + buf[11] * -s;
-    var t5 = buf[0] * s + buf[8] * c;
-    var t6 = buf[1] * s + buf[9] * c;
-    var t7 = buf[2] * s + buf[10] * c;
-    var t8 = buf[3] * s + buf[11] * c;
+    final c = cos(radians);
+    final s = sin(radians);
+    final t1 = buf[0] * c + buf[8] * -s;
+    final t2 = buf[1] * c + buf[9] * -s;
+    final t3 = buf[2] * c + buf[10] * -s;
+    final t4 = buf[3] * c + buf[11] * -s;
+    final t5 = buf[0] * s + buf[8] * c;
+    final t6 = buf[1] * s + buf[9] * c;
+    final t7 = buf[2] * s + buf[10] * c;
+    final t8 = buf[3] * s + buf[11] * c;
     buf[0] = t1;
     buf[1] = t2;
     buf[2] = t3;
@@ -306,16 +309,16 @@ class Matrix4 {
 
   /// Rotate this matrix [radians] around Z
   Matrix4 rotateZ(double radians) {
-    double c = cos(radians);
-    double s = sin(radians);
-    var t1 = buf[0] * c + buf[4] * s;
-    var t2 = buf[1] * c + buf[5] * s;
-    var t3 = buf[2] * c + buf[6] * s;
-    var t4 = buf[3] * c + buf[7] * s;
-    var t5 = buf[0] * -s + buf[4] * c;
-    var t6 = buf[1] * -s + buf[5] * c;
-    var t7 = buf[2] * -s + buf[6] * c;
-    var t8 = buf[3] * -s + buf[7] * c;
+    final c = cos(radians);
+    final s = sin(radians);
+    final t1 = buf[0] * c + buf[4] * s;
+    final t2 = buf[1] * c + buf[5] * s;
+    final t3 = buf[2] * c + buf[6] * s;
+    final t4 = buf[3] * c + buf[7] * s;
+    final t5 = buf[0] * -s + buf[4] * c;
+    final t6 = buf[1] * -s + buf[5] * c;
+    final t7 = buf[2] * -s + buf[6] * c;
+    final t8 = buf[3] * -s + buf[7] * c;
     buf[0] = t1;
     buf[1] = t2;
     buf[2] = t3;
@@ -331,10 +334,10 @@ class Matrix4 {
   ///
   /// [v] vector representing which direction to move and how much to move
   Matrix4 translate(List<double> v) {
-    var tx = v[0];
-    var ty = v[1];
-    var tz = v[2];
-    var tw = v.length == 4 ? v[3] : 1.0;
+    final tx = v[0];
+    final ty = v[1];
+    final tz = v[2];
+    final tw = v.length == 4 ? v[3] : 1.0;
 
     buf[12] = buf[0] * tx + buf[4] * ty + buf[8] * tz + buf[12] * tw;
     buf[13] = buf[1] * tx + buf[5] * ty + buf[9] * tz + buf[13] * tw;
@@ -345,9 +348,9 @@ class Matrix4 {
 
   /// returns the transpose of this matrix
   Matrix4 transpose() {
-    Matrix4 m = new Matrix4();
-    for (int row = 0; row < 4; row++) {
-      for (int col = 0; col < 4; col++) {
+    final m = Matrix4();
+    for (var row = 0; row < 4; row++) {
+      for (var col = 0; col < 4; col++) {
         m.buf[rc(col, row)] = this.buf[rc(row, col)];
       }
     }
@@ -366,13 +369,13 @@ class Matrix4 {
   /// B is another matrix
   ///
   Matrix4 operator *(Matrix4 matrixB) {
-    Matrix4 matrixC = new Matrix4();
-    Float32List bufA = this.buf;
-    Float32List bufB = matrixB.buf;
-    Float32List bufC = matrixC.buf;
-    for (int row = 0; row < 4; row++) {
-      for (int col = 0; col < 4; col++) {
-        for (int i = 0; i < 4; i++) {
+    final matrixC = Matrix4();
+    final bufA = this.buf;
+    final bufB = matrixB.buf;
+    final bufC = matrixC.buf;
+    for (var row = 0; row < 4; row++) {
+      for (var col = 0; col < 4; col++) {
+        for (var i = 0; i < 4; i++) {
           bufC[rc(row, col)] += bufA[rc(row, i)] * bufB[rc(i, col)];
         }
       }
@@ -387,26 +390,25 @@ class Matrix4 {
   /// [aspectRatio] width to height aspect ratio.
   /// [zNear] distance to the near clipping plane.
   /// [zFar] distance to the far clipping plane.
-  /// 
-  static Matrix4 perspective(
-      double fovyDegrees, double aspectRatio, double zNear, double zFar) {
-    double height = tan(radians(fovyDegrees) * 0.5) * zNear.toDouble();
-    double width = height * aspectRatio.toDouble();
+  ///
+  static Matrix4 perspective(double fovyDegrees, double aspectRatio, double zNear, double zFar) {
+    final height = tan(radians(fovyDegrees) * 0.5) * zNear.toDouble();
+    final width = height * aspectRatio.toDouble();
     return frustum(-width, width, -height, height, zNear, zFar);
   }
 
   static Matrix4 frustum(left, right, bottom, top, near, far) {
-    Matrix4 dest = new Matrix4();
+    final dest = Matrix4();
     left = left.toDouble();
     right = right.toDouble();
     bottom = bottom.toDouble();
     top = top.toDouble();
     near = near.toDouble();
     far = far.toDouble();
-    double two_near = 2.0 * near;
-    double right_minus_left = right - left;
-    double top_minus_bottom = top - bottom;
-    double far_minus_near = far - near;
+    final two_near = 2.0 * near;
+    final double right_minus_left = right - left;
+    final double top_minus_bottom = top - bottom;
+    final double far_minus_near = far - near;
     dest.m00 = two_near / right_minus_left;
     dest.m11 = two_near / top_minus_bottom;
     dest.m02 = (right + left) / right_minus_left;
@@ -427,10 +429,10 @@ class Matrix4 {
   /// @param {number} near Near bound of the frustum
   /// @param {number} far Far bound of the frustum
   /// @returns {mat4} out
-  /// 
+  ///
   static Matrix4 ortho(left, right, bottom, top, near, far) {
-    Float32List out = new Float32List(16);
-    var lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
+    final out = Float32List(16);
+    final lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
     out[0] = -2 * lr;
     out[1] = 0.0;
     out[2] = 0.0;
@@ -447,32 +449,32 @@ class Matrix4 {
     out[13] = (top + bottom) * bt;
     out[14] = (far + near) * nf;
     out[15] = 1.0;
-    return new Matrix4.fromBuffer(out);
+    return Matrix4.fromBuffer(out);
   }
 
   /// Returns the inverse of this matrix.
   Matrix4 inverse() {
-    double a0 = m00 * m11 - m10 * m01;
-    double a1 = m00 * m21 - m20 * m01;
-    double a2 = m00 * m31 - m30 * m01;
-    double a3 = m10 * m21 - m20 * m11;
-    double a4 = m10 * m31 - m30 * m11;
-    double a5 = m20 * m31 - m30 * m21;
+    final a0 = m00 * m11 - m10 * m01;
+    final a1 = m00 * m21 - m20 * m01;
+    final a2 = m00 * m31 - m30 * m01;
+    final a3 = m10 * m21 - m20 * m11;
+    final a4 = m10 * m31 - m30 * m11;
+    final a5 = m20 * m31 - m30 * m21;
 
-    double b0 = m02 * m13 - m12 * m03;
-    double b1 = m02 * m23 - m22 * m03;
-    double b2 = m02 * m33 - m32 * m03;
-    double b3 = m12 * m23 - m22 * m13;
-    double b4 = m12 * m33 - m32 * m13;
-    double b5 = m22 * m33 - m32 * m23;
+    final b0 = m02 * m13 - m12 * m03;
+    final b1 = m02 * m23 - m22 * m03;
+    final b2 = m02 * m33 - m32 * m03;
+    final b3 = m12 * m23 - m22 * m13;
+    final b4 = m12 * m33 - m32 * m13;
+    final b5 = m22 * m33 - m32 * m23;
 
     // compute determinant
-    double det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
+    final det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
     if (det == 0) {
-      throw new SingularMatrixException();
+      throw SingularMatrixException();
     }
 
-    Matrix4 m = new Matrix4();
+    final m = Matrix4();
     m.m00 = (m11 * b5 - m21 * b4 + m31 * b3) / det;
     m.m10 = (-m10 * b5 + m20 * b4 - m30 * b3) / det;
     m.m20 = (m13 * a5 - m23 * a4 + m33 * a3) / det;
@@ -502,25 +504,25 @@ class Matrix4 {
   /// transformed normals.
   ///
   /// Returns:
-  /// A new [Matrix3]
-  /// 
-  Matrix3 toInverseMat3() {
+  /// A  [Matrix3]
+  ///
+  Matrix3? toInverseMat3() {
     // Cache the matrix values (makes for huge speed increases!)
-    var a00 = m00, a01 = m10, a02 = m20;
-    var a10 = m01, a11 = m11, a12 = m21;
-    var a20 = m02, a21 = m12, a22 = m22;
+    final a00 = m00, a01 = m10, a02 = m20;
+    final a10 = m01, a11 = m11, a12 = m21;
+    final a20 = m02, a21 = m12, a22 = m22;
 
-    var b01 = a22 * a11 - a12 * a21;
-    var b11 = -a22 * a10 + a12 * a20;
-    var b21 = a21 * a10 - a11 * a20;
+    final b01 = a22 * a11 - a12 * a21;
+    final b11 = -a22 * a10 + a12 * a20;
+    final b21 = a21 * a10 - a11 * a20;
 
-    var d = a00 * b01 + a01 * b11 + a02 * b21;
+    final d = a00 * b01 + a01 * b11 + a02 * b21;
     if (d == 0) {
       return null;
     }
-    var id = 1 / d;
+    final id = 1 / d;
 
-    Matrix3 dest = new Matrix3();
+    final dest = Matrix3();
 
     dest.m00 = b01 * id;
     dest.m10 = (-a22 * a01 + a02 * a21) * id;
@@ -536,41 +538,41 @@ class Matrix4 {
   }
 
   static const double GLMAT_EPSILON = 0.000001;
-  Matrix4 rotate(num rad, List<num> axis) {
-    num x = axis[0], y = axis[1], z = axis[2];
-    num len = sqrt(x * x + y * y + z * z);
-    if (len.abs() < GLMAT_EPSILON)
-      throw "length of normal vector <~ $GLMAT_EPSILON";
+  Matrix4 rotate(double rad, List<double> axis) {
+    // ignore: omit_local_variable_types
+    double x = axis[0], y = axis[1], z = axis[2];
+    var len = sqrt(x * x + y * y + z * z);
+    if (len.abs() < GLMAT_EPSILON) throw 'length of normal vector <~ $GLMAT_EPSILON';
     if (len != 1) {
       len = 1 / len;
       x *= len;
       y *= len;
       z *= len;
     }
-    var c = cos(rad);
-    var s = sin(rad);
-    var C = 1.0 - c;
-    var m11 = x * x * C + c;
-    var m12 = x * y * C - z * s;
-    var m13 = x * z * C + y * s;
-    var m21 = y * x * C + z * s;
-    var m22 = y * y * C + c;
-    var m23 = y * z * C - x * s;
-    var m31 = z * x * C - y * s;
-    var m32 = z * y * C + x * s;
-    var m33 = z * z * C + c;
-    var t1 = buf[0] * m11 + buf[4] * m21 + buf[8] * m31;
-    var t2 = buf[1] * m11 + buf[5] * m21 + buf[9] * m31;
-    var t3 = buf[2] * m11 + buf[6] * m21 + buf[10] * m31;
-    var t4 = buf[3] * m11 + buf[7] * m21 + buf[11] * m31;
-    var t5 = buf[0] * m12 + buf[4] * m22 + buf[8] * m32;
-    var t6 = buf[1] * m12 + buf[5] * m22 + buf[9] * m32;
-    var t7 = buf[2] * m12 + buf[6] * m22 + buf[10] * m32;
-    var t8 = buf[3] * m12 + buf[7] * m22 + buf[11] * m32;
-    var t9 = buf[0] * m13 + buf[4] * m23 + buf[8] * m33;
-    var t10 = buf[1] * m13 + buf[5] * m23 + buf[9] * m33;
-    var t11 = buf[2] * m13 + buf[6] * m23 + buf[10] * m33;
-    var t12 = buf[3] * m13 + buf[7] * m23 + buf[11] * m33;
+    final c = cos(rad);
+    final s = sin(rad);
+    final C = 1.0 - c;
+    final m11 = x * x * C + c;
+    final m12 = x * y * C - z * s;
+    final m13 = x * z * C + y * s;
+    final m21 = y * x * C + z * s;
+    final m22 = y * y * C + c;
+    final m23 = y * z * C - x * s;
+    final m31 = z * x * C - y * s;
+    final m32 = z * y * C + x * s;
+    final m33 = z * z * C + c;
+    final t1 = buf[0] * m11 + buf[4] * m21 + buf[8] * m31;
+    final t2 = buf[1] * m11 + buf[5] * m21 + buf[9] * m31;
+    final t3 = buf[2] * m11 + buf[6] * m21 + buf[10] * m31;
+    final t4 = buf[3] * m11 + buf[7] * m21 + buf[11] * m31;
+    final t5 = buf[0] * m12 + buf[4] * m22 + buf[8] * m32;
+    final t6 = buf[1] * m12 + buf[5] * m22 + buf[9] * m32;
+    final t7 = buf[2] * m12 + buf[6] * m22 + buf[10] * m32;
+    final t8 = buf[3] * m12 + buf[7] * m22 + buf[11] * m32;
+    final t9 = buf[0] * m13 + buf[4] * m23 + buf[8] * m33;
+    final t10 = buf[1] * m13 + buf[5] * m23 + buf[9] * m33;
+    final t11 = buf[2] * m13 + buf[6] * m23 + buf[10] * m33;
+    final t12 = buf[3] * m13 + buf[7] * m23 + buf[11] * m33;
     buf[0] = t1;
     buf[1] = t2;
     buf[2] = t3;
@@ -608,8 +610,8 @@ class Matrix4 {
 class Matrix3 {
   Float32List buf;
 
-  Matrix3() : buf = new Float32List(9);
-  Matrix3.fromMatrix(Matrix3 other) : buf = new Float32List.fromList(other.buf);
+  Matrix3() : buf = Float32List(9);
+  Matrix3.fromMatrix(Matrix3 other) : buf = Float32List.fromList(other.buf);
 
   /// returns the index into [buf] for a given
   /// row and column.
@@ -661,12 +663,13 @@ class Matrix3 {
     buf[rc(2, 2)] = m;
   }
 
+  @override
   String toString() {
-    List<String> rows = new List();
-    for (int row = 0; row < 3; row++) {
-      List<String> items = new List();
-      for (int col = 0; col < 3; col++) {
-        double v = buf[rc(row, col)];
+    final rows = <String>[];
+    for (var row = 0; row < 3; row++) {
+      final items = <String>[];
+      for (var col = 0; col < 3; col++) {
+        var v = buf[rc(row, col)];
         if (v.abs() < 1e-16) {
           v = 0.0;
         }
@@ -686,9 +689,9 @@ class Matrix3 {
 
   /// Transposes a [Matrix3] (flips the values over the diagonal)
   Matrix3 transpose() {
-    Matrix3 dest = new Matrix3();
-    for (int row = 0; row < 3; row++) {
-      for (int col = 0; col < 3; col++) {
+    final dest = Matrix3();
+    for (var row = 0; row < 3; row++) {
+      for (var col = 0; col < 3; col++) {
         dest.buf[rc(col, row)] = this.buf[rc(row, col)];
       }
     }
@@ -700,7 +703,7 @@ class Matrix3 {
   ///     m10 m11 m12 => m01 m11 m21
   ///     m20 m21 m22    m02 m12 m22
   void transposeSelf() {
-    var a01 = m01, a02 = m02, a12 = m12;
+    final a01 = m01, a02 = m02, a12 = m12;
     m01 = m10;
     m02 = m20;
     m10 = a01;

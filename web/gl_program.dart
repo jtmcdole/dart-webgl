@@ -17,38 +17,42 @@ part of learn_gl;
 /// Create a WebGL [Program], compiling [Shader]s from passed in sources and
 /// cache [UniformLocation]s and AttribLocations.
 class GlProgram {
-  Map<String, int> attributes = new Map<String, int>();
-  Map<String, UniformLocation> uniforms = new Map<String, UniformLocation>();
-  Program program;
+  Map<String, int> attributes = <String, int>{};
+  Map<String, UniformLocation> uniforms = <String, UniformLocation>{};
+  late Program program;
 
-  Shader fragShader, vertShader;
+  late Shader fragShader, vertShader;
 
-  GlProgram(String fragSrc, String vertSrc, List<String> attributeNames,
-      List<String> uniformNames) {
+  GlProgram(String fragSrc, String vertSrc, List<String> attributeNames, List<String> uniformNames) {
     fragShader = gl.createShader(WebGL.FRAGMENT_SHADER);
     gl.shaderSource(fragShader, fragSrc);
     gl.compileShader(fragShader);
-
+    if (gl.getShaderParameter(fragShader, WebGL.COMPILE_STATUS) == 0) {
+      print('Could not compile fragment shaders');
+    }
     vertShader = gl.createShader(WebGL.VERTEX_SHADER);
     gl.shaderSource(vertShader, vertSrc);
     gl.compileShader(vertShader);
+    if (gl.getShaderParameter(vertShader, WebGL.COMPILE_STATUS) == 0) {
+      print('Could not compile vertex shaders');
+    }
 
     program = gl.createProgram();
     gl.attachShader(program, vertShader);
     gl.attachShader(program, fragShader);
     gl.linkProgram(program);
 
-    if (!gl.getProgramParameter(program, WebGL.LINK_STATUS)) {
-      print("Could not initialise shaders");
+    if (gl.getProgramParameter(program, WebGL.LINK_STATUS) == 0) {
+      print('Could not initialise shaders');
     }
 
-    for (String attrib in attributeNames) {
-      int attributeLocation = gl.getAttribLocation(program, attrib);
+    for (var attrib in attributeNames) {
+      final attributeLocation = gl.getAttribLocation(program, attrib);
       gl.enableVertexAttribArray(attributeLocation);
       attributes[attrib] = attributeLocation;
     }
-    for (String uniform in uniformNames) {
-      var uniformLocation = gl.getUniformLocation(program, uniform);
+    for (var uniform in uniformNames) {
+      final uniformLocation = gl.getUniformLocation(program, uniform);
       uniforms[uniform] = uniformLocation;
     }
   }

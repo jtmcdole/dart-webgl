@@ -15,24 +15,24 @@
 part of learn_gl;
 
 class Lesson14 extends Lesson {
-  GlProgram currentProgram;
-  Texture earthTexture, galvanizedTexture, moonTexture;
-  JsonObject teapot;
+  late GlProgram currentProgram;
+  Texture? earthTexture, galvanizedTexture, moonTexture;
+  late JsonObject? teapot;
 
   int texturesLoaded = 0;
   bool get isLoaded => teapot != null && texturesLoaded == 3;
 
-  num teapotAngle = 180;
-  num tilt = 23.4;
+  double teapotAngle = 180;
+  double tilt = 23.4;
 
   Lesson14() {
-    JsonObject.fromUrl("Teapot.json").then((JsonObject obj) {
-      print("Teapot: $obj");
+    JsonObject.fromUrl('Teapot.json').then((JsonObject obj) {
+      print('Teapot: $obj');
       teapot = obj;
     });
 
-    var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = [
+    final attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
+    final uniforms = [
       'uPMatrix',
       'uMVMatrix',
       'uNMatrix',
@@ -47,7 +47,7 @@ class Lesson14 extends Lesson {
       'uShowSpecularHighlights'
     ];
 
-    currentProgram = new GlProgram(
+    currentProgram = GlProgram(
       '''
           precision mediump float;
           
@@ -129,15 +129,15 @@ class Lesson14 extends Lesson {
     gl.useProgram(currentProgram.program);
 
     // Handle textures
-    loadTexture("earth.jpg", handleMipMapTexture).then((t) {
+    loadTexture('earth.jpg', handleMipMapTexture).then((t) {
       earthTexture = t;
       texturesLoaded++;
     });
-    loadTexture("moon.bmp", handleMipMapTexture).then((t) {
+    loadTexture('moon.bmp', handleMipMapTexture).then((t) {
       moonTexture = t;
       texturesLoaded++;
     });
-    loadTexture("galvanizedTexture.jpg", handleMipMapTexture).then((t) {
+    loadTexture('galvanizedTexture.jpg', handleMipMapTexture).then((t) {
       galvanizedTexture = t;
       texturesLoaded++;
     });
@@ -169,31 +169,28 @@ class Lesson14 extends Lesson {
     gl.generateMipmap(WebGL.TEXTURE_2D);
     gl.bindTexture(WebGL.TEXTURE_2D, null);
     texturesLoaded++;
-    print("loaded ${image.src}");
+    print('loaded ${image.src}');
   }
 
-  get aVertexPosition => currentProgram.attributes["aVertexPosition"];
-  get aVertexNormal => currentProgram.attributes["aVertexNormal"];
-  get aTextureCoord => currentProgram.attributes["aTextureCoord"];
+  int? get aVertexPosition => currentProgram.attributes['aVertexPosition'];
+  int? get aVertexNormal => currentProgram.attributes['aVertexNormal'];
+  int? get aTextureCoord => currentProgram.attributes['aTextureCoord'];
 
-  get uShowSpecularHighlights =>
-      currentProgram.uniforms["uShowSpecularHighlights"];
-  get uMaterialShininess => currentProgram.uniforms["uMaterialShininess"];
-  get uPMatrix => currentProgram.uniforms["uPMatrix"];
-  get uMVMatrix => currentProgram.uniforms["uMVMatrix"];
-  get uNMatrix => currentProgram.uniforms["uNMatrix"];
-  get uSampler => currentProgram.uniforms["uSampler"];
-  get uUseTextures => currentProgram.uniforms["uUseTextures"];
-  get uUseLighting => currentProgram.uniforms["uUseLighting"];
-  get uAmbientColor => currentProgram.uniforms["uAmbientColor"];
-  get uPointLightingLocation =>
-      currentProgram.uniforms["uPointLightingLocation"];
-  get uPointLightingSpecularColor =>
-      currentProgram.uniforms["uPointLightingSpecularColor"];
-  get uPointLightingDiffuseColor =>
-      currentProgram.uniforms["uPointLightingDiffuseColor"];
+  UniformLocation? get uShowSpecularHighlights => currentProgram.uniforms['uShowSpecularHighlights'];
+  UniformLocation? get uMaterialShininess => currentProgram.uniforms['uMaterialShininess'];
+  UniformLocation? get uPMatrix => currentProgram.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => currentProgram.uniforms['uMVMatrix'];
+  UniformLocation? get uNMatrix => currentProgram.uniforms['uNMatrix'];
+  UniformLocation? get uSampler => currentProgram.uniforms['uSampler'];
+  UniformLocation? get uUseTextures => currentProgram.uniforms['uUseTextures'];
+  UniformLocation? get uUseLighting => currentProgram.uniforms['uUseLighting'];
+  UniformLocation? get uAmbientColor => currentProgram.uniforms['uAmbientColor'];
+  UniformLocation? get uPointLightingLocation => currentProgram.uniforms['uPointLightingLocation'];
+  UniformLocation? get uPointLightingSpecularColor => currentProgram.uniforms['uPointLightingSpecularColor'];
+  UniformLocation? get uPointLightingDiffuseColor => currentProgram.uniforms['uPointLightingDiffuseColor'];
 
-  void drawScene(num viewWidth, num viewHeight, num aspect) {
+  @override
+  void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Setup the viewport, pulling information from the element.
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -206,26 +203,25 @@ class Lesson14 extends Lesson {
 
     pMatrix = Matrix4.perspective(45.0, aspect, 0.1, 100.0);
 
-    bool specularHighlights = _specular.checked;
+    final specularHighlights = _specular.checked!;
     gl.uniform1i(uShowSpecularHighlights, specularHighlights ? 1 : 0);
-    bool lighting = _lighting.checked;
+    final lighting = _lighting.checked!;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
     if (lighting) {
-      gl.uniform3f(uAmbientColor, double.parse(_aR.value),
-          double.parse(_aG.value), double.parse(_aB.value));
+      gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
-      gl.uniform3f(uPointLightingLocation, double.parse(_lpX.value),
-          double.parse(_lpY.value), double.parse(_lpZ.value));
+      gl.uniform3f(
+          uPointLightingLocation, double.parse(_lpX.value!), double.parse(_lpY.value!), double.parse(_lpZ.value!));
 
-      gl.uniform3f(uPointLightingSpecularColor, double.parse(_sR.value),
-          double.parse(_sG.value), double.parse(_sB.value));
+      gl.uniform3f(
+          uPointLightingSpecularColor, double.parse(_sR.value!), double.parse(_sG.value!), double.parse(_sB.value!));
 
-      gl.uniform3f(uPointLightingDiffuseColor, double.parse(_dR.value),
-          double.parse(_dG.value), double.parse(_dB.value));
+      gl.uniform3f(
+          uPointLightingDiffuseColor, double.parse(_dR.value!), double.parse(_dG.value!), double.parse(_dB.value!));
     }
 
-    var texture = _texture.value;
-    gl.uniform1i(uUseTextures, texture != "none" ? 1 : 0);
+    final texture = _texture.value;
+    gl.uniform1i(uUseTextures, texture != 'none' ? 1 : 0);
 
     mvPushMatrix();
 
@@ -235,41 +231,39 @@ class Lesson14 extends Lesson {
       ..rotateY(radians(teapotAngle));
 
     gl.activeTexture(WebGL.TEXTURE0);
-    if (texture == "earth") {
+    if (texture == 'earth') {
       gl.bindTexture(WebGL.TEXTURE_2D, earthTexture);
-    } else if (texture == "galvanized") {
+    } else if (texture == 'galvanized') {
       gl.bindTexture(WebGL.TEXTURE_2D, galvanizedTexture);
-    } else if (texture == "moon") {
+    } else if (texture == 'moon') {
       gl.bindTexture(WebGL.TEXTURE_2D, moonTexture);
     }
     gl.uniform1i(uSampler, 0);
 
-    gl.uniform1f(uMaterialShininess, double.parse(_shininess.value));
+    gl.uniform1f(uMaterialShininess, double.parse(_shininess.value!));
 
-    teapot.draw(
-        vertex: aVertexPosition,
-        normal: aVertexNormal,
-        coord: aTextureCoord,
-        setUniforms: setMatrixUniforms);
+    teapot?.draw(vertex: aVertexPosition, normal: aVertexNormal, coord: aTextureCoord, setUniforms: setMatrixUniforms);
     mvPopMatrix();
   }
 
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
-    var normalMatrix = mvMatrix.toInverseMat3();
-    normalMatrix.transposeSelf();
+    final normalMatrix = mvMatrix.toInverseMat3();
+    normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
-  void animate(num now) {
+  @override
+  void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
       teapotAngle += 0.05 * elapsed;
     }
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(
         up: () => tilt -= 1.0,
@@ -279,24 +273,25 @@ class Lesson14 extends Lesson {
   }
 
   // Lighting enabled / Ambient color
-  InputElement _lighting, _aR, _aG, _aB;
+  late InputElement _lighting, _aR, _aG, _aB;
 
   // Light position
-  InputElement _lpX, _lpY, _lpZ;
+  late InputElement _lpX, _lpY, _lpZ;
 
   // Difuse color
-  InputElement _dR, _dG, _dB;
+  late InputElement _dR, _dG, _dB;
 
   // Specular color
-  InputElement _specular;
-  InputElement _sR, _sG, _sB;
+  late InputElement _specular;
+  late InputElement _sR, _sG, _sB;
 
-  InputElement _shininess;
-  SelectElement _texture;
+  late InputElement _shininess;
+  late SelectElement _texture;
 
+  @override
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-      """
+      '''
     <input type="checkbox" id="specular" checked /> Show specular highlight<br/>
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
 
@@ -354,30 +349,30 @@ class Lesson14 extends Lesson {
     Earth texture courtesy of <a href="http://www.esa.int/esaEO/SEMGSY2IU7E_index_0.html">the European Space Agency/Envisat</a>.<br/>
     Galvanized texture courtesy of <a href="http://www.arroway-textures.com/">Arroway Textures</a>.<br/>
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """,
-      treeSanitizer: new NullTreeSanitizer(),
+    ''',
+      treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting");
-    _aR = querySelector("#ambientR");
-    _aG = querySelector("#ambientG");
-    _aB = querySelector("#ambientB");
+    _lighting = querySelector('#lighting') as InputElement;
+    _aR = querySelector('#ambientR') as InputElement;
+    _aG = querySelector('#ambientG') as InputElement;
+    _aB = querySelector('#ambientB') as InputElement;
 
-    _lpX = querySelector("#lightPositionX");
-    _lpY = querySelector("#lightPositionY");
-    _lpZ = querySelector("#lightPositionZ");
+    _lpX = querySelector('#lightPositionX') as InputElement;
+    _lpY = querySelector('#lightPositionY') as InputElement;
+    _lpZ = querySelector('#lightPositionZ') as InputElement;
 
-    _dR = querySelector("#diffuseR");
-    _dG = querySelector("#diffuseG");
-    _dB = querySelector("#diffuseB");
+    _dR = querySelector('#diffuseR') as InputElement;
+    _dG = querySelector('#diffuseG') as InputElement;
+    _dB = querySelector('#diffuseB') as InputElement;
 
-    _specular = querySelector("#specular");
-    _sR = querySelector("#specularR");
-    _sG = querySelector("#specularG");
-    _sB = querySelector("#specularB");
+    _specular = querySelector('#specular') as InputElement;
+    _sR = querySelector('#specularR') as InputElement;
+    _sG = querySelector('#specularG') as InputElement;
+    _sB = querySelector('#specularB') as InputElement;
 
-    _shininess = querySelector("#shininess");
-    _texture = querySelector("#texture");
+    _shininess = querySelector('#shininess') as InputElement;
+    _texture = querySelector('#texture') as SelectElement;
   }
 }
