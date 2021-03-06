@@ -23,12 +23,12 @@ class Lesson10 extends Lesson {
   bool get isLoaded => world != null && texture != null;
 
   Lesson10() {
-    JsonObject.fromUrl("world.json").then((object) {
+    JsonObject.fromUrl('world.json').then((object) {
       world = object;
-      print("world loaded with ${world?._itemSize}");
+      print('world loaded with ${world?._itemSize}');
     });
 
-    loadTexture("mcdole.gif", (Texture texture, ImageElement ele) {
+    loadTexture('mcdole.gif', (Texture texture, ImageElement ele) {
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
       gl.texImage2D(
@@ -50,13 +50,13 @@ class Lesson10 extends Lesson {
         WebGL.LINEAR,
       );
       this.texture = texture;
-      print("texture loaded");
+      print('texture loaded');
     });
 
-    var attributes = ['aVertexPosition', 'aTextureCoord'];
-    var uniforms = ['uMVMatrix', 'uPMatrix', 'uSampler'];
+    final attributes = ['aVertexPosition', 'aTextureCoord'];
+    final uniforms = ['uMVMatrix', 'uPMatrix', 'uSampler'];
     program = GlProgram(
-      """
+      '''
           precision mediump float;
 
           varying vec2 vTextureCoord;
@@ -66,8 +66,8 @@ class Lesson10 extends Lesson {
           void main(void) {
               gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
           }
-        """,
-      """
+        ''',
+      '''
           attribute vec3 aVertexPosition;
           attribute vec2 aTextureCoord;
 
@@ -80,20 +80,21 @@ class Lesson10 extends Lesson {
               gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
               vTextureCoord = aTextureCoord;
           }
-        """,
+        ''',
       attributes,
       uniforms,
     );
     gl.useProgram(program.program);
   }
 
-  get aTextureCoord => program.attributes['aTextureCoord'];
-  get aVertexPosition => program.attributes['aVertexPosition'];
+  int? get aTextureCoord => program.attributes['aTextureCoord'];
+  int? get aVertexPosition => program.attributes['aVertexPosition'];
 
-  get uSampler => program.uniforms["uSampler"];
-  get uPMatrix => program.uniforms["uPMatrix"];
-  get uMVMatrix => program.uniforms["uMVMatrix"];
+  UniformLocation? get uSampler => program.uniforms['uSampler'];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
@@ -136,9 +137,10 @@ class Lesson10 extends Lesson {
   double xPos = 0.0, yPos = 0.4, zPos = 0.0;
   double speed = 0.0;
 
+  @override
   void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
 
       if (speed != 0) {
         xPos -= sin(radians(yaw)) * speed * elapsed;
@@ -150,6 +152,7 @@ class Lesson10 extends Lesson {
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     if (anyActive([KeyCode.UP, KeyCode.W])) {
       speed = 0.003;
@@ -174,12 +177,13 @@ class Lesson10 extends Lesson {
     }
   }
 
+  @override
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-      """
+      '''
     Use the cursor keys or WASD to run around, and <code>Page Up</code>/<code>Page Down</code> to
     look up and down.
-    """,
+    ''',
       treeSanitizer: NullTreeSanitizer(),
     );
   }

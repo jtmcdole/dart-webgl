@@ -26,8 +26,8 @@ class Lesson8 extends Lesson {
     cube = Cube();
     loadTexture('glass.gif', handleMipMapTexture).then((t) => texture = t);
 
-    var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = [
+    final attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
+    final uniforms = [
       'uPMatrix',
       'uMVMatrix',
       'uNMatrix',
@@ -94,24 +94,25 @@ class Lesson8 extends Lesson {
     gl.useProgram(program.program);
   }
 
-  get uPMatrix => program.uniforms["uPMatrix"];
-  get uMVMatrix => program.uniforms["uMVMatrix"];
-  get uNMatrix => program.uniforms["uNMatrix"];
-  get uSampler => program.uniforms["uSampler"];
-  get uAmbientColor => program.uniforms["uAmbientColor"];
-  get uLightingDirection => program.uniforms["uLightingDirection"];
-  get uDirectionalColor => program.uniforms["uDirectionalColor"];
-  get uUseLighting => program.uniforms["uUseLighting"];
-  get uAlpha => program.uniforms["uAlpha"];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
+  UniformLocation? get uNMatrix => program.uniforms['uNMatrix'];
+  UniformLocation? get uSampler => program.uniforms['uSampler'];
+  UniformLocation? get uAmbientColor => program.uniforms['uAmbientColor'];
+  UniformLocation? get uLightingDirection => program.uniforms['uLightingDirection'];
+  UniformLocation? get uDirectionalColor => program.uniforms['uDirectionalColor'];
+  UniformLocation? get uUseLighting => program.uniforms['uUseLighting'];
+  UniformLocation? get uAlpha => program.uniforms['uAlpha'];
 
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
-    var normalMatrix = mvMatrix.toInverseMat3();
+    final normalMatrix = mvMatrix.toInverseMat3();
     normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
@@ -146,7 +147,7 @@ class Lesson8 extends Lesson {
       gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
 
       // Take the lighting point and normalize / reverse it.
-      Vector3 direction = Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
+      var direction = Vector3(double.parse(_ldX.value!), double.parse(_ldY.value!), double.parse(_ldZ.value!));
       direction = direction.normalize().scale(-1.0);
       gl.uniform3fv(uLightingDirection, direction.buf);
 
@@ -170,9 +171,10 @@ class Lesson8 extends Lesson {
   double xRot = 0.0, yRot = 0.0;
   double z = -5.0;
 
+  @override
   void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
 
       xRot += (xSpeed * elapsed) / 1000.0;
       yRot += (ySpeed * elapsed) / 1000.0;
@@ -180,6 +182,7 @@ class Lesson8 extends Lesson {
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(
         up: () => ySpeed -= 1.0, down: () => ySpeed += 1.0, left: () => xSpeed -= 1.0, right: () => xSpeed += 1.0);
@@ -202,9 +205,10 @@ class Lesson8 extends Lesson {
 
   late InputElement _blending, _alpha;
 
+  @override
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-      """
+      '''
     <input type="checkbox" id="blending" checked /> Use blending<br/>
     Alpha level <input type="text" id="alpha" value="0.5" /><br/>
 
@@ -238,25 +242,25 @@ class Lesson8 extends Lesson {
             <td>B: <input type="text" id="ambientB" value="0.2" />
         </tr>
     </table>
-    """,
+    ''',
       treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting") as InputElement;
-    _aR = querySelector("#ambientR") as InputElement;
-    _aG = querySelector("#ambientG") as InputElement;
-    _aB = querySelector("#ambientB") as InputElement;
+    _lighting = querySelector('#lighting') as InputElement;
+    _aR = querySelector('#ambientR') as InputElement;
+    _aG = querySelector('#ambientG') as InputElement;
+    _aB = querySelector('#ambientB') as InputElement;
 
-    _dR = querySelector("#directionalR") as InputElement;
-    _dG = querySelector("#directionalG") as InputElement;
-    _dB = querySelector("#directionalB") as InputElement;
+    _dR = querySelector('#directionalR') as InputElement;
+    _dG = querySelector('#directionalG') as InputElement;
+    _dB = querySelector('#directionalB') as InputElement;
 
-    _ldX = querySelector("#lightDirectionX") as InputElement;
-    _ldY = querySelector("#lightDirectionY") as InputElement;
-    _ldZ = querySelector("#lightDirectionZ") as InputElement;
+    _ldX = querySelector('#lightDirectionX') as InputElement;
+    _ldY = querySelector('#lightDirectionY') as InputElement;
+    _ldZ = querySelector('#lightDirectionZ') as InputElement;
 
-    _blending = querySelector("#blending") as InputElement;
-    _alpha = querySelector("#alpha") as InputElement;
+    _blending = querySelector('#blending') as InputElement;
+    _alpha = querySelector('#alpha') as InputElement;
   }
 }

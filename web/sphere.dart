@@ -26,27 +26,27 @@ class Sphere implements Renderable {
   int _indexBufferSize = 0;
 
   Sphere({this.lats = 30, this.lons = 30, this.radius = 2}) {
-    List<double> vertexPositions = [];
-    List<double> normals = [];
-    List<double> textureCoords = [];
-    List<int> indexData = [];
+    final vertexPositions = <double>[];
+    final normals = <double>[];
+    final textureCoords = <double>[];
+    final indexData = <int>[];
 
     // Step 1: Generate normals, texture coordinates and vertex positions
-    for (int lat = 0; lat <= lats; lat++) {
-      var theta = lat * pi / lats;
-      var sinTheta = sin(theta);
-      var cosTheta = cos(theta);
+    for (var lat = 0; lat <= lats; lat++) {
+      final theta = lat * pi / lats;
+      final sinTheta = sin(theta);
+      final cosTheta = cos(theta);
 
-      for (int lon = 0; lon <= lons; lon++) {
-        var phi = lon * 2 * pi / lons;
-        var sinPhi = sin(phi);
-        var cosPhi = cos(phi);
+      for (var lon = 0; lon <= lons; lon++) {
+        final phi = lon * 2 * pi / lons;
+        final sinPhi = sin(phi);
+        final cosPhi = cos(phi);
 
-        var x = cosPhi * sinTheta;
-        var y = cosTheta;
-        var z = sinPhi * sinTheta;
-        var u = 1 - (lon / lons);
-        var v = 1 - (lat / lats);
+        final x = cosPhi * sinTheta;
+        final y = cosTheta;
+        final z = sinPhi * sinTheta;
+        final u = 1 - (lon / lons);
+        final v = 1 - (lat / lats);
 
         normals.addAll([x, y, z]);
         textureCoords.addAll([u, v]);
@@ -57,8 +57,8 @@ class Sphere implements Renderable {
     // Step 2: Stich vertex positions together as a series of triangles.
     for (var lat = 0; lat < lats; lat++) {
       for (var lon = 0; lon < lons; lon++) {
-        var first = (lat * (lons + 1)) + lon;
-        var second = first + lons + 1;
+        final first = (lat * (lons + 1)) + lon;
+        final second = first + lons + 1;
         indexData.addAll([first, second, first + 1, second, second + 1, first + 1]);
       }
     }
@@ -97,7 +97,8 @@ class Sphere implements Renderable {
     );
   }
 
-  void draw({int? vertex, int? normal, int? coord, setUniforms()?}) {
+  @override
+  void draw({int? vertex, int? normal, int? coord, Function()? setUniforms}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, _positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

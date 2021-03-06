@@ -20,7 +20,7 @@ class Cube implements Renderable {
   Cube() {
     positionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
-    var vertices = [
+    final vertices = [
       // Front face
       -1.0, -1.0, 1.0,
       1.0, -1.0, 1.0,
@@ -65,7 +65,7 @@ class Cube implements Renderable {
 
     normalBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
-    var vertexNormals = [
+    final vertexNormals = [
       // Front face
       0.0, 0.0, 1.0,
       0.0, 0.0, 1.0,
@@ -110,7 +110,7 @@ class Cube implements Renderable {
 
     textureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
-    var textureCoords = [
+    final textureCoords = [
       // Front face
       0.0, 0.0,
       1.0, 0.0,
@@ -168,7 +168,8 @@ class Cube implements Renderable {
         WebGL.STATIC_DRAW);
   }
 
-  void draw({int? vertex, int? normal, int? coord, int? color, setUniforms()?}) {
+  @override
+  void draw({int? vertex, int? normal, int? coord, int? color, Function()? setUniforms}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);
@@ -195,7 +196,7 @@ class Cube implements Renderable {
   }
 
   late CubeColor color;
-  addColor(CubeColor color) {
+  void addColor(CubeColor color) {
     this.color = color;
   }
 }
@@ -209,7 +210,7 @@ class CubeColor {
     gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
 
     /// HARD CODED :'(
-    List<List<double>> colors = [
+    final colors = <List<double>>[
       [1.0, 0.0, 0.0, 1.0], // Front face
       [1.0, 1.0, 0.0, 1.0], // Back face
       [0.0, 1.0, 0.0, 1.0], // Top face
@@ -217,7 +218,7 @@ class CubeColor {
       [1.0, 0.0, 1.0, 1.0], // Right face
       [0.0, 0.0, 1.0, 1.0] // Left face
     ];
-    var unpackedColors = <double>[];
+    final unpackedColors = <double>[];
     for (var i in colors) {
       for (var j = 0; j < 4; j++) {
         unpackedColors.addAll(i);

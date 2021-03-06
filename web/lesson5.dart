@@ -24,7 +24,7 @@ class Lesson5 extends Lesson {
 
   Lesson5() {
     cube = Cube();
-    loadTexture("nehe.gif", (Texture texture, ImageElement element) {
+    loadTexture('nehe.gif', (Texture texture, ImageElement element) {
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       gl.texImage2D(
@@ -49,8 +49,8 @@ class Lesson5 extends Lesson {
       neheTexture = texture;
     });
 
-    var attributes = ['aVertexPosition', 'aTextureCoord'];
-    var uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
+    final attributes = ['aVertexPosition', 'aTextureCoord'];
+    final uniforms = ['uPMatrix', 'uMVMatrix', 'uSampler'];
 
     program = GlProgram(
       '''
@@ -85,6 +85,7 @@ class Lesson5 extends Lesson {
     gl.useProgram(program.program);
   }
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
@@ -120,9 +121,9 @@ class Lesson5 extends Lesson {
     mvPopMatrix();
   }
 
-  get uPMatrix => program.uniforms["uPMatrix"];
-  get uMVMatrix => program.uniforms["uMVMatrix"];
-  get uSampler => program.uniforms["uSampler"];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
+  UniformLocation? get uSampler => program.uniforms['uSampler'];
 
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
@@ -131,9 +132,10 @@ class Lesson5 extends Lesson {
 
   double xRot = 0.0, yRot = 0.0, zRot = 0.0;
 
+  @override
   void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
 
       xRot += (90 * elapsed) / 1000.0;
       yRot += (90 * elapsed) / 1000.0;
@@ -142,6 +144,7 @@ class Lesson5 extends Lesson {
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(up: () => yRot -= 0.5, down: () => yRot += 0.5, left: () => xRot -= 0.5, right: () => xRot += 0.5);
   }

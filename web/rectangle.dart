@@ -17,7 +17,7 @@ part of learn_gl;
 class Rectangle implements Renderable {
   late Buffer? positionBuffer, normalBuffer, textureCoordBuffer, colorBuffer, indexBuffer;
 
-  static const List<double> WHITE_COLOR = const [
+  static const List<double> WHITE_COLOR = [
     1.0, 1.0, 1.0, 1.0, // bottom left
     1.0, 1.0, 1.0, 1.0, // bottom right
     1.0, 1.0, 1.0, 1.0, // top right
@@ -31,7 +31,7 @@ class Rectangle implements Renderable {
     colorBuffer = gl.createBuffer();
 
     gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
-    var vertices = [
+    final vertices = [
       left, bottom, 0.0, // bottom left
       left + width, bottom, 0.0, // bottom right
       left + width, bottom + height, 0.0, // top right
@@ -44,7 +44,7 @@ class Rectangle implements Renderable {
     );
 
     gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
-    var vertexNormals = [
+    final vertexNormals = [
       // Front face
       0.0, 0.0, 1.0,
       0.0, 0.0, 1.0,
@@ -58,7 +58,7 @@ class Rectangle implements Renderable {
     );
 
     gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
-    var coords = [
+    final coords = [
       // Front face
       0.0, 0.0,
       1.0, 0.0,
@@ -74,19 +74,17 @@ class Rectangle implements Renderable {
     // TODO: Come up with a better way to store color buffer vs texture buffer :)
     gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
     var colors = WHITE_COLOR;
-    if (vertexColors != null) {
-      colors = <double>[];
-      if (vertexColors.length == 4) {
-        colors.addAll(vertexColors);
-        colors.addAll(vertexColors);
-        colors.addAll(vertexColors);
-        colors.addAll(vertexColors);
-      } else if (vertexColors.length == 8) {
-        colors.addAll(vertexColors.sublist(0, 4));
-        colors.addAll(vertexColors.sublist(0, 4));
-        colors.addAll(vertexColors.sublist(4, 8));
-        colors.addAll(vertexColors.sublist(4, 8));
-      }
+    colors = <double>[];
+    if (vertexColors.length == 4) {
+      colors.addAll(vertexColors);
+      colors.addAll(vertexColors);
+      colors.addAll(vertexColors);
+      colors.addAll(vertexColors);
+    } else if (vertexColors.length == 8) {
+      colors.addAll(vertexColors.sublist(0, 4));
+      colors.addAll(vertexColors.sublist(0, 4));
+      colors.addAll(vertexColors.sublist(4, 8));
+      colors.addAll(vertexColors.sublist(4, 8));
     }
 //    var colors = [
 //      // Front face
@@ -111,7 +109,8 @@ class Rectangle implements Renderable {
         WebGL.STATIC_DRAW);
   }
 
-  void draw({int? vertex, int? normal, int? coord, int? color, setUniforms()?}) {
+  @override
+  void draw({int? vertex, int? normal, int? coord, int? color, Function()? setUniforms}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

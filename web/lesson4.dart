@@ -27,32 +27,6 @@ class Lesson4 extends Lesson {
 
   Lesson4() {
     program = GlProgram(
-      // '''
-      //    #version 200
-      //    precision mediump float;
-      //     out vec4 FragColor;
-
-      //     in vec4 vColor;
-
-      //     void main(void) {
-      //       FragColor = vColor;
-      //     }
-      //   ''',
-      // '''
-      //     #version 200
-      //     in vec3 aVertexPosition;
-      //     in vec4 aVertexColor;
-
-      //     uniform mat4 uMVMatrix;
-      //     uniform mat4 uPMatrix;
-
-      //    out vec4 vColor;
-
-      //     void main(void) {
-      //         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-      //         vColor = aVertexColor;
-      //     }
-      // ''',
       '''
           precision mediump float;
 
@@ -90,6 +64,7 @@ class Lesson4 extends Lesson {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
   }
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -109,7 +84,7 @@ class Lesson4 extends Lesson {
     mvMatrix.translate([-1.5, 0.0, -8.0]);
 
     // Let the user play around with some directional changes.
-    mvMatrix.rotateX(radians(x))..rotateY(radians(y));
+    mvMatrix.rotateX(radians(x)).rotateY(radians(y));
 
     mvPushMatrix();
     mvMatrix.rotate(radians(rPyramid), [0, 1, 0]);
@@ -133,7 +108,7 @@ class Lesson4 extends Lesson {
 
   /// Write the matrix uniforms (model view matrix and perspective matrix) so
   /// WebGL knows what to do with them.
-  setMatrixUniforms() {
+  void setMatrixUniforms() {
     gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);
   }
@@ -141,6 +116,7 @@ class Lesson4 extends Lesson {
   /// Every time the browser tells us to draw the scene, animate is called.
   /// If there's something being movied, this is where that movement i
   /// calculated.
+  @override
   void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
@@ -151,6 +127,7 @@ class Lesson4 extends Lesson {
   }
 
   double x = 0.0, y = 0.0, z = 0.0;
+  @override
   void handleKeys() {
     handleDirection(up: () => y -= 0.5, down: () => y += 0.5, left: () => x -= 0.5, right: () => x += 0.5);
   }

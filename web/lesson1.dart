@@ -55,14 +55,30 @@ class Lesson1 extends Lesson {
 
     squareVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, squareVertexPositionBuffer);
-    gl.bufferData(WebGL.ARRAY_BUFFER,
-        Float32List.fromList([1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]), WebGL.STATIC_DRAW);
+    gl.bufferData(
+        WebGL.ARRAY_BUFFER,
+        Float32List.fromList([
+          1.0,
+          1.0,
+          0.0,
+          -1.0,
+          1.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          -1.0,
+          -1.0,
+          0.0,
+        ]),
+        WebGL.STATIC_DRAW);
 
     // Specify the color to clear with (black with 100% alpha) and then enable
     // depth testing.
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
   }
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -104,16 +120,18 @@ class Lesson1 extends Lesson {
 
   /// Write the matrix uniforms (model view matrix and perspective matrix) so
   /// WebGL knows what to do with them.
-  setMatrixUniforms() {
+  void setMatrixUniforms() {
     gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);
   }
 
+  @override
   void animate(double now) {
     // We're not animating the scene, but if you want to experiment, here's
     // where you get to play around.
   }
 
+  @override
   void handleKeys() {
     // We're not handling keys right now, but if you want to experiment, here's
     // where you'd get to play around.

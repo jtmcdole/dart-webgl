@@ -31,24 +31,24 @@ class Lesson16 extends Lesson {
 
     // There is no HTML, so we're going to override these options.
     lesson13._lighting = InputElement()..checked = true;
-    lesson13._aR = InputElement()..value = "0.2";
-    lesson13._aG = InputElement()..value = "0.2";
-    lesson13._aB = InputElement()..value = "0.2";
-    lesson13._lpX = InputElement()..value = "0.0";
-    lesson13._lpY = InputElement()..value = "0.0";
-    lesson13._lpZ = InputElement()..value = "-5.0";
-    lesson13._pR = InputElement()..value = "0.8";
-    lesson13._pG = InputElement()..value = "0.8";
-    lesson13._pB = InputElement()..value = "0.8";
+    lesson13._aR = InputElement()..value = '0.2';
+    lesson13._aG = InputElement()..value = '0.2';
+    lesson13._aB = InputElement()..value = '0.2';
+    lesson13._lpX = InputElement()..value = '0.0';
+    lesson13._lpY = InputElement()..value = '0.0';
+    lesson13._lpZ = InputElement()..value = '-5.0';
+    lesson13._pR = InputElement()..value = '0.8';
+    lesson13._pG = InputElement()..value = '0.8';
+    lesson13._pB = InputElement()..value = '0.8';
     lesson13._perFragment = InputElement()..checked = true;
     lesson13._textures = InputElement()..checked = true;
 
-    JsonObject.fromUrl("macbook.json").then((JsonObject obj) {
-      print("macbook: $obj");
+    JsonObject.fromUrl('macbook.json').then((JsonObject obj) {
+      print('macbook: $obj');
       laptop = obj;
     });
 
-    String laptopScreenJson = '''
+    final laptopScreenJson = '''
       {
         "vertexPositions": [
            0.580687, 0.659, 0.813106,
@@ -72,8 +72,8 @@ class Lesson16 extends Lesson {
     ''';
     laptopScreen = JsonObject(laptopScreenJson)..strip = true;
 
-    var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = [
+    final attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
+    final uniforms = [
       'uPMatrix',
       'uMVMatrix',
       'uNMatrix',
@@ -241,30 +241,31 @@ class Lesson16 extends Lesson {
   static const rttWidth = 512;
   static const rttHeight = 512;
 
-  get aVertexPosition => currentProgram.attributes["aVertexPosition"];
-  get aVertexNormal => currentProgram.attributes["aVertexNormal"];
-  get aTextureCoord => currentProgram.attributes["aTextureCoord"];
+  int? get aVertexPosition => currentProgram.attributes['aVertexPosition'];
+  int? get aVertexNormal => currentProgram.attributes['aVertexNormal'];
+  int? get aTextureCoord => currentProgram.attributes['aTextureCoord'];
 
-  get uShowSpecularHighlights => currentProgram.uniforms["uShowSpecularHighlights"];
-  get uMaterialShininess => currentProgram.uniforms["uMaterialShininess"];
+  UniformLocation? get uShowSpecularHighlights => currentProgram.uniforms['uShowSpecularHighlights'];
+  UniformLocation? get uMaterialShininess => currentProgram.uniforms['uMaterialShininess'];
 
-  get uPMatrix => currentProgram.uniforms["uPMatrix"];
-  get uMVMatrix => currentProgram.uniforms["uMVMatrix"];
-  get uNMatrix => currentProgram.uniforms["uNMatrix"];
-  get uSampler => currentProgram.uniforms["uSampler"];
-  get uUseTextures => currentProgram.uniforms["uUseTextures"];
-  get uUseLighting => currentProgram.uniforms["uUseLighting"];
-  get uAmbientColor => currentProgram.uniforms["uAmbientColor"];
-  get uPointLightingLocation => currentProgram.uniforms["uPointLightingLocation"];
-  get uPointLightingSpecularColor => currentProgram.uniforms["uPointLightingSpecularColor"];
-  get uPointLightingDiffuseColor => currentProgram.uniforms["uPointLightingDiffuseColor"];
+  UniformLocation? get uPMatrix => currentProgram.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => currentProgram.uniforms['uMVMatrix'];
+  UniformLocation? get uNMatrix => currentProgram.uniforms['uNMatrix'];
+  UniformLocation? get uSampler => currentProgram.uniforms['uSampler'];
+  UniformLocation? get uUseTextures => currentProgram.uniforms['uUseTextures'];
+  UniformLocation? get uUseLighting => currentProgram.uniforms['uUseLighting'];
+  UniformLocation? get uAmbientColor => currentProgram.uniforms['uAmbientColor'];
+  UniformLocation? get uPointLightingLocation => currentProgram.uniforms['uPointLightingLocation'];
+  UniformLocation? get uPointLightingSpecularColor => currentProgram.uniforms['uPointLightingSpecularColor'];
+  UniformLocation? get uPointLightingDiffuseColor => currentProgram.uniforms['uPointLightingDiffuseColor'];
 
-  get uAmbientLightingColor => currentProgram.uniforms["uAmbientLightingColor"];
-  get uMaterialAmbientColor => currentProgram.uniforms["uMaterialAmbientColor"];
-  get uMaterialDiffuseColor => currentProgram.uniforms["uMaterialDiffuseColor"];
-  get uMaterialSpecularColor => currentProgram.uniforms["uMaterialSpecularColor"];
-  get uMaterialEmissiveColor => currentProgram.uniforms["uMaterialEmissiveColor"];
+  UniformLocation? get uAmbientLightingColor => currentProgram.uniforms['uAmbientLightingColor'];
+  UniformLocation? get uMaterialAmbientColor => currentProgram.uniforms['uMaterialAmbientColor'];
+  UniformLocation? get uMaterialDiffuseColor => currentProgram.uniforms['uMaterialDiffuseColor'];
+  UniformLocation? get uMaterialSpecularColor => currentProgram.uniforms['uMaterialSpecularColor'];
+  UniformLocation? get uMaterialEmissiveColor => currentProgram.uniforms['uMaterialEmissiveColor'];
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
@@ -343,20 +344,22 @@ class Lesson16 extends Lesson {
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
-    var normalMatrix = mvMatrix.toInverseMat3();
+    final normalMatrix = mvMatrix.toInverseMat3();
     normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
+  @override
   void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
       laptopAngle -= 0.005 * elapsed;
     }
     lastTime = now;
     lesson13.animate(now);
   }
 
+  @override
   void handleKeys() {
     if (isActive(KeyCode.A)) {
       laptopAngle -= 1.0;

@@ -24,7 +24,7 @@ class Pyramid implements Renderable {
     textureCoordBuffer = gl.createBuffer();
 
     gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
-    var vertices = [
+    final vertices = [
       // Front face
       0.0, 1.0, 0.0,
       -1.0, -1.0, 1.0,
@@ -61,7 +61,7 @@ class Pyramid implements Renderable {
 
     normalBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
-    var vertexNormals = [
+    final vertexNormals = [
       // Front face
       0.0, 0.4472135901451111, 0.8944271802902222,
       0.0, 0.4472135901451111, 0.8944271802902222,
@@ -99,7 +99,7 @@ class Pyramid implements Renderable {
     // TODO: Come up with a better way to store color buffer vs texture buffer :)
     colorBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
-    var colors = [
+    final colors = [
       // Front face
       1.0, 0.0, 0.0, 1.0,
       0.0, 1.0, 0.0, 1.0,
@@ -146,7 +146,8 @@ class Pyramid implements Renderable {
     //    }
   }
 
-  void draw({int? vertex, int? normal, int? coord, int? color, setUniforms()?}) {
+  @override
+  void draw({int? vertex, int? normal, int? coord, int? color, Function()? setUniforms}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

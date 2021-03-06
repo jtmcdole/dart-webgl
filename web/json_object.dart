@@ -30,11 +30,11 @@ class JsonObject implements Renderable {
   bool strip = false;
 
   JsonObject(String fromJson) {
-    Map data = json.decode(fromJson);
+    final Map data = json.decode(fromJson);
 
     List<dynamic>? numArray = data['vertexNormals'];
     if (numArray != null) {
-      List<double> normals = List<double>.from(numArray.map((index) => index.toDouble()));
+      final normals = List<double>.from(numArray.map((index) => index.toDouble()));
 
       vertexNormalBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexNormalBuffer);
@@ -47,7 +47,7 @@ class JsonObject implements Renderable {
 
     numArray = data['vertexTextureCoords'];
     if (numArray != null) {
-      List<double> coords = List<double>.from(numArray.map((index) => index.toDouble()));
+      final coords = List<double>.from(numArray.map((index) => index.toDouble()));
 
       textureCoordBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
@@ -59,7 +59,7 @@ class JsonObject implements Renderable {
     }
 
     numArray = data['vertexPositions'];
-    List<double> positions = List<double>.from(numArray!.map((index) => index.toDouble()));
+    final positions = List<double>.from(numArray!.map((index) => index.toDouble()));
 
     vertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexPositionBuffer);
@@ -71,7 +71,7 @@ class JsonObject implements Renderable {
 
     numArray = data['indices'];
     if (numArray != null) {
-      List<int> indices = List<int>.from(numArray.map((index) => index.toInt()));
+      final indices = List<int>.from(numArray.map((index) => index.toInt()));
       indexBuffer = gl.createBuffer();
       gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
       gl.bufferData(
@@ -87,16 +87,17 @@ class JsonObject implements Renderable {
 
   /// Return a future [JsonObject] by fetching the JSON data from [url].
   static Future<JsonObject> fromUrl(String url) {
-    Completer<JsonObject> complete = Completer<JsonObject>();
+    final complete = Completer<JsonObject>();
     HttpRequest.getString(url).then((json) {
-      JsonObject obj = JsonObject(json);
-      print("json object from $url loaded as $obj");
+      final obj = JsonObject(json);
+      print('json object from $url loaded as $obj');
       complete.complete(obj);
     });
     return complete.future;
   }
 
-  void draw({int? vertex, int? normal, int? coord, setUniforms()?}) {
+  @override
+  void draw({int? vertex, int? normal, int? coord, Function()? setUniforms}) {
     if (vertex != null) {
       gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexPositionBuffer);
       gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);

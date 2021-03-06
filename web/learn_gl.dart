@@ -50,7 +50,7 @@ part 'renderable.dart';
 part 'sphere.dart';
 part 'star.dart';
 
-CanvasElement canvas = querySelector("#lesson01-canvas") as CanvasElement;
+final canvas = querySelector('#lesson01-canvas') as CanvasElement;
 late RenderingContext2 gl;
 late Lesson lesson;
 
@@ -58,37 +58,41 @@ void main() {
   mvMatrix = Matrix4()..identity();
   // Nab the context we'll be drawing to.
   // gl = canvas.getContext3d();
-  gl = canvas.getContext("webgl2") as RenderingContext2;
+  gl = canvas.getContext('webgl2') as RenderingContext2;
 
   // Allow some URL customization of the program.
   parseQueryString();
 
-  trackFrameRate = urlParameters.containsKey("fps");
+  trackFrameRate = urlParameters.containsKey('fps');
   if (!trackFrameRate) {
-    querySelector("#fps")!.remove();
+    querySelector('#fps')!.remove();
   }
-  if (urlParameters.containsKey("width")) {
-    String width = urlParameters["width"];
+  if (urlParameters.containsKey('width')) {
+    final String width = urlParameters['width'];
     canvas.width = int.tryParse(width) ?? 500;
   }
 
-  if (urlParameters.containsKey("height")) {
-    String height = urlParameters["height"];
+  if (urlParameters.containsKey('height')) {
+    final String height = urlParameters['height'];
     canvas.height = int.tryParse(height) ?? 500;
   }
 
-  if (urlParameters.containsKey("overflow")) {
-    document.body!.style.overflow = "hidden";
+  if (urlParameters.containsKey('overflow')) {
+    document.body!.style.overflow = 'hidden';
   }
 
-  int defaultLesson = 1;
-  if (urlParameters.containsKey("lsn")) {
-    defaultLesson = int.parse(urlParameters["lsn"]);
+  var defaultLesson = 1;
+  if (urlParameters.containsKey('lsn')) {
+    defaultLesson = int.parse(urlParameters['lsn']);
   }
 
-  SelectElement lessonSelect = querySelector("#lessonNumber") as SelectElement;
-  for (int i = 1; i < 17; i++) {
-    lessonSelect.children.add(OptionElement(data: "Lesson $i", value: "$i", selected: defaultLesson == i));
+  final lessonSelect = querySelector('#lessonNumber') as SelectElement;
+  for (var i = 1; i < 17; i++) {
+    lessonSelect.children.add(OptionElement(
+      data: 'Lesson $i',
+      value: '$i',
+      selected: defaultLesson == i,
+    ));
   }
   lessonSelect.onChange.listen((event) {
     lesson = selectLesson(lessonSelect.selectedIndex! + 1)!..initHtml(lessonHook);
@@ -114,7 +118,7 @@ void main() {
 /// This is the infinite animation loop; we request that the web browser
 /// call us back every time its ready for a  frame to be rendered. The [time]
 /// parameter is an increasing value based on when the animation loop started.
-tick(time) {
+void tick(time) {
   window.animationFrame.then(tick);
   if (trackFrameRate) frameCount(time);
   lesson.handleKeys();
@@ -123,7 +127,7 @@ tick(time) {
 }
 
 /// The global key-state map.
-Set<int> currentlyPressedKeys = Set<int>();
+Set<int> currentlyPressedKeys = <int>{};
 
 /// Test if the given [KeyCode] is active.
 bool isActive(int code) => currentlyPressedKeys.contains(code);
@@ -134,16 +138,16 @@ bool anyActive(List<int> codes) {
 }
 
 /// Parse and store the URL parameters for start up.
-parseQueryString() {
-  String search = window.location.search!;
-  if (search.startsWith("?")) {
+void parseQueryString() {
+  var search = window.location.search!;
+  if (search.startsWith('?')) {
     search = search.substring(1);
   }
-  List<String> params = search.split("&");
-  for (String param in params) {
-    List<String> pair = param.split("=");
+  final params = search.split('&');
+  for (var param in params) {
+    final pair = param.split('=');
     if (pair.length == 1) {
-      urlParameters[pair[0]] = "";
+      urlParameters[pair[0]] = '';
     } else {
       urlParameters[pair[0]] = pair[1];
     }
@@ -162,13 +166,13 @@ List<Matrix4> mvStack = <Matrix4>[];
 
 /// Add a copy of the current Model-View matrix to the the stack for future
 /// restoration.
-mvPushMatrix() => mvStack.add(Matrix4.fromMatrix(mvMatrix));
+void mvPushMatrix() => mvStack.add(Matrix4.fromMatrix(mvMatrix));
 
 /// Pop the last matrix off the stack and set the Model View matrix.
-mvPopMatrix() => mvMatrix = mvStack.removeLast();
+void mvPopMatrix() => mvMatrix = mvStack.removeLast();
 
 /// Handle common keys through callbacks, making lessons a little easier to code
-void handleDirection({up()?, down()?, left()?, right()?}) {
+void handleDirection({Function()? up, Function()? down, Function()? left, Function()? right}) {
   if (left != null && anyActive([KeyCode.A, KeyCode.LEFT])) {
     left();
   }
@@ -191,7 +195,7 @@ const SAMPLE_FACTOR = 1000 ~/ SAMPLE_RATE_MS;
 int frames = 0;
 double lastSample = 0;
 double averageFps = 1;
-DivElement fps = querySelector("#fps") as DivElement;
+DivElement fps = querySelector('#fps') as DivElement;
 
 void frameCount(double now) {
   frames++;
@@ -218,8 +222,8 @@ abstract class Lesson {
   /// This is provided by default.
   void initHtml(DivElement hook) {
     hook.innerHtml = "If you see this, don't worry, the lesson doesn't have "
-        "any parameters for you to change! Generally up/down/left/right or "
-        "WASD work.";
+        'any parameters for you to change! Generally up/down/left/right or '
+        'WASD work.';
   }
 
   /// Added for your convenience to track time between [animate] callbacks.
@@ -228,10 +232,10 @@ abstract class Lesson {
 
 /// Load the given image at [url] and call [handle] to execute some GL code.
 /// Return a [Future] to asynchronously notify when the texture is complete.
-Future<Texture> loadTexture(String url, handle(Texture tex, ImageElement ele)) {
-  var completer = Completer<Texture>();
-  var texture = gl.createTexture();
-  var element = ImageElement();
+Future<Texture> loadTexture(String url, Function(Texture tex, ImageElement ele) handle) {
+  final completer = Completer<Texture>();
+  final texture = gl.createTexture();
+  final element = ImageElement();
   element.onLoad.listen((e) {
     handle(texture, element);
     completer.complete(texture);
@@ -267,7 +271,7 @@ void handleMipMapTexture(Texture texture, ImageElement image) {
   gl.bindTexture(WebGL.TEXTURE_2D, null);
 }
 
-DivElement lessonHook = querySelector("#lesson_html") as DivElement;
+DivElement lessonHook = querySelector('#lesson_html') as DivElement;
 bool trackFrameRate = false;
 
 Lesson? selectLesson(int number) {
@@ -312,12 +316,11 @@ Lesson? selectLesson(int number) {
 class NullTreeSanitizer implements NodeTreeSanitizer {
   static NullTreeSanitizer? instance;
   factory NullTreeSanitizer() {
-    if (instance == null) {
-      instance = NullTreeSanitizer._();
-    }
+    instance ??= NullTreeSanitizer._();
     return instance!;
   }
 
   NullTreeSanitizer._();
+  @override
   void sanitizeTree(Node node) {}
 }

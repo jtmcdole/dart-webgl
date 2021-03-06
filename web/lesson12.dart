@@ -32,8 +32,8 @@ class Lesson12 extends Lesson {
     moon = Sphere(lats: 30, lons: 30, radius: 2);
     cube = Cube();
 
-    var attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
-    var uniforms = [
+    final attributes = ['aVertexPosition', 'aVertexNormal', 'aTextureCoord'];
+    final uniforms = [
       'uSampler',
       'uMVMatrix',
       'uPMatrix',
@@ -96,26 +96,27 @@ class Lesson12 extends Lesson {
       uniforms,
     );
 
-    loadTexture("moon.bmp", handleMipMapTexture).then((t) => moonTexture = t);
-    loadTexture("crate.gif", handleMipMapTexture).then((t) => cubeTexture = t);
+    loadTexture('moon.bmp', handleMipMapTexture).then((t) => moonTexture = t);
+    loadTexture('crate.gif', handleMipMapTexture).then((t) => cubeTexture = t);
 
     gl.useProgram(program.program);
     gl.enable(WebGL.DEPTH_TEST);
   }
 
-  get aVertexPosition => program.attributes['aVertexPosition'];
-  get aVertexNormal => program.attributes['aVertexNormal'];
-  get aTextureCoord => program.attributes['aTextureCoord'];
+  int? get aVertexPosition => program.attributes['aVertexPosition'];
+  int? get aVertexNormal => program.attributes['aVertexNormal'];
+  int? get aTextureCoord => program.attributes['aTextureCoord'];
 
-  get uSampler => program.uniforms['uSampler'];
-  get uMVMatrix => program.uniforms['uMVMatrix'];
-  get uPMatrix => program.uniforms['uPMatrix'];
-  get uNMatrix => program.uniforms['uNMatrix'];
-  get uAmbientColor => program.uniforms['uAmbientColor'];
-  get uPointLightingLocation => program.uniforms['uPointLightingLocation'];
-  get uPointLightingColor => program.uniforms['uPointLightingColor'];
-  get uUseLighting => program.uniforms['uUseLighting'];
+  UniformLocation? get uSampler => program.uniforms['uSampler'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uNMatrix => program.uniforms['uNMatrix'];
+  UniformLocation? get uAmbientColor => program.uniforms['uAmbientColor'];
+  UniformLocation? get uPointLightingLocation => program.uniforms['uPointLightingLocation'];
+  UniformLocation? get uPointLightingColor => program.uniforms['uPointLightingColor'];
+  UniformLocation? get uUseLighting => program.uniforms['uUseLighting'];
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
 
@@ -129,7 +130,7 @@ class Lesson12 extends Lesson {
     gl.useProgram(program.program);
 
     // One: setup lighting information
-    bool lighting = _lighting.checked!;
+    final lighting = _lighting.checked!;
     gl.uniform1i(uUseLighting, lighting ? 1 : 0);
     if (lighting) {
       gl.uniform3f(uAmbientColor, double.parse(_aR.value!), double.parse(_aG.value!), double.parse(_aB.value!));
@@ -175,20 +176,22 @@ class Lesson12 extends Lesson {
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
     gl.uniformMatrix4fv(uMVMatrix, false, mvMatrix.buf);
-    var normalMatrix = mvMatrix.toInverseMat3();
+    final normalMatrix = mvMatrix.toInverseMat3();
     normalMatrix!.transposeSelf();
     gl.uniformMatrix3fv(uNMatrix, false, normalMatrix.buf);
   }
 
+  @override
   void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
+      final elapsed = now - lastTime;
       moonAngle += 0.05 * elapsed;
       cubeAngle += 0.05 * elapsed;
     }
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(
         up: () => tilt -= 1.0,
@@ -212,9 +215,10 @@ class Lesson12 extends Lesson {
   // Point color
   late InputElement _pR, _pG, _pB;
 
+  @override
   void initHtml(DivElement hook) {
     hook.setInnerHtml(
-      """
+      '''
     <input type="checkbox" id="lighting" checked /> Use lighting<br/>
     <br/>
 
@@ -248,22 +252,22 @@ class Lesson12 extends Lesson {
     <br/>
 
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
-    """,
+    ''',
       treeSanitizer: NullTreeSanitizer(),
     );
 
     // Re-look up our dom elements
-    _lighting = querySelector("#lighting") as InputElement;
-    _aR = querySelector("#ambientR") as InputElement;
-    _aG = querySelector("#ambientG") as InputElement;
-    _aB = querySelector("#ambientB") as InputElement;
+    _lighting = querySelector('#lighting') as InputElement;
+    _aR = querySelector('#ambientR') as InputElement;
+    _aG = querySelector('#ambientG') as InputElement;
+    _aB = querySelector('#ambientB') as InputElement;
 
-    _pR = querySelector("#pointR") as InputElement;
-    _pG = querySelector("#pointG") as InputElement;
-    _pB = querySelector("#pointB") as InputElement;
+    _pR = querySelector('#pointR') as InputElement;
+    _pG = querySelector('#pointG') as InputElement;
+    _pB = querySelector('#pointB') as InputElement;
 
-    _lpX = querySelector("#lightPositionX") as InputElement;
-    _lpY = querySelector("#lightPositionY") as InputElement;
-    _lpZ = querySelector("#lightPositionZ") as InputElement;
+    _lpX = querySelector('#lightPositionX') as InputElement;
+    _lpY = querySelector('#lightPositionY') as InputElement;
+    _lpZ = querySelector('#lightPositionZ') as InputElement;
   }
 }

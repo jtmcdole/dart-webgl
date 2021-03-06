@@ -23,10 +23,10 @@ class Lesson9 extends Lesson {
   bool get isLoaded => texture != null;
 
   Lesson9() {
-    for (double i = 0; i < 50; i++) {
+    for (var i = 0; i < 50; i++) {
       stars.add(Star((i / 50) * 5.0, i / 50));
     }
-    loadTexture("star.gif", (Texture texture, ImageElement ele) {
+    loadTexture('star.gif', (Texture texture, ImageElement ele) {
       gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
       gl.bindTexture(WebGL.TEXTURE_2D, texture);
       gl.texImage2D(
@@ -52,8 +52,8 @@ class Lesson9 extends Lesson {
       this.texture = texture;
     });
 
-    var attributes = ['aVertexPosition', 'aTextureCoord'];
-    var uniforms = ['uMVMatrix', 'uPMatrix', 'uColor', 'uSampler'];
+    final attributes = ['aVertexPosition', 'aTextureCoord'];
+    final uniforms = ['uMVMatrix', 'uPMatrix', 'uColor', 'uSampler'];
     program = GlProgram(
       '''
           precision mediump float;
@@ -89,6 +89,7 @@ class Lesson9 extends Lesson {
     gl.useProgram(program.program);
   }
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     if (!isLoaded) return;
     // Basic viewport setup and clearing of the screen
@@ -114,7 +115,7 @@ class Lesson9 extends Lesson {
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
     gl.uniform1i(program.uniforms['uSampler'], 0);
 
-    for (Star star in stars) {
+    for (var star in stars) {
       star.draw(
           vertex: program.attributes['aVertexPosition']!,
           coord: program.attributes['aTextureCoord']!,
@@ -127,8 +128,8 @@ class Lesson9 extends Lesson {
     mvPopMatrix();
   }
 
-  get uPMatrix => program.uniforms["uPMatrix"];
-  get uMVMatrix => program.uniforms["uMVMatrix"];
+  UniformLocation? get uPMatrix => program.uniforms['uPMatrix'];
+  UniformLocation? get uMVMatrix => program.uniforms['uMVMatrix'];
 
   void setMatrixUniforms() {
     gl.uniformMatrix4fv(uPMatrix, false, pMatrix.buf);
@@ -139,16 +140,18 @@ class Lesson9 extends Lesson {
   double spin = 0.0;
   double zoom = -15.0;
 
+  @override
   void animate(double now) {
     if (lastTime != 0) {
-      var elapsed = now - lastTime;
-      for (Star star in stars) {
+      final elapsed = now - lastTime;
+      for (var star in stars) {
         star.animate(elapsed);
       }
     }
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     handleDirection(up: () => tilt += 2.0, down: () => tilt -= 2.0);
     if (isActive(KeyCode.PAGE_UP)) {
@@ -160,7 +163,8 @@ class Lesson9 extends Lesson {
   }
 
   late InputElement _twinkle;
-  initHtml(DivElement hook) {
+  @override
+  void initHtml(DivElement hook) {
     hook.setInnerHtml(
       '''
     <input type="checkbox" id="twinkle" /> Twinkle<br/>
@@ -169,6 +173,6 @@ class Lesson9 extends Lesson {
       treeSanitizer: NullTreeSanitizer(),
     );
 
-    _twinkle = querySelector("#twinkle") as InputElement;
+    _twinkle = querySelector('#twinkle') as InputElement;
   }
 }

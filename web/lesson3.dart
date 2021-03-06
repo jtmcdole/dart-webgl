@@ -92,6 +92,7 @@ class Lesson3 extends Lesson {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
   }
 
+  @override
   void drawScene(int viewWidth, int viewHeight, double aspect) {
     // Basic viewport setup and clearing of the screen
     gl.viewport(0, 0, viewWidth, viewHeight);
@@ -147,7 +148,7 @@ class Lesson3 extends Lesson {
 
   /// Write the matrix uniforms (model view matrix and perspective matrix) so
   /// WebGL knows what to do with them.
-  setMatrixUniforms() {
+  void setMatrixUniforms() {
     gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
     gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);
   }
@@ -155,6 +156,7 @@ class Lesson3 extends Lesson {
   /// Every time the browser tells us to draw the scene, animate is called.
   /// If there's something being movied, this is where that movement i
   /// calculated.
+  @override
   void animate(double now) {
     if (lastTime != 0) {
       var elapsed = now - lastTime;
@@ -164,6 +166,7 @@ class Lesson3 extends Lesson {
     lastTime = now;
   }
 
+  @override
   void handleKeys() {
     // We're not handling keys right now, but if you want to experiment, here's
     // where you'd get to play around.
